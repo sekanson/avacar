@@ -1,20 +1,14 @@
 "use client";
 
-import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useAppStore } from "@/store/appStore";
+import { useEffect } from "react";
 
-export default function RootPage() {
+export default function HomePage() {
   const router = useRouter();
-  const { hasSeenOnboarding } = useAppStore();
 
   useEffect(() => {
-    if (hasSeenOnboarding) {
-      router.replace("/feed");
-    } else {
-      router.replace("/splash");
-    }
-  }, [hasSeenOnboarding, router]);
+    router.replace("/feed");
+  }, [router]);
 
   return (
     <div
