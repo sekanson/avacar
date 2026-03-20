@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, Star, MapPin, ArrowRight } from "lucide-react";
+import { useAppStore } from "@/store/appStore";
 import { shops } from "@/data/products";
 import type { Shop, ProductCategory } from "@/types";
 
@@ -153,6 +154,14 @@ function ShopCard({ shop, onClick }: { shop: Shop; onClick: () => void }) {
 
 export default function FindShopPage() {
   const router = useRouter();
+  const { currentVehicle } = useAppStore();
+
+  useEffect(() => {
+    if (!currentVehicle) {
+      router.replace("/upload");
+    }
+  }, [currentVehicle, router]);
+
   const [filters, setFilters] = useState<FilterState>({ rating: "all", distance: "all", price: "all" });
 
   const filteredShops = useMemo(() => {

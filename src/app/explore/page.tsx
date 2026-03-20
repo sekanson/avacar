@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Search, Heart, MessageCircle, Sparkles } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { mockFeedPosts as prebuilds } from "@/data/products";
+import { mockPrebuilds as prebuilds } from "@/data/products";
 import type { FeedPost } from "@/types";
 
 const categories = ["All", "Wraps", "Wheels", "Tint", "PPF"];
@@ -47,7 +47,8 @@ function FeedCard({ post }: { post: FeedPost }) {
           {post.user.username[0].toUpperCase()}
         </div>
         <div style={{ flex: 1, minWidth: 0 }}>
-          <span
+          <Link
+            href={`/profile/${post.user.username}`}
             style={{
               fontSize: 13,
               fontWeight: 600,
@@ -56,10 +57,11 @@ function FeedCard({ post }: { post: FeedPost }) {
               overflow: "hidden",
               textOverflow: "ellipsis",
               whiteSpace: "nowrap",
+              textDecoration: "none",
             }}
           >
             {post.user.username}
-          </span>
+          </Link>
           <span style={{ fontSize: 11, color: "var(--muted)" }}>
             {post.car.year} {post.car.make} {post.car.model}
           </span>

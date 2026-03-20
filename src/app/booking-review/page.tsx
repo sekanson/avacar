@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, Car, MapPin, Star, Clock, AlertCircle, Mail } from "lucide-react";
 import { useAppStore } from "@/store/appStore";
@@ -19,19 +19,26 @@ export default function BookingReviewPage() {
     selectedSlot,
     getBuildTotal,
     setCurrentBooking,
+    saveBuild,
   } = useAppStore();
 
   const [isLoading, setIsLoading] = useState(false);
   const total = getBuildTotal();
 
-  const vehicle = currentVehicle ?? { make: "BMW", model: "M4", year: 2024, color: "Black", bodyType: "Coupe" };
-  const shop = selectedShop ?? {
-    id: "shop-1", name: "Elite Wraps Co.", rating: 4.9, reviewCount: 142,
-    address: "1420 W Olympic Blvd", city: "Los Angeles, CA", priceTier: 3 as const,
-    distance: 1.2, specialties: [], description: "", certifications: [],
-    portfolioImages: [], reviews: [], timeSlots: [],
-  };
-  const slot = selectedSlot ?? { date: "Thu Mar 12", time: "9:00 AM", available: true };
+  useEffect(() => {
+    if (!selectedShop || !selectedSlot) {
+      router.replace("/find-shop");
+    }
+  }, [selectedShop, selectedSlot, router]);
+
+  const vehicle = currentVehicle ?? { make: "Unknown", model: "Vehicle", year: 0, color: "", bodyType: "" };
+
+  if (!selectedShop || !selectedSlot) {
+    return null;
+  }
+
+  const shop = selectedShop;
+  const slot = selectedSlot;
 
   const buildItems = [
     currentBuild.wrap && { label: "Wrap", name: `${currentBuild.wrap.name} (${currentBuild.wrap.brand})`, priceMin: currentBuild.wrap.priceMin, priceMax: currentBuild.wrap.priceMax },
@@ -45,13 +52,21 @@ export default function BookingReviewPage() {
     setIsLoading(true);
     await new Promise((r) => setTimeout(r, 1600));
     const code = generateConfirmationCode();
+    const createdAt = new Date().toISOString();
     setCurrentBooking({
       shop,
-      build: { vehicle, selections: currentBuild, totalMin: total.min, totalMax: total.max },
+      build: { vehicle, selections: currentBuild, totalMin: total.min, totalMax: total.max, createdAt },
       selectedSlot: slot,
       status: "confirmed",
       confirmationCode: code,
-      createdAt: new Date().toISOString(),
+      createdAt,
+    });
+    saveBuild({
+      vehicle,
+      selections: currentBuild,
+      totalMin: total.min,
+      totalMax: total.max,
+      createdAt,
     });
     router.push("/booking-confirmed");
   };

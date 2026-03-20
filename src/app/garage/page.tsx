@@ -2,10 +2,11 @@
 
 import { useRouter } from "next/navigation";
 import { Car, Plus } from "lucide-react";
+import { useAppStore } from "@/store/appStore";
 
 export default function GaragePage() {
   const router = useRouter();
-  const builds: Array<{ id: string; name: string; image: string; specs: string }> = [];
+  const { savedBuilds } = useAppStore();
 
   return (
     <div style={{ background: "var(--bg)", minHeight: "100vh", padding: "24px 20px 100px" }}>
@@ -44,7 +45,7 @@ export default function GaragePage() {
         </button>
       </div>
 
-      {builds.length === 0 ? (
+      {savedBuilds.length === 0 ? (
         /* Empty state */
         <div
           style={{
@@ -95,42 +96,69 @@ export default function GaragePage() {
         </div>
       ) : (
         /* Builds grid */
-        <div className="garage-grid">
-          {builds.map((build) => (
-            <div
-              key={build.id}
-              style={{
-                background: "var(--surface-card)",
-                borderRadius: 12,
-                overflow: "hidden",
-                boxShadow: "var(--shadow-card)",
-                cursor: "pointer",
-              }}
-            >
+        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+          {savedBuilds.map((build, idx) => {
+            const tags = [
+              build.selections.wrap?.name,
+              build.selections.wheels?.name,
+              build.selections.tint?.name,
+              build.selections.ppf?.name,
+              build.selections.bodykit?.name,
+            ].filter(Boolean) as string[];
+            const dateStr = build.createdAt
+              ? new Date(build.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })
+              : "";
+            return (
               <div
+                key={build.id ?? idx}
                 style={{
-                  width: "100%",
-                  aspectRatio: "16/10",
-                  background: "var(--surface-low)",
+                  background: "var(--surface-card)",
+                  borderRadius: 14,
+                  padding: 16,
+                  boxShadow: "var(--shadow-card)",
                 }}
-              />
-              <div style={{ padding: 12 }}>
+              >
                 <p
                   style={{
-                    fontSize: 14,
-                    fontWeight: 600,
+                    fontSize: 16,
+                    fontWeight: 700,
                     color: "var(--on-surface)",
-                    margin: "0 0 4px",
+                    margin: "0 0 8px",
+                    letterSpacing: "-0.01em",
                   }}
                 >
-                  {build.name}
+                  {build.vehicle.year} {build.vehicle.make} {build.vehicle.model}
                 </p>
-                <p style={{ fontSize: 12, color: "var(--muted)", margin: 0 }}>
-                  {build.specs}
-                </p>
+                {tags.length > 0 && (
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 10 }}>
+                    {tags.map((tag) => (
+                      <span
+                        key={tag}
+                        style={{
+                          fontSize: 11,
+                          fontWeight: 500,
+                          color: "var(--on-surface-variant)",
+                          background: "var(--surface-low)",
+                          borderRadius: 6,
+                          padding: "3px 8px",
+                        }}
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                )}
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                  <span style={{ fontSize: 14, fontWeight: 600, color: "var(--primary)" }}>
+                    ${build.totalMin.toLocaleString()}-${build.totalMax.toLocaleString()}
+                  </span>
+                  {dateStr && (
+                    <span style={{ fontSize: 11, color: "var(--muted)" }}>{dateStr}</span>
+                  )}
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>

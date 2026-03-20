@@ -15,6 +15,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { getFeedPostById } from "@/data/feedPosts";
+import { useAppStore } from "@/store/appStore";
 
 function timeAgo(dateStr: string): string {
   const diff = Date.now() - new Date(dateStr).getTime();
@@ -32,8 +33,17 @@ export default function PostDetailPage() {
   const router = useRouter();
   const [commentText, setCommentText] = useState("");
   const [liked, setLiked] = useState(false);
+  const [comments, setComments] = useState<import("@/types").FeedComment[]>([]);
+  const [initialized, setInitialized] = useState(false);
+
+  const showToast = useAppStore((s) => s.showToast);
 
   const post = getFeedPostById(params.id as string);
+
+  if (post && !initialized) {
+    setComments(post.commentsList);
+    setInitialized(true);
+  }
 
   if (!post) {
     return (
@@ -245,6 +255,8 @@ export default function PostDetailPage() {
         >
           <button
             onClick={() => setLiked(!liked)}
+            aria-label={isLiked ? "Unlike" : "Like post"}
+            aria-pressed={isLiked}
             style={{
               display: "flex",
               alignItems: "center",
@@ -271,6 +283,7 @@ export default function PostDetailPage() {
             </span>
           </div>
           <button
+            aria-label="Share post"
             style={{
               display: "flex",
               alignItems: "center",
@@ -432,10 +445,10 @@ export default function PostDetailPage() {
             marginBottom: 12,
           }}
         >
-          Comments ({post.commentsList.length})
+          Comments ({comments.length})
         </h3>
         <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 16 }}>
-          {post.commentsList.map((comment) => (
+          {comments.map((comment) => (
             <div key={comment.id} style={{ display: "flex", gap: 10 }}>
               <div
                 style={{
@@ -488,7 +501,7 @@ export default function PostDetailPage() {
               </div>
             </div>
           ))}
-          {post.commentsList.length === 0 && (
+          {comments.length === 0 && (
             <p style={{ fontSize: 13, color: "var(--muted)", textAlign: "center", padding: "12px 0" }}>
               No comments yet. Be the first!
             </p>
@@ -496,7 +509,7 @@ export default function PostDetailPage() {
         </div>
 
         {/* Try This Build CTA */}
-        <Link href="/upload" style={{ display: "block", marginBottom: 24 }}>
+        <Link href={`/upload?from=feed&postId=${post.id}`} style={{ display: "block", marginBottom: 24 }}>
           <button
             style={{
               width: "100%",
@@ -549,6 +562,20 @@ export default function PostDetailPage() {
           }}
         />
         <button
+          disabled={!commentText.trim()}
+          aria-label="Send comment"
+          onClick={() => {
+            if (!commentText.trim()) return;
+            const newComment = {
+              id: Date.now().toString(),
+              user: { id: "me", username: "you", avatar: "" },
+              text: commentText,
+              createdAt: new Date().toISOString(),
+            };
+            setComments((prev) => [...prev, newComment]);
+            setCommentText("");
+            showToast("Comment posted!");
+          }}
           style={{
             width: 36,
             height: 36,
@@ -557,7 +584,7 @@ export default function PostDetailPage() {
             alignItems: "center",
             justifyContent: "center",
             border: "none",
-            cursor: "pointer",
+            cursor: commentText.trim() ? "pointer" : "default",
             background: commentText.trim()
               ? "var(--primary)"
               : "var(--primary-alpha-15)",

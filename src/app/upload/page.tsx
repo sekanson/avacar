@@ -1,7 +1,7 @@
 "use client";
 
-import { useRef, useState, useCallback } from "react";
-import { useRouter } from "next/navigation";
+import { useRef, useState, useCallback, Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Camera, ImagePlus, ArrowLeft, Loader2, RotateCcw, Info } from "lucide-react";
 import { useAppStore } from "@/store/appStore";
 
@@ -54,8 +54,10 @@ function StepBar() {
 
 // ─── Upload Page ──────────────────────────────────────────────────────────────
 
-export default function UploadPage() {
+function UploadPageInner() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const fromFeed = searchParams.get("from") === "feed";
   const { setUploadedPhoto } = useAppStore();
 
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -148,6 +150,18 @@ export default function UploadPage() {
 
       {/* Main Content */}
       <div style={{ flex: 1, display: "flex", flexDirection: "column", padding: "16px 20px", gap: 20 }}>
+        {fromFeed && (
+          <div style={{
+            background: "var(--primary-alpha-08)",
+            borderRadius: 12,
+            padding: "10px 14px",
+            fontSize: 13,
+            color: "var(--on-surface-variant)",
+            fontWeight: 500,
+          }}>
+            Inspired by this build — upload your car to try it
+          </div>
+        )}
         {preview ? (
           /* Preview */
           <div
@@ -304,5 +318,13 @@ export default function UploadPage() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function UploadPage() {
+  return (
+    <Suspense>
+      <UploadPageInner />
+    </Suspense>
   );
 }

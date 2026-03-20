@@ -1,11 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Heart, MessageCircle, Share2, Sparkles, Upload } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { mockFeedPosts } from "@/data/feedPosts";
-import { mockFeedPosts as prebuilds } from "@/data/products";
+import { mockPrebuilds as prebuilds } from "@/data/products";
 import type { FeedPost } from "@/types";
 
 const categories = ["All", "Wraps", "Wheels", "Tint", "PPF"];
@@ -138,6 +138,8 @@ function FeedCard({
       >
         <button
           onClick={onLike}
+          aria-label={liked ? "Unlike" : "Like post"}
+          aria-pressed={liked}
           style={{
             display: "flex",
             alignItems: "center",
@@ -172,6 +174,7 @@ function FeedCard({
           </span>
         </Link>
         <button
+          aria-label="Share post"
           style={{
             display: "flex",
             alignItems: "center",
@@ -185,7 +188,7 @@ function FeedCard({
         </button>
         <div style={{ flex: 1 }} />
         <Link
-          href="/upload"
+          href={`/upload?from=feed&postId=${post.id}`}
           style={{
             fontSize: 12,
             fontWeight: 600,
@@ -230,6 +233,11 @@ export default function FeedPage() {
   const [feedCat, setFeedCat] = useState("All");
   const [feedTab, setFeedTab] = useState<"feed" | "trending">("feed");
   const [feedLikes, setFeedLikes] = useState<Record<string, boolean>>({});
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    scrollRef.current?.scrollTo({ top: 0, behavior: "smooth" });
+  }, [feedTab, feedCat]);
 
   const toggleLike = (id: string) => {
     setFeedLikes((prev) => ({ ...prev, [id]: !prev[id] }));
@@ -244,7 +252,7 @@ export default function FeedPage() {
   });
 
   return (
-    <div style={{ paddingBottom: 24, background: "var(--bg)", minHeight: "100vh" }}>
+    <div ref={scrollRef} style={{ paddingBottom: 24, background: "var(--bg)", minHeight: "100vh", overflow: "auto" }}>
       {/* Hero banner */}
       <div
         style={{

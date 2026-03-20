@@ -11,10 +11,13 @@ import {
   LogOut,
   UserPen,
 } from "lucide-react";
+import { useAppStore } from "@/store/appStore";
 
 export default function ProfilePage() {
   const router = useRouter();
   const [darkMode, setDarkMode] = useState(false);
+  const { savedBuilds } = useAppStore();
+  const avatarLetter = "U";
 
   const settingsRows = [
     { icon: UserPen, label: "Edit Profile", path: "/profile/edit" },
@@ -43,7 +46,7 @@ export default function ProfilePage() {
               fontFamily: "var(--font-manrope), Manrope, sans-serif",
             }}
           >
-            U
+            {avatarLetter}
           </div>
           <button
             style={{
@@ -96,7 +99,7 @@ export default function ProfilePage() {
         }}
       >
         {[
-          { label: "Posts", value: "12" },
+          { label: "Posts", value: savedBuilds.length.toString() },
           { label: "Followers", value: "248" },
           { label: "Following", value: "89" },
         ].map((stat, i) => (

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import {
   ArrowLeft,
@@ -149,7 +149,13 @@ function ProductTile({
 
 export default function CustomizePage() {
   const router = useRouter();
-  const { currentBuild, setProduct, getBuildTotal } = useAppStore();
+  const { currentBuild, setProduct, getBuildTotal, detectedVehicle, currentVehicle } = useAppStore();
+
+  useEffect(() => {
+    if (!detectedVehicle && !currentVehicle) {
+      router.replace("/upload");
+    }
+  }, [detectedVehicle, currentVehicle, router]);
   const [activeTab, setActiveTab] = useState<TabId>("wraps");
 
   const products = TAB_DATA[activeTab];

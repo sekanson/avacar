@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import {
   ArrowLeft,
@@ -147,6 +148,13 @@ function QuoteRow({
 export default function QuotePage() {
   const router = useRouter();
   const { uploadedPhoto, currentVehicle, currentBuild, getBuildTotal, showToast } = useAppStore();
+
+  useEffect(() => {
+    if (!currentVehicle) {
+      router.replace("/upload");
+    }
+  }, [currentVehicle, router]);
+
   const total = getBuildTotal();
   const isEmpty = Object.values(currentBuild).every((v) => !v || (Array.isArray(v) && v.length === 0));
 

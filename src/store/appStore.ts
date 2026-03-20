@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type {
   Vehicle,
+  Build,
   BuildSelection,
   Product,
   Shop,
@@ -44,6 +45,11 @@ interface AppState {
 
   currentBooking: Booking | null;
   setCurrentBooking: (booking: Booking | null) => void;
+
+  // Garage
+  savedBuilds: Build[];
+  saveBuild: (build: Build) => void;
+  clearSavedBuilds: () => void;
 
   // Toast
   toast: string | null;
@@ -94,6 +100,11 @@ export const useAppStore = create<AppState>()(
       currentBooking: null,
       setCurrentBooking: (booking) => set({ currentBooking: booking }),
 
+      savedBuilds: [],
+      saveBuild: (build) =>
+        set((state) => ({ savedBuilds: [...state.savedBuilds, build] })),
+      clearSavedBuilds: () => set({ savedBuilds: [] }),
+
       toast: null,
       showToast: (msg) => {
         set({ toast: msg });
@@ -127,6 +138,7 @@ export const useAppStore = create<AppState>()(
       partialize: (state) => ({
         hasSeenOnboarding: state.hasSeenOnboarding,
         activeTab: state.activeTab,
+        savedBuilds: state.savedBuilds,
       }),
     }
   )

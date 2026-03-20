@@ -446,7 +446,7 @@ export const onboardingSlides = [
 // ─── MOCK FEED POSTS (used by /home trending builds) ────────────────────────
 import type { FeedPost } from '@/types';
 
-export const mockFeedPosts: FeedPost[] = [
+export const mockPrebuilds: FeedPost[] = [
   {
     id: 'fp-1',
     user: { id: 'u1', username: 'wraplord', avatar: 'https://i.pravatar.cc/150?u=wraplord' },

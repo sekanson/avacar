@@ -20,6 +20,7 @@ const FULL_SCREEN_ROUTES = new Set([
   "/booking-confirmed",
   "/booking-review",
   "/feed/create",
+  "/notifications",
 ]);
 
 // Routes that start with these prefixes are also full-screen
@@ -66,7 +67,7 @@ function TopBar() {
       <div className="flex gap-0.5">
         <button
           className="tbb"
-          onClick={() => router.push("/feed")}
+          onClick={() => router.push("/notifications")}
           aria-label="Notifications"
         >
           <Bell size={20} />

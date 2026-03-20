@@ -1,0 +1,15 @@
+{
+  "name": "AVACAR — Design Your Build",
+  "short_name": "AVACAR",
+  "start_url": "/feed",
+  "display": "standalone",
+  "background_color": "#f7f9fb",
+  "theme_color": "#005ab7",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "64x64",
+      "type": "image/x-icon"
+    }
+  ]
+}

@@ -9,23 +9,24 @@ export default function RenderingPage() {
   const router = useRouter();
   const { currentBuild } = useAppStore();
 
+  useEffect(() => {
+    if (!currentBuild.wrap && !currentBuild.wheels && !currentBuild.tint && !currentBuild.ppf) {
+      router.replace("/upload");
+    }
+  }, [currentBuild, router]);
+
   const [progress, setProgress] = useState(0);
   const DURATION_MS = 4000;
   const startTimeRef = useRef<number | null>(null);
   const rafRef = useRef<number | null>(null);
 
-  // Build status messages
-  const statusMessages: string[] = [];
-  if (currentBuild.wrap) statusMessages.push(`Applying ${currentBuild.wrap.name} wrap...`);
-  if (currentBuild.wheels) statusMessages.push(`Adding ${currentBuild.wheels.brand} ${currentBuild.wheels.name} wheels...`);
-  if (currentBuild.tint) statusMessages.push(`Processing ${currentBuild.tint.name} window tint...`);
-  if (currentBuild.ppf) statusMessages.push(`Applying ${currentBuild.ppf.brand} PPF layer...`);
-  const fillers = ["Rendering final details...", "Quality checking...", "Almost ready..."];
-  let fi = 0;
-  while (statusMessages.length < 4 && fi < fillers.length) {
-    statusMessages.push(fillers[fi]);
-    fi++;
-  }
+  // Status messages
+  const statusMessages = [
+    "Calculating wrap options...",
+    "Finding certified shops near you...",
+    "Pulling live pricing...",
+    "Almost ready...",
+  ];
 
   const [statusIndex, setStatusIndex] = useState(0);
 
@@ -51,8 +52,6 @@ export default function RenderingPage() {
     }, 1200);
     return () => clearInterval(interval);
   }, [statusMessages.length]);
-
-  const pctDisplay = Math.round(progress);
 
   return (
     <div
@@ -99,28 +98,27 @@ export default function RenderingPage() {
 
       {/* Text */}
       <h2 style={{ marginTop: 32, fontSize: 20, fontWeight: 700, color: "var(--on-surface)", textAlign: "center", letterSpacing: "-0.02em" }}>
-        Rendering your build...
+        Preparing your quote...
       </h2>
 
       <p style={{ marginTop: 10, fontSize: 13, color: "var(--muted)", textAlign: "center", height: 20 }}>
         {statusMessages[statusIndex]}
       </p>
 
-      {/* Percentage */}
-      <div style={{ marginTop: 32 }}>
-        <span
-          style={{
-            fontSize: 42,
-            fontWeight: 700,
-            color: "var(--primary)",
-            textAlign: "center",
-            lineHeight: 1,
-            letterSpacing: "-0.03em",
-            fontVariantNumeric: "tabular-nums",
-          }}
-        >
-          {pctDisplay}%
-        </span>
+      {/* Pulsing dots */}
+      <div style={{ marginTop: 32, display: "flex", gap: 8, alignItems: "center", justifyContent: "center" }}>
+        {[0, 1, 2].map((i) => (
+          <div
+            key={i}
+            style={{
+              width: 12,
+              height: 12,
+              borderRadius: "50%",
+              background: "var(--primary)",
+              animation: `pulse 1.4s ease-in-out ${i * 0.2}s infinite`,
+            }}
+          />
+        ))}
       </div>
 
       {/* Progress bar */}

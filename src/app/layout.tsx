@@ -28,6 +28,7 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: "AVACAR — Design Your Build",
   description: "Upload your car. Design it. Get quoted. Book a shop.",
+  manifest: '/manifest.json',
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
@@ -54,6 +55,7 @@ export default function RootLayout({
       lang="en"
       className={`${manrope.variable} ${inter.variable} ${jetbrainsMono.variable}`}
     >
+      <script dangerouslySetInnerHTML={{ __html: "try{var t=localStorage.getItem('avacar-theme');if(t==='dark')document.documentElement.setAttribute('data-theme','dark');}catch(e){}" }} />
       <body style={{ background: "var(--bg)", color: "var(--on-surface)" }}>
         <Providers>
           <AppLayout>{children}</AppLayout>

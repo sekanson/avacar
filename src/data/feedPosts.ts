@@ -17,7 +17,7 @@ export const mockFeedPosts: FeedPost[] = [
     imageUrl: "https://images.unsplash.com/photo-1617814076367-b759c7d7e738?w=800&q=80",
     isRender: false,
     buildSpecs: ["Satin Black Wrap", "Vossen HF-5 Wheels", "20% Ceramic Tint"],
-    buildTags: ["Satin Black Wrap", "Vossen HF-5", "20% Tint"],
+    buildTags: ["Satin Black Wrap", "Vossen HF-5 Wheels", "20% Tint"],
     likes: 342,
     comments: 28,
     commentsList: [
@@ -91,7 +91,7 @@ export const mockFeedPosts: FeedPost[] = [
     imageUrl: "https://images.unsplash.com/photo-1626668011687-8a114cf5a34c?w=800&q=80",
     isRender: false,
     buildSpecs: ["Nardo Grey Wrap", "Rotiform KPS 20\"", "Widebody Kit", "5% Rear Tint"],
-    buildTags: ["Nardo Grey", "Rotiform KPS", "Widebody", "5% Tint"],
+    buildTags: ["Nardo Grey Wrap", "Rotiform KPS Wheels", "Widebody", "5% Tint"],
     likes: 1204,
     comments: 97,
     commentsList: [
@@ -131,7 +131,7 @@ export const mockFeedPosts: FeedPost[] = [
     imageUrl: "https://images.unsplash.com/photo-1560958089-b8a1929cea89?w=800&q=80",
     isRender: false,
     buildSpecs: ["Chrome Delete", "Matte Black Wrap", "TSportline Wheels", "35% Ceramic Tint"],
-    buildTags: ["Chrome Delete", "Matte Black", "TSportline", "35% Tint"],
+    buildTags: ["Chrome Delete", "Matte Black Wrap", "TSportline Wheels", "35% Tint"],
     likes: 567,
     comments: 42,
     commentsList: [
@@ -164,7 +164,7 @@ export const mockFeedPosts: FeedPost[] = [
     imageUrl: "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=800&q=80",
     isRender: true,
     buildSpecs: ["Midnight Blue Wrap", "HRE P101 Wheels", "Full Body PPF", "Ceramic Coating"],
-    buildTags: ["Midnight Blue", "HRE P101", "Full PPF", "Ceramic"],
+    buildTags: ["Midnight Blue Wrap", "HRE P101 Wheels", "Full PPF", "Ceramic"],
     likes: 723,
     comments: 51,
     commentsList: [
@@ -198,7 +198,7 @@ export const mockFeedPosts: FeedPost[] = [
     imageUrl: "https://images.unsplash.com/photo-1679239313445-7e04e1d79b53?w=800&q=80",
     isRender: false,
     buildSpecs: ["Gloss Racing Red Wrap", "Enkei RPF1 18\"", "15% Tint All Around"],
-    buildTags: ["Gloss Red", "Enkei RPF1", "15% Tint"],
+    buildTags: ["Gloss Red Wrap", "Enkei RPF1 Wheels", "15% Tint"],
     likes: 456,
     comments: 33,
     commentsList: [
@@ -232,7 +232,7 @@ export const mockFeedPosts: FeedPost[] = [
     imageUrl: "https://images.unsplash.com/photo-1584345604476-8ec5f27c5ffa?w=800&q=80",
     isRender: false,
     buildSpecs: ["Matte Military Green Wrap", "Velgen VF5 20\"", "Caliper Paint Red", "20% Tint"],
-    buildTags: ["Military Green", "Velgen VF5", "Red Calipers", "20% Tint"],
+    buildTags: ["Military Green Wrap", "Velgen VF5 Wheels", "Red Calipers", "20% Tint"],
     likes: 689,
     comments: 55,
     commentsList: [
@@ -271,7 +271,7 @@ export const mockFeedPosts: FeedPost[] = [
     imageUrl: "https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=800&q=80",
     isRender: true,
     buildSpecs: ["Satin Frozen Blue Wrap", "BBS LM 21\"", "Front PPF", "Exhaust Tips Black"],
-    buildTags: ["Frozen Blue", "BBS LM", "Front PPF", "Black Tips"],
+    buildTags: ["Frozen Blue Wrap", "BBS LM Wheels", "Front PPF", "Black Tips"],
     likes: 1567,
     comments: 112,
     commentsList: [
@@ -345,7 +345,7 @@ export const mockFeedPosts: FeedPost[] = [
     imageUrl: "https://images.unsplash.com/photo-1520031441872-265e4ff70366?w=800&q=80",
     isRender: false,
     buildSpecs: ["Satin Pearl White Wrap", "Forgiato Blocco 22\"", "Full PPF Under Wrap", "Blacked Out Trim"],
-    buildTags: ["Pearl White", "Forgiato 22\"", "Full PPF", "Blacked Out"],
+    buildTags: ["Pearl White Wrap", "Forgiato 22\" Wheels", "Full PPF", "Blacked Out"],
     likes: 934,
     comments: 71,
     commentsList: [
