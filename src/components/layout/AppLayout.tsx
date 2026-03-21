@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
-import { Home, Compass, Plus, LayoutGrid, User, Bell, Sun, Moon } from "lucide-react";
+import { Home, Compass, Plus, LayoutGrid, User, Bell, Sun, Moon, Camera } from "lucide-react";
 import { useAppStore } from "@/store/appStore";
 import type { NavTab } from "@/types";
 import { useState, useEffect } from "react";
@@ -40,8 +40,27 @@ const TABS: TabConfig[] = [
   { id: "profile", href: "/profile", icon: User, label: "Profile" },
 ];
 
-function TopBar() {
-  const router = useRouter();
+const PAGE_TITLES: Record<string, string> = {
+  "/feed": "Feed",
+  "/explore": "Explore",
+  "/garage": "My Garage",
+  "/profile": "Profile",
+};
+
+function getPageTitle(pathname: string): string {
+  return PAGE_TITLES[pathname] || "AVACAR";
+}
+
+function getActiveTab(pathname: string): NavTab | null {
+  if (pathname === "/feed" || pathname === "/") return "feed";
+  if (pathname.startsWith("/explore")) return "explore";
+  if (pathname.startsWith("/garage")) return "garage";
+  if (pathname === "/profile") return "profile";
+  return null;
+}
+
+/* ─── Theme hook (shared between mobile TopBar & desktop components) ─── */
+function useTheme() {
   const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
@@ -58,6 +77,14 @@ function TopBar() {
     document.documentElement.setAttribute("data-theme", next ? "dark" : "light");
     localStorage.setItem("avacar-theme", next ? "dark" : "light");
   };
+
+  return { darkMode, toggleTheme };
+}
+
+/* ─── Mobile TopBar ─── */
+function TopBar() {
+  const router = useRouter();
+  const { darkMode, toggleTheme } = useTheme();
 
   return (
     <header className="topbar">
@@ -84,20 +111,13 @@ function TopBar() {
   );
 }
 
+/* ─── Mobile TabBar ─── */
 function TabBar() {
   const pathname = usePathname();
   const router = useRouter();
   const { setActiveTab } = useAppStore();
 
-  const getActiveTab = (): NavTab | null => {
-    if (pathname === "/feed" || pathname === "/") return "feed";
-    if (pathname.startsWith("/explore")) return "explore";
-    if (pathname.startsWith("/garage")) return "garage";
-    if (pathname === "/profile") return "profile";
-    return null;
-  };
-
-  const activeTab = getActiveTab();
+  const activeTab = getActiveTab(pathname);
 
   const handleTabPress = (tab: TabConfig) => {
     setActiveTab(tab.id);
@@ -188,12 +208,140 @@ function TabBar() {
   );
 }
 
+/* ─── Desktop Sidebar ─── */
+function DesktopSidebar({
+  pathname,
+  darkMode,
+  onToggleTheme,
+}: {
+  pathname: string;
+  darkMode: boolean;
+  onToggleTheme: () => void;
+}) {
+  const router = useRouter();
+  const { setActiveTab } = useAppStore();
+  const activeTab = getActiveTab(pathname);
+
+  const handleNav = (tab: TabConfig) => {
+    setActiveTab(tab.id);
+    router.push(tab.href);
+  };
+
+  return (
+    <aside className="desktop-sidebar">
+      {/* Logo */}
+      <div className="desktop-sidebar-logo">
+        <span>AVACAR</span>
+      </div>
+
+      {/* Nav items */}
+      <nav className="desktop-sidebar-nav">
+        {TABS.map((tab) => {
+          const isActive = activeTab === tab.id;
+          const Icon = tab.icon;
+          return (
+            <button
+              key={tab.id}
+              onClick={() => handleNav(tab)}
+              className={`desktop-nav-item${isActive ? " active" : ""}`}
+            >
+              <Icon size={20} strokeWidth={2} />
+              <span>{tab.label}</span>
+            </button>
+          );
+        })}
+      </nav>
+
+      {/* Upload CTA */}
+      <button
+        className="desktop-upload-btn"
+        onClick={() => router.push("/upload")}
+      >
+        <Camera size={18} />
+        <span>Upload My Car</span>
+      </button>
+
+      {/* Footer */}
+      <div className="desktop-sidebar-footer">
+        <button
+          className="tbb"
+          onClick={() => router.push("/notifications")}
+          aria-label="Notifications"
+        >
+          <Bell size={18} />
+        </button>
+        <button
+          className="tbb"
+          onClick={onToggleTheme}
+          aria-label={`Toggle ${darkMode ? "light" : "dark"} mode`}
+        >
+          {darkMode ? <Sun size={18} /> : <Moon size={18} />}
+        </button>
+      </div>
+    </aside>
+  );
+}
+
+/* ─── Desktop Header ─── */
+function DesktopHeader({
+  pathname,
+  darkMode,
+  onToggleTheme,
+}: {
+  pathname: string;
+  darkMode: boolean;
+  onToggleTheme: () => void;
+}) {
+  const router = useRouter();
+
+  return (
+    <header className="desktop-header">
+      <span className="desktop-header-title">{getPageTitle(pathname)}</span>
+      <div className="desktop-header-actions">
+        <button
+          className="tbb"
+          onClick={() => router.push("/notifications")}
+          aria-label="Notifications"
+        >
+          <Bell size={18} />
+        </button>
+        <button
+          className="tbb"
+          onClick={onToggleTheme}
+          aria-label={`Toggle ${darkMode ? "light" : "dark"} mode`}
+        >
+          {darkMode ? <Sun size={18} /> : <Moon size={18} />}
+        </button>
+      </div>
+    </header>
+  );
+}
+
+/* ─── Toast ─── */
+function Toast() {
+  const { toast } = useAppStore();
+  if (!toast) return null;
+  return <div className="toast">{toast}</div>;
+}
+
+/* ─── Main Layout ─── */
 export default function AppLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  const [isDesktop, setIsDesktop] = useState(false);
+  const { darkMode, toggleTheme } = useTheme();
+
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 768px)");
+    setIsDesktop(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setIsDesktop(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
+
   const isFullScreen =
     FULL_SCREEN_ROUTES.has(pathname) ||
     (pathname !== "/feed" &&
@@ -202,18 +350,40 @@ export default function AppLayout({
 
   return (
     <div className="phone">
-      {!isFullScreen && <TopBar />}
-      <main style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "auto", minHeight: 0 }}>
-        {children}
-      </main>
-      {!isFullScreen && <TabBar />}
+      {/* MOBILE chrome */}
+      {!isDesktop && !isFullScreen && <TopBar />}
+
+      {/* DESKTOP sidebar */}
+      {isDesktop && !isFullScreen && (
+        <DesktopSidebar
+          pathname={pathname}
+          darkMode={darkMode}
+          onToggleTheme={toggleTheme}
+        />
+      )}
+
+      {/* Content area */}
+      {isDesktop && !isFullScreen ? (
+        <div className="desktop-main">
+          <DesktopHeader
+            pathname={pathname}
+            darkMode={darkMode}
+            onToggleTheme={toggleTheme}
+          />
+          <div className="desktop-content">
+            {children}
+          </div>
+        </div>
+      ) : (
+        <main style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "auto", minHeight: 0 }}>
+          {children}
+        </main>
+      )}
+
+      {/* MOBILE tab bar */}
+      {!isDesktop && !isFullScreen && <TabBar />}
+
       <Toast />
     </div>
   );
-}
-
-function Toast() {
-  const { toast } = useAppStore();
-  if (!toast) return null;
-  return <div className="toast">{toast}</div>;
 }

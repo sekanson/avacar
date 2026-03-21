@@ -882,3 +882,192 @@ html, body {
   .profile-builds-grid { grid-template-columns: repeat(5, 1fr) !important; }
   .garage-grid { grid-template-columns: repeat(3, 1fr) !important; }
 }
+
+/* ─── Desktop Layout (768px+) ─── */
+@media (min-width: 768px) {
+
+  /* Override phone container for desktop */
+  .phone {
+    max-width: 100%;
+    height: 100dvh;
+    display: flex;
+    flex-direction: row !important;
+    overflow: hidden;
+  }
+
+  /* Desktop sidebar nav */
+  .desktop-sidebar {
+    display: flex;
+    flex-direction: column;
+    width: 240px;
+    min-width: 240px;
+    height: 100dvh;
+    background: var(--surface-card);
+    border-right: 1px solid var(--ghost-border);
+    padding: 0;
+    flex-shrink: 0;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    overflow: hidden;
+  }
+
+  .desktop-sidebar-logo {
+    padding: 24px 20px 20px;
+    font-family: var(--font-manrope), Manrope, sans-serif;
+    font-size: 20px;
+    font-weight: 900;
+    font-style: italic;
+    color: var(--on-surface);
+    letter-spacing: -0.02em;
+    border-bottom: 1px solid var(--ghost-border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .desktop-sidebar-nav {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 12px 12px;
+    gap: 2px;
+    overflow-y: auto;
+  }
+
+  .desktop-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 14px;
+    border-radius: 12px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: var(--font-manrope), Manrope, sans-serif;
+    color: var(--on-surface-variant);
+    transition: all .15s;
+    text-decoration: none;
+  }
+
+  .desktop-nav-item:hover {
+    background: var(--primary-alpha-06);
+    color: var(--primary);
+  }
+
+  .desktop-nav-item.active {
+    background: var(--primary-alpha-12);
+    color: var(--primary);
+  }
+
+  .desktop-nav-item.active svg {
+    color: var(--primary);
+  }
+
+  .desktop-upload-btn {
+    margin: 12px;
+    padding: 12px;
+    border-radius: 14px;
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: var(--font-manrope), Manrope, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all .15s;
+    box-shadow: 0 4px 16px var(--primary-alpha-30);
+  }
+
+  .desktop-upload-btn:hover {
+    background: var(--primary-container);
+    box-shadow: 0 6px 20px var(--primary-alpha-40);
+    transform: translateY(-1px);
+  }
+
+  .desktop-sidebar-footer {
+    padding: 12px;
+    border-top: 1px solid var(--ghost-border);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* Desktop main area */
+  .desktop-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100dvh;
+    overflow: hidden;
+    min-width: 0;
+  }
+
+  /* Desktop header (replaces mobile topbar) */
+  .desktop-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 28px;
+    background: var(--topbar-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--ghost-border);
+    flex-shrink: 0;
+    z-index: 10;
+  }
+
+  .desktop-header-title {
+    font-size: 16px;
+    font-weight: 700;
+    font-family: var(--font-manrope), Manrope, sans-serif;
+    color: var(--on-surface);
+  }
+
+  .desktop-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* Desktop content area — scrollable */
+  .desktop-content {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  .desktop-content::-webkit-scrollbar { width: 0; display: none; }
+
+  /* Adjust content max-width for desktop */
+  .desktop-content-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 28px;
+    width: 100%;
+  }
+
+  /* Feed page on desktop — wider card layout */
+  .feed-grid-desktop {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 24px 0 80px;
+    width: 100%;
+  }
+
+  /* Feed hero on desktop */
+  .feed-hero-desktop {
+    border-radius: 20px;
+    margin: 24px 0 0;
+  }
+}
