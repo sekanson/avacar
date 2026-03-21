@@ -203,7 +203,7 @@ export default function AppLayout({
   return (
     <div className="phone">
       {!isFullScreen && <TopBar />}
-      <main style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden", minHeight: 0 }}>
+      <main style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "auto", minHeight: 0 }}>
         {children}
       </main>
       {!isFullScreen && <TabBar />}
