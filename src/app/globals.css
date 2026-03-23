@@ -1052,14 +1052,16 @@ html, body {
     flex-direction: row;
     flex: 1;
     height: 100dvh;
-    overflow: hidden;
+    overflow-y: auto;
+    overflow-x: hidden;
+    align-items: flex-start;
   }
+  .desktop-three-col::-webkit-scrollbar { display: none; }
 
   .desktop-three-col .desktop-content {
     flex: 1;
     min-width: 0;
-    overflow-y: auto;
-    overflow-x: hidden;
+    overflow: visible;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -1068,6 +1070,13 @@ html, body {
   .desktop-three-col .desktop-content > * {
     width: 100%;
     max-width: 620px;
+  }
+
+  /* Sidebar and right panel stay sticky while page scrolls */
+  .desktop-three-col .desktop-sidebar-sticky {
+    position: sticky;
+    top: 0;
+    height: 100dvh;
   }
 
   /* 2-col layout wrapper (garage, profile) */
@@ -1084,11 +1093,13 @@ html, body {
     overflow-x: hidden;
   }
 
-  /* Right panel */
+  /* Right panel - sticky, doesn't scroll with page */
   .desktop-right-panel {
     width: 340px;
     min-width: 340px;
     height: 100dvh;
+    position: sticky;
+    top: 0;
     overflow-y: auto;
     overflow-x: hidden;
     padding: 20px 20px 40px;
