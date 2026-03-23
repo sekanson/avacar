@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { Heart, MessageCircle, Share2, Sparkles, Upload, HelpCircle, ChevronRight } from "lucide-react";
+import { Heart, MessageCircle, Share2, Sparkles, Upload, HelpCircle, ChevronRight, Plus } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { mockFeedPosts } from "@/data/feedPosts";
@@ -455,32 +455,50 @@ export default function FeedPage() {
         width: "100%",
       }}
     >
-      {/* Editorial header */}
-      <div style={{ padding: "28px 16px 0" }}>
-        <p
+      {/* Hero - "Digital Heart" gradient card */}
+      <div style={{ padding: "20px 16px 0" }}>
+        <div
           style={{
-            fontSize: 11,
-            fontWeight: 600,
-            letterSpacing: "0.08em",
-            textTransform: "uppercase",
-            color: "var(--primary)",
-            marginBottom: 6,
+            borderRadius: 24,
+            background: "var(--hero-gradient)",
+            padding: "32px 28px",
+            position: "relative",
+            overflow: "hidden",
+            minHeight: 160,
           }}
         >
-          Community
-        </p>
-        <h1
-          style={{
-            fontSize: 32,
-            fontWeight: 800,
-            color: "var(--on-surface)",
-            letterSpacing: "-0.03em",
-            lineHeight: 1.1,
-            margin: 0,
-          }}
-        >
-          Build Gallery
-        </h1>
+          {/* Background glow orb */}
+          <div style={{
+            position: "absolute", top: -40, right: -40,
+            width: 200, height: 200, borderRadius: "50%",
+            background: "radial-gradient(ellipse, rgba(0,127,255,.3) 0%, transparent 70%)",
+            pointerEvents: "none",
+          }} />
+          <p style={{
+            fontSize: 11, fontWeight: 700, letterSpacing: "0.1em",
+            textTransform: "uppercase", color: "rgba(255,255,255,.6)", margin: "0 0 8px",
+          }}>
+            Community
+          </p>
+          <h1 style={{
+            fontSize: 28, fontWeight: 800, color: "#fff",
+            letterSpacing: "-0.03em", lineHeight: 1.1, margin: "0 0 8px",
+          }}>
+            Build Gallery
+          </h1>
+          <p style={{ fontSize: 13, color: "rgba(255,255,255,.65)", margin: 0 }}>
+            Share your build. Get inspired.
+          </p>
+          <Link href="/upload" style={{
+            position: "absolute", bottom: 24, right: 24,
+            width: 48, height: 48, borderRadius: 999,
+            background: "rgba(255,255,255,.2)", backdropFilter: "blur(10px)",
+            display: "flex", alignItems: "center", justifyContent: "center",
+            textDecoration: "none",
+          }}>
+            <Plus size={22} color="#fff" />
+          </Link>
+        </div>
       </div>
 
       {/* Category pills */}

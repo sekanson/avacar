@@ -335,7 +335,7 @@ function RightPanel() {
         </button>
       </div>
 
-      <div className="rp-card">
+      <div className="rp-card rp-hero-card">
         <p className="rp-overline">Start Building</p>
         <p className="rp-title">Design your car, get quoted</p>
         <p className="rp-sub">Upload a photo and see your build come to life</p>
