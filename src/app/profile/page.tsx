@@ -74,10 +74,11 @@ export default function ProfilePage() {
           <h2
             style={{
               fontFamily: "var(--font-manrope), Manrope, sans-serif",
-              fontWeight: 700,
-              fontSize: 20,
+              fontWeight: 800,
+              fontSize: 28,
               color: "var(--on-surface)",
               margin: 0,
+              letterSpacing: "-0.03em",
             }}
           >
             Your Name
@@ -116,14 +117,15 @@ export default function ProfilePage() {
             <span
               style={{
                 fontFamily: "var(--font-manrope), Manrope, sans-serif",
-                fontWeight: 700,
-                fontSize: 18,
+                fontWeight: 800,
+                fontSize: 24,
                 color: "var(--on-surface)",
+                letterSpacing: "-0.02em",
               }}
             >
               {stat.value}
             </span>
-            <span style={{ fontSize: 11, color: "var(--muted)" }}>
+            <span style={{ fontSize: 11, color: "var(--muted)", textTransform: "uppercase", letterSpacing: "0.06em" }}>
               {stat.label}
             </span>
           </div>

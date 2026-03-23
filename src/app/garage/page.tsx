@@ -9,7 +9,7 @@ export default function GaragePage() {
   const { savedBuilds } = useAppStore();
 
   return (
-    <div style={{ background: "var(--bg)", minHeight: "100vh", padding: "24px 20px 100px" }}>
+    <div style={{ background: "var(--bg)", minHeight: "100vh", padding: "28px 20px 100px" }}>
       {/* Header */}
       <div
         style={{
@@ -20,18 +20,21 @@ export default function GaragePage() {
         }}
       >
         <div>
+          <p style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--primary)", margin: "0 0 6px" }}>My Collection</p>
           <h1
             style={{
               fontFamily: "var(--font-manrope), Manrope, sans-serif",
               fontWeight: 700,
-              fontSize: 22,
+              fontSize: 32,
               color: "var(--on-surface)",
               margin: 0,
+              letterSpacing: "-0.03em",
+              lineHeight: 1.1,
             }}
           >
             My Garage
           </h1>
-          <p style={{ fontSize: 13, color: "var(--muted)", margin: "2px 0 0" }}>
+          <p style={{ fontSize: 14, color: "var(--muted)", margin: "2px 0 0" }}>
             Your saved builds & vehicles
           </p>
         </div>
@@ -66,7 +69,6 @@ export default function GaragePage() {
               alignItems: "center",
               justifyContent: "center",
               background: "var(--primary-alpha-06)",
-              border: "1px solid var(--primary-alpha-12)",
             }}
           >
             <Car size={36} style={{ color: "var(--outline)" }} />
@@ -74,10 +76,11 @@ export default function GaragePage() {
           <div style={{ textAlign: "center" }}>
             <p
               style={{
-                fontSize: 16,
+                fontSize: 18,
                 fontWeight: 600,
                 color: "var(--on-surface)",
                 margin: "0 0 4px",
+                letterSpacing: "-0.02em",
               }}
             >
               No saved builds yet
@@ -113,9 +116,9 @@ export default function GaragePage() {
                 key={build.id ?? idx}
                 style={{
                   background: "var(--surface-card)",
-                  borderRadius: 14,
+                  borderRadius: 24,
                   padding: 16,
-                  boxShadow: "var(--shadow-card)",
+                  boxShadow: "var(--shadow-card), inset 3px 0 0 var(--primary-alpha-20)",
                 }}
               >
                 <p
@@ -124,7 +127,7 @@ export default function GaragePage() {
                     fontWeight: 700,
                     color: "var(--on-surface)",
                     margin: "0 0 8px",
-                    letterSpacing: "-0.01em",
+                    letterSpacing: "-0.02em",
                   }}
                 >
                   {build.vehicle.year} {build.vehicle.make} {build.vehicle.model}

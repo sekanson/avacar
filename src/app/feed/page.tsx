@@ -34,7 +34,7 @@ function FeedCard({
     <div
       style={{
         background: "var(--surface-card)",
-        borderRadius: 16,
+        borderRadius: 24,
         boxShadow: "var(--shadow-card)",
         overflow: "hidden",
       }}
@@ -252,51 +252,14 @@ export default function FeedPage() {
 
   return (
     <div ref={scrollRef} style={{ paddingBottom: 24, background: "var(--bg)", minHeight: "100vh", overflow: "auto" }}>
-      {/* Hero banner */}
-      <div
-        style={{
-          background: "var(--hero-gradient)",
-          padding: "32px 20px 28px",
-          borderRadius: "0 0 20px 20px",
-        }}
-      >
-        <h1
-          style={{
-            fontSize: 24,
-            fontWeight: 800,
-            color: "var(--on-primary)",
-            marginBottom: 6,
-          }}
-        >
-          Design your build.
-        </h1>
-        <p
-          style={{
-            fontSize: 13,
-            color: "rgba(255,255,255,.75)",
-            marginBottom: 16,
-          }}
-        >
-          Share your car builds with the community
+      {/* Editorial header */}
+      <div style={{ padding: "28px 20px 0" }}>
+        <p style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--primary)", marginBottom: 6 }}>
+          Community
         </p>
-        <Link
-          href="/upload"
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: 8,
-            padding: "10px 20px",
-            borderRadius: 999,
-            background: "var(--on-primary)",
-            color: "var(--primary)",
-            fontSize: 13,
-            fontWeight: 700,
-            textDecoration: "none",
-          }}
-        >
-          <Upload size={16} />
-          Upload My Car
-        </Link>
+        <h1 style={{ fontSize: 32, fontWeight: 800, color: "var(--on-surface)", letterSpacing: "-0.03em", lineHeight: 1.1, margin: 0 }}>
+          Build Gallery
+        </h1>
       </div>
 
       {/* Category pills */}
@@ -306,6 +269,7 @@ export default function FeedPage() {
           gap: 8,
           padding: "16px 20px 0",
           overflowX: "auto",
+          scrollbarWidth: "none",
         }}
       >
         {categories.map((cat) => (
@@ -404,6 +368,18 @@ export default function FeedPage() {
           </p>
         )}
       </div>
+
+      {/* Upload FAB */}
+      <Link href="/upload" style={{
+        position: "fixed", bottom: 88, right: 20, zIndex: 50,
+        width: 52, height: 52, borderRadius: 999,
+        background: "var(--primary-gradient)",
+        display: "flex", alignItems: "center", justifyContent: "center",
+        boxShadow: "var(--fab-shadow)",
+        textDecoration: "none",
+      }}>
+        <Upload size={20} color="#fff" />
+      </Link>
     </div>
   );
 }

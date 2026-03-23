@@ -248,7 +248,7 @@ html, body {
     font-weight: 900;
     font-style: italic;
     color: var(--on-surface);
-    letter-spacing: -0.02em;
+    letter-spacing: -0.03em;
   }
 
   .tbb {
@@ -359,7 +359,7 @@ html, body {
   .card-base {
     background: var(--surface-card);
     border: none;
-    border-radius: 14px;
+    border-radius: 24px !important;
     padding: 16px;
     margin-bottom: 12px;
     box-shadow: var(--shadow-card);
@@ -1069,5 +1069,22 @@ html, body {
   .feed-hero-desktop {
     border-radius: 20px;
     margin: 24px 0 0;
+  }
+
+  /* Editorial typography helpers */
+  .display-editorial {
+    font-size: clamp(28px, 6vw, 40px);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    color: var(--on-surface);
+  }
+
+  .overline-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--primary);
   }
 }

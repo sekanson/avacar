@@ -14,7 +14,7 @@ function FeedCard({ post }: { post: FeedPost }) {
     <div
       style={{
         background: "var(--surface-card)",
-        borderRadius: 16,
+        borderRadius: 20,
         boxShadow: "var(--shadow-card)",
         overflow: "hidden",
       }}
@@ -192,8 +192,18 @@ export default function ExplorePage() {
 
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", paddingBottom: 100 }}>
+      {/* Editorial header */}
+      <div style={{ padding: "28px 20px 16px" }}>
+        <p style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--primary)", marginBottom: 6 }}>
+          Discover
+        </p>
+        <h1 style={{ fontSize: 32, fontWeight: 800, color: "var(--on-surface)", letterSpacing: "-0.03em", lineHeight: 1.1, margin: 0 }}>
+          Explore Builds
+        </h1>
+      </div>
+
       {/* Search */}
-      <div style={{ padding: "16px 20px 0" }}>
+      <div style={{ padding: "0 20px 0" }}>
         <div style={{ position: "relative" }}>
           <Search
             size={16}
@@ -213,7 +223,7 @@ export default function ExplorePage() {
             style={{
               width: "100%",
               padding: "11px 16px 11px 40px",
-              borderRadius: 12,
+              borderRadius: 16,
               border: "none",
               background: "var(--input-bg)",
               fontSize: 14,
