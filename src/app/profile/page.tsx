@@ -102,7 +102,7 @@ export default function ProfilePage() {
           { label: "Posts", value: savedBuilds.length.toString() },
           { label: "Followers", value: "248" },
           { label: "Following", value: "89" },
-        ].map((stat, i) => (
+        ].map((stat) => (
           <div
             key={stat.label}
             style={{
@@ -111,7 +111,6 @@ export default function ProfilePage() {
               flexDirection: "column",
               alignItems: "center",
               padding: "14px 0",
-              borderRight: i < 2 ? "1px solid var(--ghost-border)" : undefined,
             }}
           >
             <span
@@ -197,8 +196,7 @@ export default function ProfilePage() {
           </div>
         </div>
 
-        {/* Divider */}
-        <div style={{ height: 1, background: "var(--ghost-border)", margin: "8px 0" }} />
+        <div style={{ height: 16 }} />
 
         {/* Log Out */}
         <div

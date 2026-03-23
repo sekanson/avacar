@@ -80,7 +80,7 @@ export default function BookingReviewPage() {
           alignItems: "center",
           gap: 12,
           padding: "16px 20px",
-          borderBottom: "1px solid var(--ghost-border)",
+          boxShadow: "0 1px 0 rgba(0,0,0,0.06)",
           background: "var(--topbar-bg)",
           backdropFilter: "blur(20px)",
           position: "sticky",
@@ -109,7 +109,7 @@ export default function BookingReviewPage() {
           </div>
 
           {/* Vehicle */}
-          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16, paddingBottom: 12, borderBottom: "1px solid var(--ghost-border)" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16, paddingBottom: 12 }}>
             <div style={{ width: 36, height: 36, borderRadius: 10, background: "var(--primary-alpha-08)", display: "flex", alignItems: "center", justifyContent: "center" }}>
               <Car size={18} style={{ color: "var(--primary)" }} />
             </div>
@@ -140,7 +140,7 @@ export default function BookingReviewPage() {
 
           {/* Total */}
           {total.min > 0 && (
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 16, paddingTop: 12, borderTop: "1px solid var(--ghost-border)" }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 16, paddingTop: 12 }}>
               <span style={{ fontSize: 11, fontWeight: 600, color: "var(--muted)", textTransform: "uppercase", letterSpacing: "0.06em" }}>Total Estimate</span>
               <span style={{ fontSize: 16, fontWeight: 600, color: "var(--primary)", fontVariantNumeric: "tabular-nums" }}>
                 ${total.min.toLocaleString()}-{total.max.toLocaleString()}
@@ -168,7 +168,7 @@ export default function BookingReviewPage() {
             <button onClick={() => router.back()} style={{ fontSize: 12, color: "var(--primary)", background: "none", border: "none", cursor: "pointer" }}>Change</button>
           </div>
 
-          <div style={{ marginTop: 12, paddingTop: 12, borderTop: "1px solid var(--ghost-border)", display: "flex", alignItems: "center", gap: 10 }}>
+          <div style={{ marginTop: 12, paddingTop: 12, display: "flex", alignItems: "center", gap: 10 }}>
             <Clock size={15} style={{ color: "var(--primary)", flexShrink: 0 }} />
             <div>
               <p style={{ fontSize: 14, fontWeight: 600, color: "var(--on-surface)" }}>{slot.date} at {slot.time}</p>
@@ -189,7 +189,7 @@ export default function BookingReviewPage() {
             <AlertCircle size={14} style={{ color: "var(--primary)", flexShrink: 0 }} />
             <span>No deposit required. Final quote from shop within 24 hours.</span>
           </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 12, color: "var(--muted)", paddingTop: 8, borderTop: "1px solid var(--ghost-border)" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 12, color: "var(--muted)", paddingTop: 8, marginTop: 4 }}>
             <Mail size={13} style={{ color: "var(--muted)", flexShrink: 0 }} />
             <span>Confirmation sent to your registered email</span>
           </div>
@@ -206,7 +206,7 @@ export default function BookingReviewPage() {
           zIndex: 40,
           padding: "16px 20px",
           background: "var(--topbar-bg)",
-          borderTop: "1px solid var(--ghost-border)",
+          boxShadow: "0 -4px 20px rgba(0,0,0,0.06)",
           backdropFilter: "blur(20px)",
           maxWidth: 400,
           margin: "0 auto",

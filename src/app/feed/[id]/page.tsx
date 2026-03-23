@@ -222,7 +222,8 @@ export default function PostDetailPage() {
               borderRadius: 999,
               background: "var(--primary-alpha-10)",
               color: "var(--primary)",
-              border: "1px solid var(--primary-alpha-20)",
+              border: "none",
+              boxShadow: "0 0 0 1px var(--primary-alpha-20)",
               cursor: "pointer",
             }}
           >
@@ -297,15 +298,6 @@ export default function PostDetailPage() {
           </button>
         </div>
 
-        {/* Divider */}
-        <div
-          style={{
-            height: 1,
-            background: "var(--ghost-border)",
-            marginBottom: 16,
-          }}
-        />
-
         {/* Build Specs */}
         <h3
           style={{
@@ -328,7 +320,6 @@ export default function PostDetailPage() {
                 padding: 12,
                 borderRadius: 10,
                 background: "var(--surface-low)",
-                border: "1px solid var(--ghost-border)",
               }}
             >
               <div
@@ -357,7 +348,6 @@ export default function PostDetailPage() {
               padding: 12,
               borderRadius: 10,
               background: "var(--surface-low)",
-              border: "1px solid var(--ghost-border)",
               marginBottom: 16,
             }}
           >
@@ -395,7 +385,6 @@ export default function PostDetailPage() {
               padding: 12,
               borderRadius: 10,
               background: "var(--success-alpha-08)",
-              border: "1px solid var(--success-alpha-15)",
               marginBottom: 16,
             }}
           >
@@ -426,15 +415,6 @@ export default function PostDetailPage() {
             </div>
           </div>
         )}
-
-        {/* Divider */}
-        <div
-          style={{
-            height: 1,
-            background: "var(--ghost-border)",
-            marginBottom: 16,
-          }}
-        />
 
         {/* Comments */}
         <h3
@@ -541,7 +521,7 @@ export default function PostDetailPage() {
           padding: "12px 16px",
           background: "var(--tabbar-bg)",
           backdropFilter: "blur(12px)",
-          borderTop: "1px solid var(--ghost-border)",
+          boxShadow: "0 -4px 20px rgba(0,0,0,0.06)",
           zIndex: 30,
         }}
       >
@@ -557,7 +537,7 @@ export default function PostDetailPage() {
             background: "var(--input-bg)",
             borderRadius: 999,
             padding: "10px 16px",
-            border: "1px solid var(--ghost-border)",
+            border: "none",
             outline: "none",
           }}
         />

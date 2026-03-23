@@ -107,7 +107,7 @@ export default function SignUpPage() {
                 setName(e.target.value);
                 setErrors((prev) => ({ ...prev, name: undefined }));
               }}
-              style={errors.name ? { borderColor: "var(--error)", border: "1.5px solid var(--error)" } : undefined}
+              style={errors.name ? { border: "none", boxShadow: "0 0 0 1.5px var(--error)" } : undefined}
               autoComplete="name"
             />
             {errors.name && (
@@ -128,7 +128,7 @@ export default function SignUpPage() {
                 setEmail(e.target.value);
                 setErrors((prev) => ({ ...prev, email: undefined }));
               }}
-              style={errors.email ? { borderColor: "var(--error)", border: "1.5px solid var(--error)" } : undefined}
+              style={errors.email ? { border: "none", boxShadow: "0 0 0 1.5px var(--error)" } : undefined}
               autoComplete="email"
             />
             {errors.email && (
@@ -149,7 +149,7 @@ export default function SignUpPage() {
                 setPassword(e.target.value);
                 setErrors((prev) => ({ ...prev, password: undefined }));
               }}
-              style={errors.password ? { borderColor: "var(--error)", border: "1.5px solid var(--error)" } : undefined}
+              style={errors.password ? { border: "none", boxShadow: "0 0 0 1.5px var(--error)" } : undefined}
               autoComplete="new-password"
             />
             {errors.password && (

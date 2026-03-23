@@ -176,7 +176,7 @@ export default function FindShopPage() {
   return (
     <div className="cx" style={{ minHeight: "100dvh", background: "var(--bg)", paddingBottom: 100 }}>
       {/* Topbar */}
-      <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "16px 20px", borderBottom: "1px solid var(--ghost-border)" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "16px 20px", boxShadow: "0 1px 0 rgba(0,0,0,0.06)" }}>
         <button
           onClick={() => router.back()}
           aria-label="Go back"

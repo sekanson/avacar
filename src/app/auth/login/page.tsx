@@ -102,7 +102,7 @@ export default function LoginPage() {
                 setEmail(e.target.value);
                 setErrors((prev) => ({ ...prev, email: undefined }));
               }}
-              style={errors.email ? { borderColor: "var(--error)", border: "1.5px solid var(--error)" } : undefined}
+              style={errors.email ? { border: "none", boxShadow: "0 0 0 1.5px var(--error)" } : undefined}
               autoComplete="email"
             />
             {errors.email && (
@@ -123,7 +123,7 @@ export default function LoginPage() {
                 setPassword(e.target.value);
                 setErrors((prev) => ({ ...prev, password: undefined }));
               }}
-              style={errors.password ? { borderColor: "var(--error)", border: "1.5px solid var(--error)" } : undefined}
+              style={errors.password ? { border: "none", boxShadow: "0 0 0 1.5px var(--error)" } : undefined}
               autoComplete="current-password"
             />
             {errors.password && (

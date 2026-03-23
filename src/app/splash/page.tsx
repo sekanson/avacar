@@ -126,7 +126,6 @@ export default function SplashPage() {
               borderRadius: 16,
               padding: 16,
               boxShadow: "var(--sp-preview-shadow)",
-              border: "1px solid var(--ghost-border)",
             }}
           >
             {/* Mock top row */}

@@ -110,7 +110,7 @@ export default function PublicProfilePage() {
             style={{
               borderRadius: "50%",
               objectFit: "cover",
-              border: "3px solid var(--primary-alpha-25)",
+              boxShadow: "0 0 0 3px var(--primary-alpha-25)",
             }}
             unoptimized
           />
@@ -200,7 +200,7 @@ export default function PublicProfilePage() {
             { label: "Posts", value: formatCount(profile.postsCount) },
             { label: "Followers", value: formatCount(profile.followersCount) },
             { label: "Following", value: formatCount(profile.followingCount) },
-          ].map((stat, i) => (
+          ].map((stat) => (
             <div
               key={stat.label}
               style={{
@@ -209,7 +209,6 @@ export default function PublicProfilePage() {
                 flexDirection: "column",
                 alignItems: "center",
                 padding: "14px 0",
-                borderRight: i < 2 ? "1px solid var(--ghost-border)" : undefined,
               }}
             >
               <span
@@ -229,8 +228,7 @@ export default function PublicProfilePage() {
           ))}
         </div>
 
-        {/* Divider */}
-        <div style={{ height: 1, background: "var(--ghost-border)", marginBottom: 16 }} />
+        <div style={{ height: 16 }} />
 
         {/* Builds grid */}
         <h3

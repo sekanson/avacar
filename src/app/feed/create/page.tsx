@@ -119,7 +119,6 @@ export default function CreatePostPage() {
                 aspectRatio: "16/10",
                 borderRadius: 14,
                 background: "var(--surface-low)",
-                border: "1px solid var(--ghost-border)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -146,7 +145,6 @@ export default function CreatePostPage() {
                   height: 28,
                   borderRadius: "50%",
                   background: "var(--surface-card)",
-                  border: "1px solid var(--ghost-border)",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
@@ -210,7 +208,7 @@ export default function CreatePostPage() {
               background: "var(--input-bg)",
               borderRadius: 12,
               padding: "12px 16px",
-              border: "1px solid var(--ghost-border)",
+              border: "none",
               outline: "none",
               resize: "none",
               fontFamily: "inherit",
@@ -275,7 +273,7 @@ export default function CreatePostPage() {
               background: "var(--input-bg)",
               borderRadius: 12,
               padding: "11px 16px",
-              border: "1px solid var(--ghost-border)",
+              border: "none",
               outline: "none",
             }}
           />
@@ -308,7 +306,7 @@ export default function CreatePostPage() {
               background: "var(--input-bg)",
               borderRadius: 12,
               padding: "11px 16px",
-              border: "1px solid var(--ghost-border)",
+              border: "none",
               outline: "none",
             }}
           />
@@ -323,7 +321,7 @@ export default function CreatePostPage() {
             padding: 16,
             borderRadius: 12,
             background: "var(--surface-card)",
-            border: "1px solid var(--ghost-border)",
+            boxShadow: "var(--shadow-card)",
             marginBottom: 32,
           }}
         >

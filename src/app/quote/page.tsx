@@ -92,7 +92,8 @@ function QuoteRow({
             alignItems: "center",
             gap: 4,
             background: "var(--primary-alpha-08)",
-            border: "1px solid var(--primary-alpha-15)",
+            border: "none",
+            boxShadow: "0 0 0 1px var(--primary-alpha-15)",
             borderRadius: 8,
             padding: "5px 10px",
             color: "var(--primary)",
@@ -165,7 +166,7 @@ export default function QuotePage() {
   return (
     <div className="cx" style={{ minHeight: "100dvh", background: "var(--bg)", paddingBottom: 100 }}>
       {/* Topbar */}
-      <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "16px 20px", borderBottom: "1px solid var(--ghost-border)" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "16px 20px", boxShadow: "0 1px 0 rgba(0,0,0,0.06)" }}>
         <button
           onClick={() => router.back()}
           aria-label="Go back"
@@ -183,7 +184,7 @@ export default function QuotePage() {
       {/* Car image + name */}
       <div style={{ padding: "16px 20px" }}>
         {uploadedPhoto && (
-          <div style={{ borderRadius: 14, overflow: "hidden", height: 180, marginBottom: 16, border: "1px solid var(--ghost-border)", boxShadow: "var(--shadow-card)" }}>
+          <div style={{ borderRadius: 14, overflow: "hidden", height: 180, marginBottom: 16, boxShadow: "var(--shadow-card)" }}>
             <img src={uploadedPhoto} alt="Your car" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
           </div>
         )}

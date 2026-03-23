@@ -110,7 +110,7 @@ export default function ForgotPasswordPage() {
                     setEmail(e.target.value);
                     setEmailError(null);
                   }}
-                  style={emailError ? { borderColor: "var(--error)", border: "1.5px solid var(--error)" } : undefined}
+                  style={emailError ? { border: "none", boxShadow: "0 0 0 1.5px var(--error)" } : undefined}
                   autoComplete="email"
                 />
                 {emailError && (
@@ -151,7 +151,7 @@ export default function ForgotPasswordPage() {
                 alignItems: "center",
                 justifyContent: "center",
                 background: "var(--success-alpha-10)",
-                border: "1.5px solid var(--success-alpha-25)",
+                boxShadow: "0 0 0 1.5px var(--success-alpha-25)",
               }}
             >
               <CheckCircle size={36} style={{ color: "var(--success)" }} strokeWidth={1.8} />

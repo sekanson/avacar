@@ -37,7 +37,6 @@ function FeedCard({
         borderRadius: 16,
         boxShadow: "var(--shadow-card)",
         overflow: "hidden",
-        border: "1px solid var(--ghost-border)",
       }}
     >
       {/* Header */}

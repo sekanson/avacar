@@ -17,7 +17,6 @@ function FeedCard({ post }: { post: FeedPost }) {
         borderRadius: 16,
         boxShadow: "var(--shadow-card)",
         overflow: "hidden",
-        border: "1px solid var(--ghost-border)",
       }}
     >
       {/* Header */}
@@ -215,7 +214,7 @@ export default function ExplorePage() {
               width: "100%",
               padding: "11px 16px 11px 40px",
               borderRadius: 12,
-              border: "1px solid var(--ghost-border)",
+              border: "none",
               background: "var(--input-bg)",
               fontSize: 14,
               color: "var(--on-surface)",

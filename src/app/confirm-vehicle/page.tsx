@@ -51,7 +51,7 @@ function StepBar() {
 
 function InfoRow({ label, value, colorHex }: { label: string; value: string; colorHex?: string }) {
   return (
-    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 0", borderBottom: "1px solid var(--ghost-border)" }}>
+    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 0" }}>
       <span style={{ fontSize: 13, color: "var(--muted)", fontWeight: 500 }}>{label}</span>
       <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
         {colorHex && (
@@ -91,7 +91,7 @@ export default function ConfirmVehiclePage() {
   return (
     <div className="cx" style={{ minHeight: "100dvh", background: "var(--bg)", display: "flex", flexDirection: "column", paddingBottom: 32 }}>
       {/* Topbar */}
-      <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "16px 20px", borderBottom: "1px solid var(--ghost-border)" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "16px 20px", boxShadow: "0 1px 0 rgba(0,0,0,0.06)" }}>
         <button
           onClick={() => router.back()}
           aria-label="Go back"
@@ -109,7 +109,7 @@ export default function ConfirmVehiclePage() {
       {/* Content */}
       <div style={{ flex: 1, display: "flex", flexDirection: "column", padding: "20px", gap: 20 }}>
         {/* Car image */}
-        <div style={{ borderRadius: 14, overflow: "hidden", border: "1px solid var(--ghost-border)", boxShadow: "var(--shadow-card)", height: 180, background: "var(--surface-low)" }}>
+        <div style={{ borderRadius: 14, overflow: "hidden", boxShadow: "var(--shadow-card)", height: 180, background: "var(--surface-low)" }}>
           {uploadedPhoto ? (
             <img src={uploadedPhoto} alt="Your car" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
           ) : (
@@ -128,7 +128,7 @@ export default function ConfirmVehiclePage() {
             padding: "5px 12px",
             borderRadius: 100,
             background: "var(--success-alpha-10)",
-            border: "1px solid var(--success-alpha-20)",
+            boxShadow: "0 0 0 1px var(--success-alpha-20)",
           }}>
             <Check size={12} style={{ color: "var(--success)" }} strokeWidth={2.5} />
             <span style={{ fontSize: 12, fontWeight: 600, color: "var(--success)" }}>AI Detected</span>
