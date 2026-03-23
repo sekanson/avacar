@@ -10,12 +10,15 @@ import {
   Store,
   DollarSign,
   Send,
+  HelpCircle,
+  ChevronRight,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { getFeedPostById } from "@/data/feedPosts";
 import { useAppStore } from "@/store/appStore";
+import type { PollOption } from "@/types";
 
 function timeAgo(dateStr: string): string {
   const diff = Date.now() - new Date(dateStr).getTime();
@@ -26,6 +29,86 @@ function timeAgo(dateStr: string): string {
   const days = Math.floor(hrs / 24);
   if (days < 7) return `${days}d ago`;
   return `${Math.floor(days / 7)}w ago`;
+}
+
+function timeUntil(dateStr: string): string {
+  const diff = new Date(dateStr).getTime() - Date.now();
+  if (diff <= 0) return "Poll ended";
+  const hrs = Math.floor(diff / 3600000);
+  if (hrs < 24) return `${hrs}h left`;
+  return `${Math.floor(hrs / 24)}d left`;
+}
+
+function PollView({ options, endsAt }: { options: PollOption[]; endsAt: string }) {
+  const total = options.reduce((s, o) => s + o.votes, 0);
+  const maxVotes = Math.max(...options.map((o) => o.votes));
+  return (
+    <div style={{ marginBottom: 16 }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+        {options.map((opt) => {
+          const pct = total > 0 ? Math.round((opt.votes / total) * 100) : 0;
+          const isLeading = opt.votes === maxVotes;
+          return (
+            <div key={opt.id}>
+              <div
+                style={{
+                  position: "relative",
+                  borderRadius: 10,
+                  overflow: "hidden",
+                  height: 44,
+                  background: "var(--surface-low)",
+                  width: "100%",
+                }}
+              >
+                <div
+                  style={{
+                    position: "absolute",
+                    inset: 0,
+                    width: `${pct}%`,
+                    background: isLeading ? "var(--primary-alpha-15)" : "var(--surface-low)",
+                    borderRadius: 10,
+                    transition: "width 0.4s ease",
+                  }}
+                />
+                <div
+                  style={{
+                    position: "absolute",
+                    inset: 0,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    padding: "0 14px",
+                  }}
+                >
+                  <span
+                    style={{
+                      fontSize: 14,
+                      fontWeight: isLeading ? 600 : 400,
+                      color: isLeading ? "var(--primary)" : "var(--on-surface-variant)",
+                    }}
+                  >
+                    {opt.text}
+                  </span>
+                  <span
+                    style={{
+                      fontSize: 13,
+                      fontWeight: 600,
+                      color: isLeading ? "var(--primary)" : "var(--muted)",
+                    }}
+                  >
+                    {pct}%
+                  </span>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+      <p style={{ fontSize: 12, color: "var(--muted)", marginTop: 10 }}>
+        {total.toLocaleString()} votes · {timeUntil(endsAt)}
+      </p>
+    </div>
+  );
 }
 
 export default function PostDetailPage() {
@@ -80,6 +163,8 @@ export default function PostDetailPage() {
   }
 
   const isLiked = liked || post.isLiked;
+  const postType = post.postType ?? "image";
+  const isTextType = postType === "text" || postType === "question" || postType === "poll";
 
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", paddingBottom: 80 }}>
@@ -115,7 +200,7 @@ export default function PostDetailPage() {
           <ArrowLeft size={20} color="var(--on-surface)" />
         </button>
         <span style={{ fontSize: 14, fontWeight: 600, color: "var(--on-surface)" }}>
-          Build Post
+          {isTextType ? "Post" : "Build Post"}
         </span>
         <button
           style={{
@@ -134,40 +219,67 @@ export default function PostDetailPage() {
         </button>
       </div>
 
-      {/* Large image */}
-      <div style={{ position: "relative", width: "100%", aspectRatio: "1/1" }}>
-        <Image
-          src={post.imageUrl}
-          alt={`${post.car.year} ${post.car.make} ${post.car.model}`}
-          fill
-          className="object-cover"
-          sizes="100vw"
-          priority
-          unoptimized
-        />
-        {post.isRender && (
-          <div
-            style={{
-              position: "absolute",
-              top: 12,
-              right: 12,
-              display: "flex",
-              alignItems: "center",
-              gap: 4,
-              padding: "5px 12px",
-              borderRadius: 999,
-              fontSize: 11,
-              fontWeight: 600,
-              background: "var(--overlay-card)",
-              color: "var(--primary)",
-              backdropFilter: "blur(8px)",
-            }}
-          >
-            <Sparkles size={11} />
-            AI Render
-          </div>
-        )}
-      </div>
+      {/* Reply-to banner */}
+      {post.replyTo && (
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 6,
+            padding: "10px 20px",
+            background: "var(--surface-low)",
+            fontSize: 12,
+            color: "var(--muted)",
+            borderBottom: "1px solid var(--ghost-border)",
+          }}
+        >
+          <ChevronRight size={12} />
+          Replying to{" "}
+          <span style={{ color: "var(--primary)", fontWeight: 600 }}>
+            @{post.replyTo.username}
+          </span>
+          <span style={{ flex: 1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", marginLeft: 4 }}>
+            &ldquo;{post.replyTo.preview}&rdquo;
+          </span>
+        </div>
+      )}
+
+      {/* Image (image posts only) */}
+      {!isTextType && post.imageUrl && (
+        <div style={{ position: "relative", width: "100%", aspectRatio: "1/1" }}>
+          <Image
+            src={post.imageUrl}
+            alt={post.car ? `${post.car.year} ${post.car.make} ${post.car.model}` : post.caption}
+            fill
+            className="object-cover"
+            sizes="100vw"
+            priority
+            unoptimized
+          />
+          {post.isRender && (
+            <div
+              style={{
+                position: "absolute",
+                top: 12,
+                right: 12,
+                display: "flex",
+                alignItems: "center",
+                gap: 4,
+                padding: "5px 12px",
+                borderRadius: 999,
+                fontSize: 11,
+                fontWeight: 600,
+                background: "var(--overlay-card)",
+                color: "var(--primary)",
+                backdropFilter: "blur(8px)",
+              }}
+            >
+              <Sparkles size={11} />
+              AI Render
+            </div>
+          )}
+        </div>
+      )}
 
       <div style={{ padding: "16px 20px 0" }}>
         {/* User info */}
@@ -197,21 +309,41 @@ export default function PostDetailPage() {
             {post.user.username[0].toUpperCase()}
           </div>
           <div style={{ flex: 1, minWidth: 0 }}>
-            <Link
-              href={`/profile/${post.user.username}`}
-              style={{
-                fontSize: 14,
-                fontWeight: 600,
-                color: "var(--on-surface)",
-                textDecoration: "none",
-                display: "block",
-              }}
-            >
-              {post.user.username}
-            </Link>
+            <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+              <Link
+                href={`/profile/${post.user.username}`}
+                style={{
+                  fontSize: 14,
+                  fontWeight: 600,
+                  color: "var(--on-surface)",
+                  textDecoration: "none",
+                }}
+              >
+                {post.user.username}
+              </Link>
+              {postType === "question" && (
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 3,
+                    padding: "2px 7px",
+                    borderRadius: 999,
+                    background: "var(--primary-alpha-10)",
+                    fontSize: 10,
+                    fontWeight: 600,
+                    color: "var(--primary)",
+                  }}
+                >
+                  <HelpCircle size={10} />
+                  Question
+                </div>
+              )}
+            </div>
             <span style={{ fontSize: 12, color: "var(--muted)" }}>
-              {post.car.year} {post.car.make} {post.car.model} &middot;{" "}
-              {timeAgo(post.createdAt)}
+              {post.car
+                ? `${post.car.year} ${post.car.make} ${post.car.model} · ${timeAgo(post.createdAt)}`
+                : timeAgo(post.createdAt)}
             </span>
           </div>
           <button
@@ -235,14 +367,20 @@ export default function PostDetailPage() {
         {post.caption && (
           <p
             style={{
-              fontSize: 14,
+              fontSize: isTextType ? 17 : 14,
               color: "var(--on-surface)",
-              lineHeight: 1.6,
+              lineHeight: 1.65,
               marginBottom: 16,
+              fontWeight: isTextType ? 400 : 400,
             }}
           >
             {post.caption}
           </p>
+        )}
+
+        {/* Poll view */}
+        {postType === "poll" && post.poll && (
+          <PollView options={post.poll.options} endsAt={post.poll.endsAt} />
         )}
 
         {/* Actions */}
@@ -252,6 +390,8 @@ export default function PostDetailPage() {
             alignItems: "center",
             gap: 20,
             marginBottom: 16,
+            paddingBottom: 16,
+            borderBottom: "1px solid var(--ghost-border)",
           }}
         >
           <button
@@ -280,7 +420,7 @@ export default function PostDetailPage() {
           <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
             <MessageCircle size={22} color="var(--muted)" />
             <span style={{ fontSize: 13, color: "var(--on-surface-variant)" }}>
-              {post.comments}
+              {comments.length}
             </span>
           </div>
           <button
@@ -298,45 +438,49 @@ export default function PostDetailPage() {
           </button>
         </div>
 
-        {/* Build Specs */}
-        <h3
-          style={{
-            fontSize: 14,
-            fontWeight: 600,
-            color: "var(--on-surface)",
-            marginBottom: 12,
-          }}
-        >
-          Build Specs
-        </h3>
-        <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 16 }}>
-          {post.buildSpecs.map((spec) => (
-            <div
-              key={spec}
+        {/* Build Specs (image posts only) */}
+        {!isTextType && post.buildSpecs.length > 0 && (
+          <>
+            <h3
               style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 12,
-                padding: 12,
-                borderRadius: 10,
-                background: "var(--surface-low)",
+                fontSize: 14,
+                fontWeight: 600,
+                color: "var(--on-surface)",
+                marginBottom: 12,
               }}
             >
-              <div
-                style={{
-                  width: 8,
-                  height: 8,
-                  borderRadius: "50%",
-                  background: "var(--primary)",
-                  flexShrink: 0,
-                }}
-              />
-              <span style={{ fontSize: 13, color: "var(--on-surface)" }}>
-                {spec}
-              </span>
+              Build Specs
+            </h3>
+            <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 16 }}>
+              {post.buildSpecs.map((spec) => (
+                <div
+                  key={spec}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 12,
+                    padding: 12,
+                    borderRadius: 10,
+                    background: "var(--surface-low)",
+                  }}
+                >
+                  <div
+                    style={{
+                      width: 8,
+                      height: 8,
+                      borderRadius: "50%",
+                      background: "var(--primary)",
+                      flexShrink: 0,
+                    }}
+                  />
+                  <span style={{ fontSize: 13, color: "var(--on-surface)" }}>
+                    {spec}
+                  </span>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+          </>
+        )}
 
         {/* Shop tag */}
         {post.shopName && (
@@ -353,22 +497,10 @@ export default function PostDetailPage() {
           >
             <Store size={16} color="var(--primary)" style={{ flexShrink: 0 }} />
             <div>
-              <span
-                style={{
-                  fontSize: 12,
-                  color: "var(--muted)",
-                  display: "block",
-                }}
-              >
+              <span style={{ fontSize: 12, color: "var(--muted)", display: "block" }}>
                 Installed by
               </span>
-              <span
-                style={{
-                  fontSize: 13,
-                  fontWeight: 600,
-                  color: "var(--on-surface)",
-                }}
-              >
+              <span style={{ fontSize: 13, fontWeight: 600, color: "var(--on-surface)" }}>
                 {post.shopName}
               </span>
             </div>
@@ -388,74 +520,88 @@ export default function PostDetailPage() {
               marginBottom: 16,
             }}
           >
-            <DollarSign
-              size={16}
-              color="var(--success)"
-              style={{ flexShrink: 0 }}
-            />
+            <DollarSign size={16} color="var(--success)" style={{ flexShrink: 0 }} />
             <div>
-              <span
-                style={{
-                  fontSize: 12,
-                  color: "var(--muted)",
-                  display: "block",
-                }}
-              >
+              <span style={{ fontSize: 12, color: "var(--muted)", display: "block" }}>
                 Total Build Cost
               </span>
-              <span
-                style={{
-                  fontSize: 13,
-                  fontWeight: 600,
-                  color: "var(--on-surface)",
-                }}
-              >
+              <span style={{ fontSize: 13, fontWeight: 600, color: "var(--on-surface)" }}>
                 ${post.totalCost.toLocaleString()}
               </span>
             </div>
           </div>
         )}
 
-        {/* Comments */}
+        {/* Thread / Comments */}
         <h3
           style={{
             fontSize: 14,
             fontWeight: 600,
             color: "var(--on-surface)",
-            marginBottom: 12,
+            marginBottom: 16,
           }}
         >
-          Comments ({comments.length})
+          {post.threadCount && post.threadCount > 0
+            ? `${post.threadCount} Replies`
+            : `${comments.length} Comments`}
         </h3>
-        <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 16 }}>
-          {comments.map((comment) => (
-            <div key={comment.id} style={{ display: "flex", gap: 10 }}>
+
+        <div style={{ display: "flex", flexDirection: "column", gap: 0, marginBottom: 16 }}>
+          {comments.map((comment, idx) => (
+            <div
+              key={comment.id}
+              style={{
+                display: "flex",
+                gap: 10,
+                paddingLeft: 0,
+                paddingTop: idx === 0 ? 0 : 12,
+                paddingBottom: 12,
+                borderBottom:
+                  idx < comments.length - 1
+                    ? "1px solid var(--ghost-border)"
+                    : "none",
+              }}
+            >
+              {/* Thread line indicator for replies */}
               <div
                 style={{
-                  width: 30,
-                  height: 30,
-                  borderRadius: "50%",
-                  background: "var(--surface-low)",
-                  color: "var(--primary)",
                   display: "flex",
+                  flexDirection: "column",
                   alignItems: "center",
-                  justifyContent: "center",
-                  fontWeight: 600,
-                  fontSize: 11,
                   flexShrink: 0,
-                  marginTop: 2,
                 }}
               >
-                {comment.user.username[0].toUpperCase()}
-              </div>
-              <div style={{ flex: 1 }}>
                 <div
                   style={{
+                    width: 30,
+                    height: 30,
+                    borderRadius: "50%",
+                    background: "var(--surface-low)",
+                    color: "var(--primary)",
                     display: "flex",
-                    alignItems: "baseline",
-                    gap: 8,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontWeight: 600,
+                    fontSize: 11,
                   }}
                 >
+                  {comment.user.username[0].toUpperCase()}
+                </div>
+                {idx < comments.length - 1 && (
+                  <div
+                    style={{
+                      width: 2,
+                      flex: 1,
+                      marginTop: 4,
+                      background: "var(--primary-alpha-12)",
+                      borderRadius: 1,
+                      minHeight: 16,
+                    }}
+                  />
+                )}
+              </div>
+              <div style={{ flex: 1, paddingLeft: 4 }}>
+                <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 4 }}>
                   <span
                     style={{
                       fontSize: 12,
@@ -471,9 +617,10 @@ export default function PostDetailPage() {
                 </div>
                 <p
                   style={{
-                    fontSize: 13,
+                    fontSize: 14,
                     color: "var(--on-surface-variant)",
-                    marginTop: 2,
+                    lineHeight: 1.55,
+                    margin: 0,
                   }}
                 >
                   {comment.text}
@@ -482,33 +629,42 @@ export default function PostDetailPage() {
             </div>
           ))}
           {comments.length === 0 && (
-            <p style={{ fontSize: 13, color: "var(--muted)", textAlign: "center", padding: "12px 0" }}>
-              No comments yet. Be the first!
+            <p
+              style={{
+                fontSize: 13,
+                color: "var(--muted)",
+                textAlign: "center",
+                padding: "12px 0",
+              }}
+            >
+              No replies yet. Be the first!
             </p>
           )}
         </div>
 
-        {/* Try This Build CTA */}
-        <Link href={`/upload?from=feed&postId=${post.id}`} style={{ display: "block", marginBottom: 24 }}>
-          <button
-            style={{
-              width: "100%",
-              padding: "14px 0",
-              borderRadius: 14,
-              background: "var(--primary)",
-              color: "var(--on-primary)",
-              fontSize: 15,
-              fontWeight: 700,
-              border: "none",
-              cursor: "pointer",
-            }}
-          >
-            Try This Build on My Car
-          </button>
-        </Link>
+        {/* Try This Build CTA (image posts only) */}
+        {!isTextType && (
+          <Link href={`/upload?from=feed&postId=${post.id}`} style={{ display: "block", marginBottom: 24 }}>
+            <button
+              style={{
+                width: "100%",
+                padding: "14px 0",
+                borderRadius: 14,
+                background: "var(--primary)",
+                color: "var(--on-primary)",
+                fontSize: 15,
+                fontWeight: 700,
+                border: "none",
+                cursor: "pointer",
+              }}
+            >
+              Try This Build on My Car
+            </button>
+          </Link>
+        )}
       </div>
 
-      {/* Comment input */}
+      {/* Comment/reply input */}
       <div
         style={{
           position: "fixed",
@@ -529,7 +685,7 @@ export default function PostDetailPage() {
           type="text"
           value={commentText}
           onChange={(e) => setCommentText(e.target.value)}
-          placeholder="Add a comment..."
+          placeholder="Add to the conversation..."
           style={{
             flex: 1,
             fontSize: 13,
@@ -543,7 +699,7 @@ export default function PostDetailPage() {
         />
         <button
           disabled={!commentText.trim()}
-          aria-label="Send comment"
+          aria-label="Send reply"
           onClick={() => {
             if (!commentText.trim()) return;
             const newComment = {
@@ -554,7 +710,7 @@ export default function PostDetailPage() {
             };
             setComments((prev) => [...prev, newComment]);
             setCommentText("");
-            showToast("Comment posted!");
+            showToast("Reply posted!");
           }}
           style={{
             width: 36,
@@ -565,9 +721,7 @@ export default function PostDetailPage() {
             justifyContent: "center",
             border: "none",
             cursor: commentText.trim() ? "pointer" : "default",
-            background: commentText.trim()
-              ? "var(--primary)"
-              : "var(--primary-alpha-15)",
+            background: commentText.trim() ? "var(--primary)" : "var(--primary-alpha-15)",
           }}
         >
           <Send

@@ -450,6 +450,7 @@ export const mockPrebuilds: FeedPost[] = [
   {
     id: 'fp-1',
     user: { id: 'u1', username: 'wraplord', avatar: 'https://i.pravatar.cc/150?u=wraplord' },
+    postType: 'image' as const,
     car: { make: 'BMW', model: 'M4', year: 2024, image: 'https://images.unsplash.com/photo-1583121274602-3e2820c69888?w=800&q=80' },
     imageUrl: 'https://images.unsplash.com/photo-1583121274602-3e2820c69888?w=800&q=80',
     isRender: false,
@@ -462,6 +463,7 @@ export const mockPrebuilds: FeedPost[] = [
   {
     id: 'fp-2',
     user: { id: 'u2', username: 'customsonly', avatar: 'https://i.pravatar.cc/150?u=customsonly' },
+    postType: 'image' as const,
     car: { make: 'Mercedes-Benz', model: 'AMG GT', year: 2024, image: 'https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=800&q=80' },
     imageUrl: 'https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=800&q=80',
     isRender: true,
@@ -474,6 +476,7 @@ export const mockPrebuilds: FeedPost[] = [
   {
     id: 'fp-3',
     user: { id: 'u3', username: 'buildkulture', avatar: 'https://i.pravatar.cc/150?u=buildkulture' },
+    postType: 'image' as const,
     car: { make: 'Chevrolet', model: 'Corvette C8', year: 2024, image: 'https://images.unsplash.com/photo-1550355291-bbee04a92027?w=800&q=80' },
     imageUrl: 'https://images.unsplash.com/photo-1550355291-bbee04a92027?w=800&q=80',
     isRender: false,
@@ -486,6 +489,7 @@ export const mockPrebuilds: FeedPost[] = [
   {
     id: 'fp-4',
     user: { id: 'u4', username: 'tarmaclife', avatar: 'https://i.pravatar.cc/150?u=tarmaclife' },
+    postType: 'image' as const,
     car: { make: 'Audi', model: 'RS6 Avant', year: 2024, image: 'https://images.unsplash.com/photo-1494905998402-395d579af36f?w=800&q=80' },
     imageUrl: 'https://images.unsplash.com/photo-1494905998402-395d579af36f?w=800&q=80',
     isRender: false,

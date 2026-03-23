@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
-import { Home, Compass, Plus, LayoutGrid, User, Bell, Sun, Moon, Camera } from "lucide-react";
+import { Home, Compass, Plus, User, Bell, Sun, Moon, Camera, MessageCircle } from "lucide-react";
 import { useAppStore } from "@/store/appStore";
 import type { NavTab } from "@/types";
 import { useState, useEffect } from "react";
@@ -26,6 +26,9 @@ const FULL_SCREEN_ROUTES = new Set([
 // Routes that start with these prefixes are also full-screen
 const FULL_SCREEN_PREFIXES = ["/feed/", "/shop/", "/profile/"] as const;
 
+// Mock unread DM count — replace with real store/API later
+const UNREAD_DMS = 3;
+
 interface TabConfig {
   id: NavTab;
   href: string;
@@ -36,15 +39,14 @@ interface TabConfig {
 const TABS: TabConfig[] = [
   { id: "feed", href: "/feed", icon: Home, label: "Feed" },
   { id: "explore", href: "/explore", icon: Compass, label: "Explore" },
-  { id: "garage", href: "/garage", icon: LayoutGrid, label: "Garage" },
+  { id: "messages", href: "/messages", icon: MessageCircle, label: "Messages" },
   { id: "profile", href: "/profile", icon: User, label: "Profile" },
 ];
-
 
 function getActiveTab(pathname: string): NavTab | null {
   if (pathname === "/feed" || pathname === "/") return "feed";
   if (pathname.startsWith("/explore")) return "explore";
-  if (pathname.startsWith("/garage")) return "garage";
+  if (pathname.startsWith("/messages")) return "messages";
   if (pathname === "/profile") return "profile";
   return null;
 }
@@ -177,19 +179,37 @@ function TabBar() {
       {TABS.slice(2).map((tab) => {
         const isActive = activeTab === tab.id;
         const Icon = tab.icon;
+        const showBadge = tab.id === "messages" && UNREAD_DMS > 0;
         return (
           <button
             key={tab.id}
             onClick={() => handleTabPress(tab)}
             className={`tab-item${isActive ? " active" : ""}`}
             aria-label={tab.label}
+            style={{ position: "relative" }}
           >
-            <Icon
-              size={24}
-              className="tab-icon"
-              color={isActive ? "var(--primary)" : "var(--muted)"}
-              strokeWidth={2}
-            />
+            <div style={{ position: "relative", display: "inline-flex" }}>
+              <Icon
+                size={24}
+                className="tab-icon"
+                color={isActive ? "var(--primary)" : "var(--muted)"}
+                strokeWidth={2}
+              />
+              {showBadge && (
+                <div
+                  style={{
+                    position: "absolute",
+                    top: -2,
+                    right: -4,
+                    width: 8,
+                    height: 8,
+                    borderRadius: "50%",
+                    background: "#dc2626",
+                    border: "1.5px solid var(--bg)",
+                  }}
+                />
+              )}
+            </div>
             <span className="tab-label">{tab.label}</span>
           </button>
         );
@@ -229,13 +249,31 @@ function DesktopSidebar({
         {TABS.map((tab) => {
           const isActive = activeTab === tab.id;
           const Icon = tab.icon;
+          const showBadge = tab.id === "messages" && UNREAD_DMS > 0;
           return (
             <button
               key={tab.id}
               onClick={() => handleNav(tab)}
               className={`desktop-nav-item${isActive ? " active" : ""}`}
+              style={{ position: "relative" }}
             >
-              <Icon size={20} strokeWidth={2} />
+              <div style={{ position: "relative", display: "inline-flex" }}>
+                <Icon size={20} strokeWidth={2} />
+                {showBadge && (
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: -2,
+                      right: -4,
+                      width: 8,
+                      height: 8,
+                      borderRadius: "50%",
+                      background: "#dc2626",
+                      border: "1.5px solid var(--surface-card)",
+                    }}
+                  />
+                )}
+              </div>
               <span>{tab.label}</span>
             </button>
           );
@@ -272,20 +310,19 @@ function DesktopSidebar({
   );
 }
 
-
 /* ─── Desktop Right Panel ─── */
 function RightPanel() {
   const router = useRouter();
   const { darkMode, toggleTheme } = useTheme();
 
   const suggestedBuilds = [
-    { username: "wraps_by_rico", car: "2023 BMW M4", tag: "Satin Black Wrap", avatar: "W" },
-    { username: "custom.tints", car: "2022 Audi RS7", tag: "Ceramic Tint", avatar: "C" },
-    { username: "chrome_delete_co", car: "2024 G-Wagon", tag: "Full Chrome Delete", avatar: "X" },
-    { username: "ppf.studio", car: "2023 Porsche 911", tag: "Full PPF", avatar: "P" },
+    { username: "wrapsbyalex", car: "2024 BMW M4", tag: "Satin Black Wrap", avatar: "W" },
+    { username: "gta.wraps", car: "2024 Porsche 911", tag: "Satin Ceramic + PPF", avatar: "G" },
+    { username: "chromedelete_co", car: "2025 Tesla Model 3", tag: "Full Chrome Delete", avatar: "C" },
+    { username: "ppf.obsessed", car: "2024 BMW M3", tag: "Full XPEL PPF", avatar: "P" },
   ];
 
-  const trendingTags = ["satin-black", "ceramic-tint", "chrome-delete", "widebody", "ppf"];
+  const trendingTags = ["satin-black", "ceramic-tint", "chrome-delete", "full-ppf", "widebody"];
 
   return (
     <aside className="desktop-right-panel">

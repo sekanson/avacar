@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { Heart, MessageCircle, Share2, Sparkles, Upload } from "lucide-react";
+import { Heart, MessageCircle, Share2, Sparkles, Upload, HelpCircle, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { mockFeedPosts } from "@/data/feedPosts";
@@ -21,6 +21,91 @@ function timeAgo(dateStr: string): string {
   return `${Math.floor(days / 7)}w`;
 }
 
+function timeUntil(dateStr: string): string {
+  const diff = new Date(dateStr).getTime() - Date.now();
+  if (diff <= 0) return "Ended";
+  const hrs = Math.floor(diff / 3600000);
+  if (hrs < 24) return `${hrs}h left`;
+  return `${Math.floor(hrs / 24)}d left`;
+}
+
+function PollBars({ post }: { post: FeedPost }) {
+  if (!post.poll) return null;
+  const opts = post.poll.options;
+  const total = opts.reduce((s, o) => s + o.votes, 0);
+  const maxVotes = Math.max(...opts.map((o) => o.votes));
+
+  return (
+    <div style={{ padding: "12px 16px 4px" }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+        {opts.map((opt) => {
+          const pct = total > 0 ? Math.round((opt.votes / total) * 100) : 0;
+          const isLeading = opt.votes === maxVotes;
+          return (
+            <div key={opt.id}>
+              <div
+                style={{
+                  position: "relative",
+                  borderRadius: 8,
+                  overflow: "hidden",
+                  height: 36,
+                  background: "var(--surface-low)",
+                  width: "100%",
+                }}
+              >
+                <div
+                  style={{
+                    position: "absolute",
+                    inset: 0,
+                    width: `${pct}%`,
+                    background: isLeading
+                      ? "var(--primary-alpha-15)"
+                      : "var(--surface-low)",
+                    borderRadius: 8,
+                    transition: "width 0.4s ease",
+                  }}
+                />
+                <div
+                  style={{
+                    position: "absolute",
+                    inset: 0,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    padding: "0 12px",
+                  }}
+                >
+                  <span
+                    style={{
+                      fontSize: 13,
+                      fontWeight: isLeading ? 600 : 400,
+                      color: isLeading ? "var(--primary)" : "var(--on-surface-variant)",
+                    }}
+                  >
+                    {opt.text}
+                  </span>
+                  <span
+                    style={{
+                      fontSize: 12,
+                      fontWeight: 600,
+                      color: isLeading ? "var(--primary)" : "var(--muted)",
+                    }}
+                  >
+                    {pct}%
+                  </span>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+      <p style={{ fontSize: 11, color: "var(--muted)", marginTop: 8 }}>
+        {total.toLocaleString()} votes · {timeUntil(post.poll.endsAt)}
+      </p>
+    </div>
+  );
+}
+
 function FeedCard({
   post,
   liked,
@@ -30,22 +115,50 @@ function FeedCard({
   liked: boolean;
   onLike: () => void;
 }) {
+  const postType = post.postType ?? "image";
+  const isTextType = postType === "text" || postType === "question" || postType === "poll";
+
+  const cardBg = isTextType ? "var(--surface)" : "var(--surface-card)";
+
   return (
     <div
       style={{
-        background: "var(--surface-card)",
+        background: cardBg,
         borderRadius: 24,
         boxShadow: "var(--shadow-card)",
         overflow: "hidden",
+        padding: isTextType ? "0 0 4px" : undefined,
       }}
     >
+      {/* Reply-to indicator */}
+      {post.replyTo && (
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 6,
+            padding: "10px 16px 0",
+            fontSize: 12,
+            color: "var(--muted)",
+          }}
+        >
+          <MessageCircle size={12} color="var(--muted)" />
+          <span>
+            Replying to{" "}
+            <span style={{ color: "var(--primary)", fontWeight: 600 }}>
+              @{post.replyTo.username}
+            </span>
+          </span>
+        </div>
+      )}
+
       {/* Header */}
       <div
         style={{
           display: "flex",
           alignItems: "center",
           gap: 10,
-          padding: "12px 16px 8px",
+          padding: post.replyTo ? "8px 16px 8px" : "12px 16px 8px",
         }}
       >
         <div
@@ -81,50 +194,100 @@ function FeedCard({
           >
             {post.user.username}
           </Link>
-          <span style={{ fontSize: 11, color: "var(--muted)" }}>
-            {post.car.year} {post.car.make} {post.car.model}
-          </span>
-        </div>
-        <span style={{ fontSize: 11, color: "var(--outline)", flexShrink: 0 }}>
-          {timeAgo(post.createdAt)}
-        </span>
-      </div>
-
-      {/* Image */}
-      <Link href={`/feed/${post.id}`}>
-        <div style={{ position: "relative", width: "100%", aspectRatio: "1/1" }}>
-          <Image
-            src={post.imageUrl}
-            alt={`${post.car.year} ${post.car.make} ${post.car.model}`}
-            fill
-            className="object-cover"
-            sizes="(max-width: 768px) 100vw, 500px"
-            unoptimized
-          />
-          {post.isRender && (
-            <div
-              style={{
-                position: "absolute",
-                top: 10,
-                right: 10,
-                display: "flex",
-                alignItems: "center",
-                gap: 4,
-                padding: "4px 10px",
-                borderRadius: 999,
-                fontSize: 10,
-                fontWeight: 600,
-                background: "var(--overlay-card)",
-                color: "var(--primary)",
-                backdropFilter: "blur(8px)",
-              }}
-            >
-              <Sparkles size={10} />
-              AI Render
-            </div>
+          {post.car ? (
+            <span style={{ fontSize: 11, color: "var(--muted)" }}>
+              {post.car.year} {post.car.make} {post.car.model}
+            </span>
+          ) : (
+            <span style={{ fontSize: 11, color: "var(--muted)" }}>
+              {timeAgo(post.createdAt)}
+            </span>
           )}
         </div>
-      </Link>
+        <div style={{ display: "flex", alignItems: "center", gap: 6, flexShrink: 0 }}>
+          {postType === "question" && (
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 3,
+                padding: "3px 8px",
+                borderRadius: 999,
+                background: "var(--primary-alpha-10)",
+                fontSize: 10,
+                fontWeight: 600,
+                color: "var(--primary)",
+              }}
+            >
+              <HelpCircle size={10} />
+              Question
+            </div>
+          )}
+          {post.car && (
+            <span style={{ fontSize: 11, color: "var(--outline)" }}>
+              {timeAgo(post.createdAt)}
+            </span>
+          )}
+        </div>
+      </div>
+
+      {/* Image (image/build_share posts only) */}
+      {(postType === "image" || postType === "build_share") && post.imageUrl && (
+        <Link href={`/feed/${post.id}`}>
+          <div style={{ position: "relative", width: "100%", aspectRatio: "1/1" }}>
+            <Image
+              src={post.imageUrl}
+              alt={post.car ? `${post.car.year} ${post.car.make} ${post.car.model}` : post.caption}
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 500px"
+              unoptimized
+            />
+            {post.isRender && (
+              <div
+                style={{
+                  position: "absolute",
+                  top: 10,
+                  right: 10,
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 4,
+                  padding: "4px 10px",
+                  borderRadius: 999,
+                  fontSize: 10,
+                  fontWeight: 600,
+                  background: "var(--overlay-card)",
+                  color: "var(--primary)",
+                  backdropFilter: "blur(8px)",
+                }}
+              >
+                <Sparkles size={10} />
+                AI Render
+              </div>
+            )}
+          </div>
+        </Link>
+      )}
+
+      {/* Caption / text body */}
+      <div style={{ padding: isTextType ? "4px 16px 8px" : "10px 16px 4px" }}>
+        <Link href={`/feed/${post.id}`} style={{ textDecoration: "none" }}>
+          <p
+            style={{
+              fontSize: isTextType ? 15 : 13,
+              lineHeight: 1.6,
+              color: "var(--on-surface)",
+              margin: 0,
+              fontWeight: isTextType ? 400 : 400,
+            }}
+          >
+            {post.caption}
+          </p>
+        </Link>
+      </div>
+
+      {/* Poll bars */}
+      {postType === "poll" && <PollBars post={post} />}
 
       {/* Action row */}
       <div
@@ -132,7 +295,7 @@ function FeedCard({
           display: "flex",
           alignItems: "center",
           gap: 16,
-          padding: "10px 16px 4px",
+          padding: "6px 16px 8px",
         }}
       >
         <button
@@ -158,20 +321,42 @@ function FeedCard({
             {(post.likes + (liked && !post.isLiked ? 1 : 0)).toLocaleString()}
           </span>
         </button>
-        <Link
-          href={`/feed/${post.id}`}
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 5,
-            textDecoration: "none",
-          }}
-        >
-          <MessageCircle size={20} color="var(--muted)" />
-          <span style={{ fontSize: 12, color: "var(--muted)" }}>
-            {post.comments}
-          </span>
-        </Link>
+
+        {/* Thread count or comment count */}
+        {post.threadCount && post.threadCount > 0 ? (
+          <Link
+            href={`/feed/${post.id}`}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 5,
+              textDecoration: "none",
+              fontSize: 12,
+              color: "var(--primary)",
+              fontWeight: 500,
+            }}
+          >
+            <MessageCircle size={20} color="var(--primary)" />
+            {post.threadCount} replies
+            <ChevronRight size={14} color="var(--primary)" style={{ marginLeft: -2 }} />
+          </Link>
+        ) : (
+          <Link
+            href={`/feed/${post.id}`}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 5,
+              textDecoration: "none",
+            }}
+          >
+            <MessageCircle size={20} color="var(--muted)" />
+            <span style={{ fontSize: 12, color: "var(--muted)" }}>
+              {post.comments}
+            </span>
+          </Link>
+        )}
+
         <button
           aria-label="Share post"
           style={{
@@ -185,45 +370,52 @@ function FeedCard({
         >
           <Share2 size={20} color="var(--muted)" />
         </button>
-        <div style={{ flex: 1 }} />
-        <Link
-          href={`/upload?from=feed&postId=${post.id}`}
-          style={{
-            fontSize: 12,
-            fontWeight: 600,
-            color: "var(--primary)",
-            textDecoration: "none",
-          }}
-        >
-          Try This Build
-        </Link>
+
+        {(postType === "image" || postType === "build_share") && (
+          <>
+            <div style={{ flex: 1 }} />
+            <Link
+              href={`/upload?from=feed&postId=${post.id}`}
+              style={{
+                fontSize: 12,
+                fontWeight: 600,
+                color: "var(--primary)",
+                textDecoration: "none",
+              }}
+            >
+              Try This Build
+            </Link>
+          </>
+        )}
       </div>
 
-      {/* Hashtag pills */}
-      <div
-        style={{
-          display: "flex",
-          flexWrap: "wrap",
-          gap: 6,
-          padding: "6px 16px 14px",
-        }}
-      >
-        {post.buildTags.map((tag) => (
-          <span
-            key={tag}
-            style={{
-              fontSize: 11,
-              fontWeight: 500,
-              padding: "4px 10px",
-              borderRadius: 999,
-              background: "var(--tag-bg)",
-              color: "var(--primary)",
-            }}
-          >
-            #{tag.replace(/\s+/g, "")}
-          </span>
-        ))}
-      </div>
+      {/* Hashtag pills (image posts only) */}
+      {(postType === "image" || postType === "build_share") && post.buildTags.length > 0 && (
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: 6,
+            padding: "2px 16px 14px",
+          }}
+        >
+          {post.buildTags.map((tag) => (
+            <span
+              key={tag}
+              style={{
+                fontSize: 11,
+                fontWeight: 500,
+                padding: "4px 10px",
+                borderRadius: 999,
+                background: "var(--tag-bg)",
+                color: "var(--primary)",
+              }}
+            >
+              #{tag.replace(/\s+/g, "")}
+            </span>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
@@ -251,13 +443,42 @@ export default function FeedPage() {
   });
 
   return (
-    <div ref={scrollRef} style={{ paddingBottom: 24, background: "var(--bg)", minHeight: "100vh", overflow: "auto", maxWidth: 620, margin: "0 auto", width: "100%" }}>
+    <div
+      ref={scrollRef}
+      style={{
+        paddingBottom: 24,
+        background: "var(--bg)",
+        minHeight: "100vh",
+        overflow: "auto",
+        maxWidth: 620,
+        margin: "0 auto",
+        width: "100%",
+      }}
+    >
       {/* Editorial header */}
-      <div style={{ padding: "28px 20px 0" }}>
-        <p style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--primary)", marginBottom: 6 }}>
+      <div style={{ padding: "28px 16px 0" }}>
+        <p
+          style={{
+            fontSize: 11,
+            fontWeight: 600,
+            letterSpacing: "0.08em",
+            textTransform: "uppercase",
+            color: "var(--primary)",
+            marginBottom: 6,
+          }}
+        >
           Community
         </p>
-        <h1 style={{ fontSize: 32, fontWeight: 800, color: "var(--on-surface)", letterSpacing: "-0.03em", lineHeight: 1.1, margin: 0 }}>
+        <h1
+          style={{
+            fontSize: 32,
+            fontWeight: 800,
+            color: "var(--on-surface)",
+            letterSpacing: "-0.03em",
+            lineHeight: 1.1,
+            margin: 0,
+          }}
+        >
           Build Gallery
         </h1>
       </div>
@@ -267,7 +488,7 @@ export default function FeedPage() {
         style={{
           display: "flex",
           gap: 8,
-          padding: "16px 20px 0",
+          padding: "16px 16px 0",
           overflowX: "auto",
           scrollbarWidth: "none",
         }}
@@ -285,15 +506,11 @@ export default function FeedPage() {
               cursor: "pointer",
               flexShrink: 0,
               background:
-                feedCat === cat
-                  ? "var(--primary-alpha-15)"
-                  : "var(--surface-card)",
+                feedCat === cat ? "var(--primary-alpha-15)" : "var(--surface-card)",
               color:
                 feedCat === cat ? "var(--primary)" : "var(--on-surface-variant)",
               boxShadow:
-                feedCat !== cat
-                  ? "inset 0 0 0 1px var(--ghost-border)"
-                  : "none",
+                feedCat !== cat ? "inset 0 0 0 1px var(--ghost-border)" : "none",
             }}
           >
             {cat}
@@ -305,7 +522,7 @@ export default function FeedPage() {
       <div
         style={{
           display: "flex",
-          margin: "16px 20px 0",
+          margin: "16px 16px 0",
           borderRadius: 12,
           overflow: "hidden",
           background: "var(--surface-low)",
@@ -324,12 +541,9 @@ export default function FeedPage() {
               border: "none",
               cursor: "pointer",
               borderRadius: 10,
-              background:
-                feedTab === tab ? "var(--surface-card)" : "transparent",
-              color:
-                feedTab === tab ? "var(--on-surface)" : "var(--muted)",
-              boxShadow:
-                feedTab === tab ? "0 1px 3px rgba(0,0,0,.08)" : "none",
+              background: feedTab === tab ? "var(--surface-card)" : "transparent",
+              color: feedTab === tab ? "var(--on-surface)" : "var(--muted)",
+              boxShadow: feedTab === tab ? "0 1px 3px rgba(0,0,0,.08)" : "none",
               textTransform: "capitalize",
             }}
           >
@@ -343,8 +557,8 @@ export default function FeedPage() {
         style={{
           display: "flex",
           flexDirection: "column",
-          gap: 16,
-          padding: "16px 20px 0",
+          gap: 12,
+          padding: "16px 16px 0",
         }}
       >
         {filtered.map((post) => (
@@ -370,14 +584,24 @@ export default function FeedPage() {
       </div>
 
       {/* Upload FAB */}
-      <Link href="/upload" style={{
-        position: "fixed", bottom: 88, right: 20, zIndex: 50,
-        width: 52, height: 52, borderRadius: 999,
-        background: "var(--primary-gradient)",
-        display: "flex", alignItems: "center", justifyContent: "center",
-        boxShadow: "var(--fab-shadow)",
-        textDecoration: "none",
-      }}>
+      <Link
+        href="/upload"
+        style={{
+          position: "fixed",
+          bottom: 80,
+          right: 20,
+          zIndex: 50,
+          width: 52,
+          height: 52,
+          borderRadius: 999,
+          background: "var(--primary-gradient)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          boxShadow: "var(--fab-shadow)",
+          textDecoration: "none",
+        }}
+      >
         <Upload size={20} color="#fff" />
       </Link>
     </div>

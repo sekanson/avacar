@@ -133,11 +133,20 @@ export interface FeedComment {
   createdAt: string;
 }
 
+export type PostType = 'image' | 'text' | 'poll' | 'build_share' | 'question';
+
+export interface PollOption {
+  id: string;
+  text: string;
+  votes: number;
+}
+
 export interface FeedPost {
   id: string;
   user: FeedUser;
-  car: FeedCar;
-  imageUrl: string;
+  postType: PostType;
+  car?: FeedCar;
+  imageUrl?: string;
   isRender: boolean;
   buildSpecs: string[];
   buildTags: string[];
@@ -150,10 +159,31 @@ export interface FeedPost {
   sharedCost: boolean;
   caption: string;
   createdAt: string;
+  poll?: { question: string; options: PollOption[]; endsAt: string };
+  replyTo?: { username: string; preview: string };
+  threadCount?: number;
 }
 
 /** Legacy alias */
 export type FeedPostLegacy = FeedPost;
+
+// ─── DMs ────────────────────────────────────────────────────────────────────
+export interface DMMessage {
+  id: string;
+  senderId: string;
+  text: string;
+  createdAt: string;
+  read: boolean;
+}
+
+export interface DMConversation {
+  id: string;
+  user: FeedUser;
+  lastMessage: string;
+  lastMessageAt: string;
+  unread: number;
+  messages: DMMessage[];
+}
 
 // ─── App State ───────────────────────────────────────────────────────────────
 export type AppScreen =
@@ -177,4 +207,4 @@ export type AppScreen =
   | 'booking-review'
   | 'booking-confirmed';
 
-export type NavTab = 'feed' | 'explore' | 'upload' | 'garage' | 'profile';
+export type NavTab = 'feed' | 'explore' | 'upload' | 'garage' | 'profile' | 'messages';

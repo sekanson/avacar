@@ -255,8 +255,8 @@ export default function PublicProfilePage() {
                   }}
                 >
                   <Image
-                    src={post.imageUrl}
-                    alt={`${post.car.year} ${post.car.make} ${post.car.model}`}
+                    src={post.imageUrl ?? ""}
+                    alt={post.car ? `${post.car.year} ${post.car.make} ${post.car.model}` : post.caption}
                     fill
                     style={{ objectFit: "cover" }}
                     sizes="(max-width: 768px) 33vw, 150px"

@@ -61,17 +61,19 @@ function FeedCard({ post }: { post: FeedPost }) {
           >
             {post.user.username}
           </Link>
-          <span style={{ fontSize: 11, color: "var(--muted)" }}>
-            {post.car.year} {post.car.make} {post.car.model}
-          </span>
+          {post.car && (
+            <span style={{ fontSize: 11, color: "var(--muted)" }}>
+              {post.car.year} {post.car.make} {post.car.model}
+            </span>
+          )}
         </div>
       </div>
 
       {/* Image */}
       <div style={{ position: "relative", width: "100%", aspectRatio: "1/1" }}>
         <Image
-          src={post.imageUrl}
-          alt={`${post.car.year} ${post.car.make} ${post.car.model}`}
+          src={post.imageUrl ?? ""}
+          alt={post.car ? `${post.car.year} ${post.car.make} ${post.car.model}` : post.caption}
           fill
           className="object-cover"
           sizes="(max-width: 768px) 50vw, 300px"
@@ -179,14 +181,13 @@ export default function ExplorePage() {
       p.buildTags.some((t) =>
         t.toLowerCase().includes(activeCategory.toLowerCase())
       );
+    const q = searchQuery.toLowerCase();
     const matchesSearch =
       !searchQuery.trim() ||
-      p.car.make.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      p.car.model.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      p.user.username.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      p.buildTags.some((t) =>
-        t.toLowerCase().includes(searchQuery.toLowerCase())
-      );
+      (p.car?.make.toLowerCase().includes(q) ?? false) ||
+      (p.car?.model.toLowerCase().includes(q) ?? false) ||
+      p.user.username.toLowerCase().includes(q) ||
+      p.buildTags.some((t) => t.toLowerCase().includes(q));
     return matchesCat && matchesSearch;
   });
 
