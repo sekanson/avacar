@@ -251,7 +251,7 @@ export default function FeedPage() {
   });
 
   return (
-    <div ref={scrollRef} style={{ paddingBottom: 24, background: "var(--bg)", minHeight: "100vh", overflow: "auto" }}>
+    <div ref={scrollRef} style={{ paddingBottom: 24, background: "var(--bg)", minHeight: "100vh", overflow: "auto", maxWidth: 620, margin: "0 auto", width: "100%" }}>
       {/* Editorial header */}
       <div style={{ padding: "28px 20px 0" }}>
         <p style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--primary)", marginBottom: 6 }}>

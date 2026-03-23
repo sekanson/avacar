@@ -40,16 +40,6 @@ const TABS: TabConfig[] = [
   { id: "profile", href: "/profile", icon: User, label: "Profile" },
 ];
 
-const PAGE_TITLES: Record<string, string> = {
-  "/feed": "Feed",
-  "/explore": "Explore",
-  "/garage": "My Garage",
-  "/profile": "Profile",
-};
-
-function getPageTitle(pathname: string): string {
-  return PAGE_TITLES[pathname] || "AVACAR";
-}
 
 function getActiveTab(pathname: string): NavTab | null {
   if (pathname === "/feed" || pathname === "/") return "feed";
@@ -282,38 +272,76 @@ function DesktopSidebar({
   );
 }
 
-/* ─── Desktop Header ─── */
-function DesktopHeader({
-  pathname,
-  darkMode,
-  onToggleTheme,
-}: {
-  pathname: string;
-  darkMode: boolean;
-  onToggleTheme: () => void;
-}) {
+
+/* ─── Desktop Right Panel ─── */
+function RightPanel() {
   const router = useRouter();
+  const { darkMode, toggleTheme } = useTheme();
+
+  const suggestedBuilds = [
+    { username: "wraps_by_rico", car: "2023 BMW M4", tag: "Satin Black Wrap", avatar: "W" },
+    { username: "custom.tints", car: "2022 Audi RS7", tag: "Ceramic Tint", avatar: "C" },
+    { username: "chrome_delete_co", car: "2024 G-Wagon", tag: "Full Chrome Delete", avatar: "X" },
+    { username: "ppf.studio", car: "2023 Porsche 911", tag: "Full PPF", avatar: "P" },
+  ];
+
+  const trendingTags = ["satin-black", "ceramic-tint", "chrome-delete", "widebody", "ppf"];
 
   return (
-    <header className="desktop-header">
-      <span className="desktop-header-title">{getPageTitle(pathname)}</span>
-      <div className="desktop-header-actions">
-        <button
-          className="tbb"
-          onClick={() => router.push("/notifications")}
-          aria-label="Notifications"
-        >
+    <aside className="desktop-right-panel">
+      <div className="desktop-right-panel-actions">
+        <button className="tbb" onClick={() => router.push("/notifications")} aria-label="Notifications">
           <Bell size={18} />
         </button>
-        <button
-          className="tbb"
-          onClick={onToggleTheme}
-          aria-label={`Toggle ${darkMode ? "light" : "dark"} mode`}
-        >
+        <button className="tbb" onClick={toggleTheme} aria-label="Toggle theme">
           {darkMode ? <Sun size={18} /> : <Moon size={18} />}
         </button>
       </div>
-    </header>
+
+      <div className="rp-card">
+        <p className="rp-overline">Start Building</p>
+        <p className="rp-title">Design your car, get quoted</p>
+        <p className="rp-sub">Upload a photo and see your build come to life</p>
+        <button
+          className="desktop-upload-btn"
+          onClick={() => router.push("/upload")}
+          style={{ width: "100%", marginTop: 12 }}
+        >
+          <Camera size={16} />
+          Upload My Car
+        </button>
+      </div>
+
+      <div className="rp-card">
+        <p className="rp-overline">Trending</p>
+        <p className="rp-title" style={{ marginBottom: 12 }}>Popular Builds</p>
+        {trendingTags.map((tag) => (
+          <div key={tag} className="rp-trend-row">
+            <span className="rp-trend-tag">#{tag}</span>
+          </div>
+        ))}
+      </div>
+
+      <div className="rp-card">
+        <p className="rp-overline">Discover</p>
+        <p className="rp-title" style={{ marginBottom: 12 }}>Builders to Follow</p>
+        {suggestedBuilds.map((b) => (
+          <div key={b.username} className="rp-user-row">
+            <div className="rp-avatar">{b.avatar}</div>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <p className="rp-username">@{b.username}</p>
+              <p className="rp-usertag">{b.car} · {b.tag}</p>
+            </div>
+            <button className="rp-follow-btn">Follow</button>
+          </div>
+        ))}
+      </div>
+
+      <div className="rp-footer">
+        <span>Privacy</span><span>Terms</span><span>About</span>
+        <span style={{ width: "100%", marginTop: 4, display: "block" }}>© 2026 AVACAR</span>
+      </div>
+    </aside>
   );
 }
 
@@ -348,6 +376,9 @@ export default function AppLayout({
       pathname !== "/profile" &&
       FULL_SCREEN_PREFIXES.some((prefix) => pathname.startsWith(prefix)));
 
+  const showRightPanel =
+    isDesktop && !isFullScreen && (pathname === "/feed" || pathname.startsWith("/explore"));
+
   return (
     <div className="phone">
       {/* MOBILE chrome */}
@@ -365,13 +396,11 @@ export default function AppLayout({
       {/* Content area */}
       {isDesktop && !isFullScreen ? (
         <div className="desktop-main">
-          <DesktopHeader
-            pathname={pathname}
-            darkMode={darkMode}
-            onToggleTheme={toggleTheme}
-          />
-          <div className="desktop-content">
-            {children}
+          <div className={showRightPanel ? "desktop-three-col" : "desktop-two-col"}>
+            <div className="desktop-content">
+              {children}
+            </div>
+            {showRightPanel && <RightPanel />}
           </div>
         </div>
       ) : (

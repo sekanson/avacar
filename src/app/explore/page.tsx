@@ -191,7 +191,7 @@ export default function ExplorePage() {
   });
 
   return (
-    <div style={{ minHeight: "100vh", background: "var(--bg)", paddingBottom: 100 }}>
+    <div style={{ minHeight: "100vh", background: "var(--bg)", paddingBottom: 100, maxWidth: 620, margin: "0 auto", width: "100%" }}>
       {/* Editorial header */}
       <div style={{ padding: "28px 20px 16px" }}>
         <p style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--primary)", marginBottom: 6 }}>
