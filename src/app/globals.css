@@ -91,20 +91,19 @@
 }
 
 [data-theme="dark"] {
-  /* Core environment - deep navy */
-  --bg: #060e1a;
-  --surface: #091726;
-  --surface-low: #0c1d30;
-  --surface-container: #112338;
-  --surface-high: #172c44;
-  --surface-highest: #1d3550;
-  --surface-card: #0d1e33;
+  --bg: #0a0c10;
+  --surface: #0d0f14;
+  --surface-low: #111318;
+  --surface-container: #14171e;
+  --surface-high: #191c24;
+  --surface-highest: #1e2129;
+  --surface-card: #1e2025;
 
-  /* Cyan primary */
-  --primary: #007FFF;
-  --primary-container: #0066dd;
+  --primary: #005ab7;
+  --primary-container: #0066cc;
   --primary-gradient: linear-gradient(135deg, #005ab7, #007FFF);
   --accent: #007FFF;
+
   --primary-alpha-04: rgba(0,127,255,.04);
   --primary-alpha-06: rgba(0,127,255,.06);
   --primary-alpha-08: rgba(0,127,255,.08);
@@ -117,35 +116,30 @@
   --primary-alpha-35: rgba(0,127,255,.35);
   --primary-alpha-40: rgba(0,127,255,.40);
   --primary-alpha-45: rgba(0,127,255,.45);
+
   --on-primary: #ffffff;
+  --on-surface: #f0f2f5;
+  --on-surface-variant: #8892a0;
+  --muted: #525d6b;
+  --outline: #3a4250;
+  --outline-variant: #252a35;
 
-  /* Text - blue-tinted whites */
-  --on-surface: #e8eef5;
-  --on-surface-variant: #8fa8c8;
-  --muted: #5a7a9a;
-  --outline: #3a5a7a;
-  --outline-variant: #1e3a5a;
+  --ghost-border: rgba(255,255,255,.06);
+  --ghost-border-hover: rgba(255,255,255,.10);
+  --ghost-border-04: rgba(255,255,255,.04);
+  --ghost-border-08: rgba(255,255,255,.08);
+  --ghost-border-12: rgba(255,255,255,.12);
 
-  /* Ghost borders - subtle blue-tinted */
-  --ghost-border: rgba(0,127,255,.08);
-  --ghost-border-hover: rgba(0,127,255,.15);
-  --ghost-border-04: rgba(0,127,255,.04);
-  --ghost-border-08: rgba(0,127,255,.08);
-  --ghost-border-12: rgba(0,127,255,.12);
+  --shadow-ambient: 0 4px 40px rgba(0,0,0,.5);
+  --shadow-card: 0 2px 20px rgba(0,0,0,.4);
+  --shadow-card-hover: 0 8px 40px rgba(0,127,255,.2);
+  --shadow-modal: 0 -4px 40px rgba(0,0,0,.6);
 
-  /* Shadows - blue-tinted ambient */
-  --shadow-ambient: 0 4px 40px rgba(0,30,80,.3);
-  --shadow-card: 0 4px 40px rgba(0,20,60,.25);
-  --shadow-card-hover: 0 8px 40px rgba(0,127,255,.15);
-  --shadow-modal: 0 -4px 40px rgba(0,0,0,.4);
+  --topbar-bg: rgba(10,12,16,.9);
+  --topbar-shadow: 0 1px 0 rgba(255,255,255,.04);
+  --tabbar-bg: rgba(10,12,16,.96);
 
-  /* Glassmorphic bars */
-  --topbar-bg: rgba(6,14,26,.85);
-  --topbar-shadow: 0 1px 0 rgba(0,127,255,.06);
-  --tabbar-bg: rgba(6,14,26,.95);
-
-  /* Tags */
-  --tag-bg: rgba(0,127,255,.15);
+  --tag-bg: rgba(0,127,255,.18);
   --tag-color: #007FFF;
   --tag-border: rgba(0,127,255,.2);
 
@@ -153,40 +147,36 @@
   --error: #EF4444;
   --warning: #F59E0B;
 
-  --chip-bg: #0d1e33;
+  --chip-bg: #1e2025;
   --chip-active-bg: #007FFF;
   --chip-active-color: #ffffff;
 
-  /* Inputs */
-  --input-bg: #0d1e33;
-  --modal-bg: #0d1e33;
-  --modal-overlay: rgba(0,0,0,.7);
+  --input-bg: #14171e;
+  --modal-bg: #1e2025;
+  --modal-overlay: rgba(0,0,0,.6);
 
-  /* Skeleton */
-  --skeleton-base: #0d1e33;
-  --skeleton-shine: #152840;
+  --skeleton-base: #1e2025;
+  --skeleton-shine: #252a35;
 
-  --fab-shadow: 0 4px 20px rgba(0,127,255,.4);
+  --fab-shadow: 0 4px 20px rgba(0,127,255,.5);
 
-  /* Hero gradient - "Digital Heart" */
-  --hero-gradient: linear-gradient(135deg, #0a1628 0%, #0044bb 60%, #007FFF 100%);
+  --hero-gradient: linear-gradient(135deg, #005ab7 0%, #007FFF 100%);
 
   --btn-primary-text: #ffffff;
-  --btn-dark-bg: #ffffff;
-  --btn-dark-color: #091726;
-  --overlay-light: rgba(6,14,26,.85);
-  --overlay-card: rgba(13,30,51,.8);
+  --btn-dark-bg: #f0f2f5;
+  --btn-dark-color: #0a0c10;
+  --overlay-light: rgba(10,12,16,.85);
+  --overlay-card: rgba(30,32,37,.8);
   --error-alpha-08: rgba(239,68,68,.08);
   --error-alpha-15: rgba(239,68,68,.15);
-  --divider: 1px solid rgba(0,127,255,.08);
-  --selected-bg: #172c44;
+  --divider: 1px solid rgba(255,255,255,.06);
+  --selected-bg: #007FFF;
   --selected-shadow: 0 4px 16px rgba(0,127,255,.15);
 
-  /* Splash */
-  --sp-h1-gradient: linear-gradient(180deg, #e8eef5 0%, #5a7a9a 100%);
-  --sp-cta-shadow: 0 4px 24px rgba(0,127,255,.4), inset 0 1px 0 rgba(255,255,255,.1);
-  --sp-cta-shadow-hover: 0 6px 32px rgba(0,127,255,.6);
-  --sp-preview-shadow: 0 20px 60px rgba(0,0,0,.4), 0 0 40px rgba(0,127,255,.08);
+  --sp-h1-gradient: linear-gradient(180deg, #f0f2f5 0%, #525d6b 100%);
+  --sp-cta-shadow: 0 4px 24px rgba(0,127,255,.5), inset 0 1px 0 rgba(255,255,255,.15);
+  --sp-cta-shadow-hover: 0 8px 32px rgba(0,127,255,.7);
+  --sp-preview-shadow: 0 20px 60px rgba(0,0,0,.6), 0 0 40px rgba(0,127,255,.06);
 }
 
 * {
@@ -1332,15 +1322,19 @@ html, body {
 /* Sidebar premium dark mode */
 @media (min-width: 768px) {
   [data-theme="dark"] .desktop-sidebar {
-    background: var(--surface-card);
+    background: #131620;
     border-right: none;
-    box-shadow: 4px 0 40px rgba(0,20,60,.4);
+    box-shadow: 1px 0 0 rgba(255,255,255,.04);
   }
 
   [data-theme="dark"] .desktop-nav-item.active {
-    background: rgba(0,127,255,.15);
+    background: rgba(0,127,255,.12);
     color: #007FFF;
-    box-shadow: inset 3px 0 0 #007FFF;
+  }
+
+  [data-theme="dark"] .desktop-nav-item:hover {
+    background: rgba(255,255,255,.04);
+    color: var(--on-surface);
   }
 
   [data-theme="dark"] .desktop-upload-btn {
@@ -1352,19 +1346,49 @@ html, body {
     box-shadow: 0 6px 28px rgba(0,127,255,.55);
   }
 
-  /* Right panel hero card */
-  [data-theme="dark"] .rp-hero-card {
-    background: linear-gradient(135deg, #0a1628 0%, #0044bb 70%, #007FFF 100%);
-    box-shadow: 0 8px 40px rgba(0,127,255,.25);
+  [data-theme="dark"] .desktop-sidebar-logo {
+    border-bottom: none;
+    box-shadow: 0 1px 0 rgba(255,255,255,.04);
   }
 
-  [data-theme="dark"] .rp-hero-card .rp-overline { color: rgba(255,255,255,.6); }
-  [data-theme="dark"] .rp-hero-card .rp-title { color: #fff; }
-  [data-theme="dark"] .rp-hero-card .rp-sub { color: rgba(255,255,255,.6); }
+  [data-theme="dark"] .desktop-right-panel {
+    background: var(--bg);
+  }
+
+  [data-theme="dark"] .rp-card {
+    background: var(--surface-card);
+    box-shadow: 0 2px 20px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.04);
+  }
+
+  /* Right panel hero card */
+  [data-theme="dark"] .rp-hero-card {
+    background: linear-gradient(135deg, #005ab7 0%, #007FFF 100%);
+    box-shadow: 0 8px 40px rgba(0,127,255,.35);
+  }
+
+  [data-theme="dark"] .rp-hero-card .rp-overline { color: rgba(255,255,255,.65); }
+  [data-theme="dark"] .rp-hero-card .rp-title { color: rgba(255,255,255,.9); }
+  [data-theme="dark"] .rp-hero-card .rp-sub { color: rgba(255,255,255,.65); }
   [data-theme="dark"] .rp-hero-card .desktop-upload-btn {
     background: rgba(255,255,255,.2);
     backdrop-filter: blur(10px);
     color: #fff;
-    box-shadow: none;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.2);
   }
+
+  [data-theme="dark"] .card-base {
+    background: var(--surface-card);
+    box-shadow: 0 2px 20px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.04);
+  }
+}
+
+/* ─── Dark mode btn-secondary ghost style ─── */
+[data-theme="dark"] .btn-secondary {
+  background: transparent;
+  color: var(--on-surface);
+  box-shadow: inset 0 0 0 1.5px rgba(255,255,255,.2);
+}
+[data-theme="dark"] .btn-secondary:hover {
+  background: rgba(255,255,255,.06);
+  box-shadow: inset 0 0 0 1.5px rgba(255,255,255,.35);
 }

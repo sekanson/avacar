@@ -486,17 +486,18 @@ export default function FeedPage() {
           }}>
             Build Gallery
           </h1>
-          <p style={{ fontSize: 13, color: "rgba(255,255,255,.65)", margin: 0 }}>
-            Share your build. Get inspired.
+          <p style={{ fontSize: 13, color: "rgba(255,255,255,.65)", margin: 0, lineHeight: 1.5 }}>
+            Share your build. Get quoted. Get inspired.
           </p>
           <Link href="/upload" style={{
             position: "absolute", bottom: 24, right: 24,
-            width: 48, height: 48, borderRadius: 999,
-            background: "rgba(255,255,255,.2)", backdropFilter: "blur(10px)",
+            width: 48, height: 48, borderRadius: "50%",
+            background: "#fff",
             display: "flex", alignItems: "center", justifyContent: "center",
+            boxShadow: "0 4px 16px rgba(0,0,0,.2)",
             textDecoration: "none",
           }}>
-            <Plus size={22} color="#fff" />
+            <Plus size={22} color="#005ab7" />
           </Link>
         </div>
       </div>
