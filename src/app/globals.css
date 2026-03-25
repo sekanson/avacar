@@ -924,88 +924,89 @@ html, body {
   /* Hide mobile-only FAB on desktop */
   .mobile-fab { display: none !important; }
 
-  /* Desktop sidebar — icon rail, expands to 220px on hover */
+  /* Desktop sidebar — YouTube style: icon rail, overlays on hover */
   .desktop-sidebar {
     display: flex;
     flex-direction: column;
-    align-items: center;
     width: 64px;
     min-width: 64px;
     height: 100dvh;
-    background: var(--surface-card);
-    border-right: 1px solid var(--ghost-border-04);
+    background: var(--bg);
+    border-right: none;
     padding: 0;
     flex-shrink: 0;
     position: sticky;
     top: 0;
     z-index: 30;
+    overflow: visible; /* allow overlay to escape */
+  }
+
+  /* Inner wrapper — this is what actually expands as an overlay */
+  .desktop-sidebar-inner {
+    display: flex;
+    flex-direction: column;
+    width: 64px;
+    height: 100dvh;
+    background: var(--bg);
     overflow: hidden;
-    transition: width 200ms cubic-bezier(0.4, 0, 0.2, 1);
+    transition: width 200ms cubic-bezier(0.4, 0, 0.2, 1), box-shadow 200ms;
+    position: relative;
+    z-index: 30;
   }
 
-  .desktop-sidebar:hover {
-    width: 220px;
-    align-items: flex-start;
+  .desktop-sidebar:hover .desktop-sidebar-inner {
+    width: 240px;
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.12);
   }
 
-  /* Top logo icon — clicking goes to feed */
+  /* Top logo icon */
   .desktop-sidebar-logo {
     width: 64px;
+    min-width: 64px;
     height: 64px;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
+    padding-left: 20px;
     flex-shrink: 0;
     cursor: pointer;
     border: none;
     background: none;
-    padding: 0;
   }
 
   .desktop-sidebar-nav {
     flex: 1;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    padding: 8px 10px;
+    align-items: flex-start;
+    padding: 8px 0;
     gap: 2px;
     overflow-y: auto;
     overflow-x: hidden;
     width: 100%;
-    transition: align-items 0.2s;
   }
 
-  .desktop-sidebar:hover .desktop-sidebar-nav {
-    align-items: stretch;
-  }
-
-  /* Nav items: icons only collapsed, labels appear on hover */
+  /* Nav items: left-aligned, icon at fixed position, label slides in */
   .desktop-nav-item {
     display: flex;
     align-items: center;
-    justify-content: center;
-    width: 44px;
+    gap: 14px;
     height: 44px;
-    border-radius: 12px;
+    width: 100%;
+    padding: 0 20px;
+    border-radius: 10px;
     border: none;
     background: none;
     cursor: pointer;
     color: var(--on-surface-variant);
-    transition: background 0.15s, color 0.15s, width 0.15s, padding 0.15s;
-    flex-shrink: 0;
-    overflow: hidden;
+    transition: background 0.15s, color 0.15s;
     white-space: nowrap;
-    gap: 0;
-    padding: 0;
+    overflow: hidden;
+    flex-shrink: 0;
   }
 
-  .desktop-sidebar:hover .desktop-nav-item {
-    width: 100%;
-    justify-content: flex-start;
-    padding: 10px 14px;
-    gap: 12px;
-    border-radius: 10px;
-  }
+  /* Icon stays fixed at left; label hidden until expanded */
+  .desktop-nav-item svg { flex-shrink: 0; }
 
   .desktop-nav-item span {
     display: block;
@@ -1013,7 +1014,7 @@ html, body {
     font-size: 14px;
     font-weight: 600;
     font-family: var(--font-manrope), Manrope, sans-serif;
-    transition: opacity 100ms 80ms;
+    transition: opacity 120ms 60ms;
     overflow: hidden;
   }
 
@@ -1021,11 +1022,11 @@ html, body {
 
   .desktop-nav-item:hover {
     background: var(--primary-alpha-08);
-    color: var(--primary);
+    color: var(--on-surface);
   }
 
   .desktop-nav-item.active {
-    background: var(--primary-alpha-15);
+    background: var(--primary-alpha-12);
     color: var(--primary);
   }
 
@@ -1037,7 +1038,8 @@ html, body {
     padding: 12px 0;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
+    padding-left: 20px;
     width: 100%;
   }
 
@@ -1408,10 +1410,15 @@ html, body {
 
 /* Sidebar premium dark mode */
 @media (min-width: 768px) {
-  [data-theme="dark"] .desktop-sidebar {
-    background: #131620;
+  [data-theme="dark"] .desktop-sidebar,
+  [data-theme="dark"] .desktop-sidebar-inner {
+    background: var(--bg);
     border-right: none;
-    box-shadow: 1px 0 0 rgba(255,255,255,.04);
+    box-shadow: none;
+  }
+
+  [data-theme="dark"] .desktop-sidebar:hover .desktop-sidebar-inner {
+    box-shadow: 4px 0 32px rgba(0, 0, 0, 0.4);
   }
 
   [data-theme="dark"] .desktop-nav-item.active {

@@ -277,39 +277,41 @@ function DesktopSidebar({
 
   return (
     <aside className="desktop-sidebar">
-      {/* Logo icon — click to go home */}
-      <button className="desktop-sidebar-logo" onClick={() => router.push("/feed")} aria-label="AVACAR home">
-        <span style={{
-          fontFamily: "var(--font-manrope), Manrope, sans-serif",
-          fontSize: 16,
-          fontWeight: 900,
-          fontStyle: "italic",
-          color: "var(--primary)",
-          letterSpacing: "-0.03em",
-        }}>AV</span>
-      </button>
+      <div className="desktop-sidebar-inner">
+        {/* Logo icon — click to go home */}
+        <button className="desktop-sidebar-logo" onClick={() => router.push("/feed")} aria-label="AVACAR home">
+          <span style={{
+            fontFamily: "var(--font-manrope), Manrope, sans-serif",
+            fontSize: 16,
+            fontWeight: 900,
+            fontStyle: "italic",
+            color: "var(--primary)",
+            letterSpacing: "-0.03em",
+          }}>AV</span>
+        </button>
 
-      {/* Nav items */}
-      <nav className="desktop-sidebar-nav">
-        {TABS.map((tab) => {
-          const isActive = activeTab === tab.id;
-          const Icon = tab.icon;
-          return (
-            <button
-              key={tab.id}
-              onClick={() => handleNav(tab)}
-              className={`desktop-nav-item${isActive ? " active" : ""}`}
-            >
-              <Icon size={20} strokeWidth={2} />
-              <span>{tab.label}</span>
-            </button>
-          );
-        })}
-      </nav>
+        {/* Nav items */}
+        <nav className="desktop-sidebar-nav">
+          {TABS.map((tab) => {
+            const isActive = activeTab === tab.id;
+            const Icon = tab.icon;
+            return (
+              <button
+                key={tab.id}
+                onClick={() => handleNav(tab)}
+                className={`desktop-nav-item${isActive ? " active" : ""}`}
+              >
+                <Icon size={20} strokeWidth={2} />
+                <span>{tab.label}</span>
+              </button>
+            );
+          })}
+        </nav>
 
-      {/* Footer */}
-      <div className="desktop-sidebar-footer">
-        <span style={{ fontSize: 11, color: "var(--on-surface-variant)" }}>© 2026 AVACAR</span>
+        {/* Footer */}
+        <div className="desktop-sidebar-footer">
+          <span style={{ fontSize: 11, color: "var(--on-surface-variant)" }}>© 2026 AVACAR</span>
+        </div>
       </div>
     </aside>
   );
