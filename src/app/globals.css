@@ -924,196 +924,92 @@ html, body {
   /* Hide mobile-only FAB on desktop */
   .mobile-fab { display: none !important; }
 
-  /* Desktop sidebar — collapsed by default, expands on hover */
+  /* Desktop sidebar — IG-style icon-only rail, always 64px */
   .desktop-sidebar {
     display: flex;
     flex-direction: column;
+    align-items: center;
     width: 64px;
     min-width: 64px;
     height: 100dvh;
     background: var(--surface-card);
-    border-right: 1px solid var(--ghost-border);
+    border-right: 1px solid var(--ghost-border-04);
     padding: 0;
     flex-shrink: 0;
     position: sticky;
     top: 0;
     z-index: 30;
     overflow: hidden;
-    transition: width 220ms cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  .desktop-sidebar:hover {
-    width: 240px;
-  }
-
+  /* Top logo icon — clicking goes to feed */
   .desktop-sidebar-logo {
-    padding: 20px 0;
+    width: 64px;
     height: 64px;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    overflow: hidden;
     cursor: pointer;
-    text-decoration: none;
     border: none;
     background: none;
-    width: 100%;
-  }
-
-  /* Icon-only monogram shown when collapsed */
-  .desktop-sidebar-logo .sidebar-monogram {
-    font-family: var(--font-manrope), Manrope, sans-serif;
-    font-size: 18px;
-    font-weight: 900;
-    font-style: italic;
-    color: var(--primary);
-    flex-shrink: 0;
-    width: 64px;
-    text-align: center;
-    letter-spacing: -0.02em;
-  }
-
-  /* Full wordmark shown when expanded */
-  .desktop-sidebar-logo .sidebar-wordmark {
-    font-family: var(--font-manrope), Manrope, sans-serif;
-    font-size: 18px;
-    font-weight: 900;
-    font-style: italic;
-    text-transform: uppercase;
-    color: var(--on-surface);
-    letter-spacing: -0.03em;
-    white-space: nowrap;
-    opacity: 0;
-    transform: translateX(-8px);
-    transition: opacity 150ms 50ms, transform 150ms 50ms;
-    pointer-events: none;
-  }
-
-  .desktop-sidebar:hover .sidebar-wordmark {
-    opacity: 1;
-    transform: translateX(0);
-  }
-
-  .desktop-sidebar:hover .sidebar-monogram {
-    display: none;
+    padding: 0;
   }
 
   .desktop-sidebar-nav {
     flex: 1;
     display: flex;
     flex-direction: column;
-    padding: 8px 8px;
-    gap: 2px;
+    align-items: center;
+    padding: 8px 0;
+    gap: 4px;
     overflow-y: auto;
     overflow-x: hidden;
+    width: 100%;
   }
 
+  /* Icon-only nav buttons — centered, no labels */
   .desktop-nav-item {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 11px;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
     border-radius: 12px;
     border: none;
     background: none;
     cursor: pointer;
-    width: 100%;
-    text-align: left;
-    font-size: 14px;
-    font-weight: 600;
-    font-family: var(--font-manrope), Manrope, sans-serif;
     color: var(--on-surface-variant);
     transition: background 0.15s, color 0.15s;
-    text-decoration: none;
-    white-space: nowrap;
-    overflow: hidden;
-    justify-content: center;
+    flex-shrink: 0;
   }
 
-  .desktop-sidebar:hover .desktop-nav-item {
-    justify-content: flex-start;
-    padding: 11px 14px;
-  }
-
-  .desktop-nav-item span {
-    opacity: 0;
-    transition: opacity 120ms 60ms;
-    overflow: hidden;
-  }
-
-  .desktop-sidebar:hover .desktop-nav-item span {
-    opacity: 1;
-  }
+  /* Hide labels entirely on desktop sidebar */
+  .desktop-nav-item span { display: none; }
 
   .desktop-nav-item:hover {
-    background: var(--primary-alpha-06);
+    background: var(--primary-alpha-08);
     color: var(--primary);
   }
 
   .desktop-nav-item.active {
-    background: var(--primary-alpha-12);
+    background: var(--primary-alpha-15);
     color: var(--primary);
   }
 
-  .desktop-nav-item.active svg {
-    color: var(--primary);
-  }
+  .desktop-nav-item.active svg { color: var(--primary); }
 
-  .desktop-upload-btn {
-    margin: 8px;
-    padding: 12px;
-    border-radius: 14px;
-    background: var(--primary);
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 700;
-    font-family: var(--font-manrope), Manrope, sans-serif;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    transition: all .15s;
-    box-shadow: 0 4px 16px var(--primary-alpha-30);
-    overflow: hidden;
-    white-space: nowrap;
-  }
-
-  .desktop-upload-btn span {
-    opacity: 0;
-    transition: opacity 120ms 60ms;
-  }
-
-  .desktop-sidebar:hover .desktop-upload-btn span {
-    opacity: 1;
-  }
-
-  .desktop-upload-btn:hover {
-    background: var(--primary-container);
-    box-shadow: 0 6px 20px var(--primary-alpha-40);
-    transform: translateY(-1px);
-  }
+  .desktop-upload-btn { display: none; }
 
   .desktop-sidebar-footer {
-    padding: 8px;
+    padding: 12px 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
-    overflow: hidden;
-    white-space: nowrap;
+    width: 100%;
   }
 
-  .desktop-sidebar-footer span {
-    opacity: 0;
-    transition: opacity 120ms 60ms;
-  }
-
-  .desktop-sidebar:hover .desktop-sidebar-footer span {
-    opacity: 1;
-  }
+  .desktop-sidebar-footer span { display: none; }
 
   /* Desktop main area */
   .desktop-main {

@@ -273,10 +273,16 @@ function DesktopSidebar({
 
   return (
     <aside className="desktop-sidebar">
-      {/* Logo — monogram when collapsed, wordmark when expanded */}
-      <button className="desktop-sidebar-logo" onClick={() => router.push("/feed")} aria-label="Go to feed">
-        <span className="sidebar-monogram">AV</span>
-        <span className="sidebar-wordmark">AVACAR</span>
+      {/* Logo icon — click to go home */}
+      <button className="desktop-sidebar-logo" onClick={() => router.push("/feed")} aria-label="AVACAR home">
+        <span style={{
+          fontFamily: "var(--font-manrope), Manrope, sans-serif",
+          fontSize: 16,
+          fontWeight: 900,
+          fontStyle: "italic",
+          color: "var(--primary)",
+          letterSpacing: "-0.03em",
+        }}>AV</span>
       </button>
 
       {/* Nav items */}
