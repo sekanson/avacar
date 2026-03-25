@@ -896,6 +896,8 @@ html, body {
   .garage-grid { display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 16px !important; }
   .modal-overlay { align-items: center; }
   .modal { border-radius: 20px; }
+  /* Marketplace */
+  .marketplace-product-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 14px !important; }
 }
 
 @media (min-width: 1200px) {

@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
-import { Home, Compass, User, Bell, Sun, Moon, Sparkles, Car, Smartphone } from "lucide-react";
+import { Home, Compass, User, Bell, Sun, Moon, Sparkles, Car, Smartphone, Store, ShoppingCart } from "lucide-react";
 import { useAppStore } from "@/store/appStore";
 import type { NavTab } from "@/types";
 import { useState, useEffect } from "react";
@@ -45,6 +45,7 @@ function getActiveTab(pathname: string): NavTab | null {
   if (pathname === "/feed" || pathname === "/") return "feed";
   if (pathname.startsWith("/explore")) return "explore";
   if (pathname.startsWith("/garage")) return "garage";
+  if (pathname.startsWith("/marketplace")) return null; // handled separately in sidebar
   if (pathname === "/profile") return "profile";
   if (
     pathname.startsWith("/upload") ||
@@ -81,14 +82,24 @@ function useTheme() {
 /* ─── Mobile TopBar ─── */
 function TopBar() {
   const router = useRouter();
+  const pathname = usePathname();
   const { darkMode, toggleTheme } = useTheme();
+  const isMarketplace = pathname.startsWith("/marketplace");
 
   return (
     <header className="topbar">
       <div className="flex items-center gap-1">
-        <span className="topbar-title">AVACAR</span>
+        <span className="topbar-title">{isMarketplace ? "Shop" : "AVACAR"}</span>
       </div>
       <div className="flex gap-0.5">
+        <button
+          className="tbb"
+          onClick={() => router.push("/marketplace/cart")}
+          aria-label="Cart"
+          style={{ color: pathname === "/marketplace/cart" ? "var(--accent)" : undefined }}
+        >
+          <ShoppingCart size={20} />
+        </button>
         <button
           className="tbb"
           onClick={() => router.push("/notifications")}
@@ -238,6 +249,9 @@ function DesktopTopNav({
           <button className="tbb" onClick={onToggleMobilePreview} aria-label="Toggle mobile preview" title="Mobile preview" style={{ color: mobilePreview ? "var(--accent)" : undefined }}>
             <Smartphone size={18} />
           </button>
+          <button className="tbb" onClick={() => router.push("/marketplace/cart")} aria-label="Cart">
+            <ShoppingCart size={18} />
+          </button>
           <button className="tbb" onClick={() => router.push("/notifications")} aria-label="Notifications">
             <Bell size={20} />
           </button>
@@ -315,6 +329,14 @@ function DesktopSidebar({
               </button>
             );
           })}
+          {/* Shop — desktop sidebar only */}
+          <button
+            onClick={() => router.push("/marketplace")}
+            className={`desktop-nav-item${pathname.startsWith("/marketplace") ? " active" : ""}`}
+          >
+            <Store size={20} strokeWidth={2} />
+            <span>Shop</span>
+          </button>
         </nav>
 
         {/* Footer */}
