@@ -197,7 +197,7 @@ body {
 
 /* ─── Desktop Sidebar ─── */
 .desktop-sidebar {
-  width: 28px;
+  width: 48px;
   background: #0e0e14;
   overflow: hidden;
   transition: width 200ms ease;
@@ -249,14 +249,15 @@ body {
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: center;
   gap: 12px;
-  padding: 11px 0 11px 4px;
+  padding: 11px 0;
   border-radius: 0;
   color: var(--color-text-secondary);
   background: none;
   border: none;
   cursor: pointer;
-  width: 160px;
+  width: 48px;
   text-align: left;
   white-space: nowrap;
   overflow: hidden;
@@ -270,13 +271,16 @@ body {
   min-width: 20px;
 }
 
-/* Hide icon labels when sidebar is collapsed — show only on hover */
+/* Hide icon labels when sidebar is collapsed — zero width so they don't push icon off-center */
 .desktop-nav-item span {
   opacity: 0;
-  transition: opacity 150ms ease;
+  max-width: 0;
+  overflow: hidden;
+  transition: opacity 150ms ease, max-width 150ms ease;
 }
 .desktop-sidebar:hover .desktop-nav-item span {
   opacity: 1;
+  max-width: 120px;
 }
 
 /* Also hide logo 'ACAR' text when collapsed */
@@ -298,10 +302,11 @@ body {
   background: var(--color-cyan-subtle);
 }
 
-/* On hover-expand, left-align items */
+/* On hover-expand, left-align items and expand to full width */
 .desktop-sidebar:hover .desktop-nav-item {
   justify-content: flex-start;
   padding: 12px 14px;
+  width: 160px;
 }
 
 .desktop-sidebar-footer {
@@ -411,7 +416,7 @@ body {
   display: flex;
   overflow: hidden;
   justify-content: center;
-  padding-left: 28px; /* leave room for collapsed sidebar */
+  padding-left: 48px; /* leave room for collapsed sidebar */
 }
 
 .desktop-three-col {
@@ -419,14 +424,14 @@ body {
   display: flex;
   gap: 0;
   overflow: hidden;
-  padding-left: 28px;
+  padding-left: 48px;
 }
 
 .desktop-full-col {
   flex: 1;
   display: flex;
   overflow: hidden;
-  padding-left: 28px;
+  padding-left: 48px;
 }
 
 .desktop-content {
