@@ -172,14 +172,16 @@ export default function FeedPage() {
         ))}
       </div>
 
-      {/* Filter pills — sticky below top nav */}
+      {/* Filter pills — sticky, glassmorphic, below topnav */}
       <div
         style={{
           position: "sticky",
-          top: 0,
-          zIndex: 5,
-          background: "var(--bg)",
-          paddingBottom: 4,
+          top: 56,
+          zIndex: 10,
+          background: "rgba(var(--bg-rgb, 247,249,251), 0.9)",
+          backdropFilter: "blur(16px)",
+          WebkitBackdropFilter: "blur(16px)",
+          borderBottom: "1px solid var(--ghost-border-04)",
         }}
       >
         <div
@@ -188,7 +190,7 @@ export default function FeedPage() {
             gap: 8,
             overflowX: "auto",
             scrollbarWidth: "none",
-            padding: "8px 16px",
+            padding: "10px 16px",
           }}
         >
           {CATEGORIES.map((cat) => (
@@ -196,15 +198,15 @@ export default function FeedPage() {
               key={cat}
               onClick={() => setFeedCat(cat)}
               style={{
-                padding: "7px 16px",
+                padding: "6px 14px",
                 borderRadius: 999,
                 fontSize: 13,
                 fontWeight: 600,
                 border: "none",
                 cursor: "pointer",
                 flexShrink: 0,
-                background: feedCat === cat ? "var(--primary)" : "var(--surface-card)",
-                color: feedCat === cat ? "#fff" : "var(--on-surface-variant)",
+                background: feedCat === cat ? "var(--on-surface)" : "var(--surface-container)",
+                color: feedCat === cat ? "var(--bg)" : "var(--on-surface)",
                 transition: "all .15s",
               }}
             >

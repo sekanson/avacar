@@ -92,6 +92,7 @@
 
 [data-theme="dark"] {
   --bg: #0a0c10;
+  --bg-rgb: 10,12,16;
   --surface: #0d0f14;
   --surface-low: #111318;
   --surface-container: #14171e;
@@ -924,42 +925,42 @@ html, body {
   /* Hide mobile-only FAB on desktop */
   .mobile-fab { display: none !important; }
 
-  /* Desktop sidebar — YouTube style: icon rail, overlays on hover */
+  /* Desktop sidebar — #131620 rail, overlays on hover */
   .desktop-sidebar {
     display: flex;
     flex-direction: column;
     width: 64px;
     min-width: 64px;
     height: 100dvh;
-    background: var(--bg);
+    background: #131620;
     border-right: none;
     padding: 0;
     flex-shrink: 0;
     position: sticky;
     top: 0;
     z-index: 30;
-    overflow: visible; /* allow overlay to escape */
+    overflow: visible;
   }
 
-  /* Inner wrapper — this is what actually expands as an overlay */
+  /* Inner wrapper — expands as overlay, same bg */
   .desktop-sidebar-inner {
     display: flex;
     flex-direction: column;
     width: 64px;
     height: 100dvh;
-    background: var(--bg);
+    background: #131620;
     overflow: hidden;
-    transition: width 200ms cubic-bezier(0.4, 0, 0.2, 1), box-shadow 200ms;
+    transition: width 220ms cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     z-index: 30;
   }
 
   .desktop-sidebar:hover .desktop-sidebar-inner {
     width: 240px;
-    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.12);
+    box-shadow: 4px 0 32px rgba(0, 0, 0, 0.3);
   }
 
-  /* Top logo icon */
+  /* Top logo — "AV" collapsed, "AVACAR" expanded */
   .desktop-sidebar-logo {
     width: 64px;
     min-width: 64px;
@@ -972,6 +973,21 @@ html, body {
     cursor: pointer;
     border: none;
     background: none;
+    overflow: hidden;
+  }
+
+  .sidebar-logo-rest {
+    display: inline-block;
+    max-width: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-width 200ms cubic-bezier(0.4, 0, 0.2, 1), opacity 150ms 60ms;
+    vertical-align: baseline;
+  }
+
+  .desktop-sidebar:hover .sidebar-logo-rest {
+    max-width: 120px;
+    opacity: 1;
   }
 
   .desktop-sidebar-nav {
@@ -998,7 +1014,7 @@ html, body {
     border: none;
     background: none;
     cursor: pointer;
-    color: var(--on-surface-variant);
+    color: rgba(255,255,255,0.6);
     transition: background 0.15s, color 0.15s;
     white-space: nowrap;
     overflow: hidden;
@@ -1021,16 +1037,16 @@ html, body {
   .desktop-sidebar:hover .desktop-nav-item span { opacity: 1; }
 
   .desktop-nav-item:hover {
-    background: var(--primary-alpha-08);
-    color: var(--on-surface);
+    background: rgba(255,255,255,0.06);
+    color: #ffffff;
   }
 
   .desktop-nav-item.active {
-    background: var(--primary-alpha-12);
-    color: var(--primary);
+    background: rgba(0,127,255,0.15);
+    color: #007FFF;
   }
 
-  .desktop-nav-item.active svg { color: var(--primary); }
+  .desktop-nav-item.active svg { color: #007FFF; }
 
   .desktop-upload-btn { display: none; }
 
@@ -1099,11 +1115,11 @@ html, body {
     align-items: center;
     gap: 16px;
     padding: 0 24px;
-    height: 64px;
-    background: var(--surface-card);
+    height: 56px;
+    background: rgba(var(--bg-rgb, 247,249,251), 0.85);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--ghost-border);
+    border-bottom: 1px solid var(--ghost-border-04);
     position: sticky;
     top: 0;
     z-index: 40;
@@ -1412,13 +1428,13 @@ html, body {
 @media (min-width: 768px) {
   [data-theme="dark"] .desktop-sidebar,
   [data-theme="dark"] .desktop-sidebar-inner {
-    background: var(--bg);
+    background: #131620;
     border-right: none;
     box-shadow: none;
   }
 
   [data-theme="dark"] .desktop-sidebar:hover .desktop-sidebar-inner {
-    box-shadow: 4px 0 32px rgba(0, 0, 0, 0.4);
+    box-shadow: 4px 0 40px rgba(0, 0, 0, 0.6);
   }
 
   [data-theme="dark"] .desktop-nav-item.active {

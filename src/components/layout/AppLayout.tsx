@@ -278,16 +278,20 @@ function DesktopSidebar({
   return (
     <aside className="desktop-sidebar">
       <div className="desktop-sidebar-inner">
-        {/* Logo icon — click to go home */}
+        {/* Logo — AV collapsed, AVACAR on hover */}
         <button className="desktop-sidebar-logo" onClick={() => router.push("/feed")} aria-label="AVACAR home">
-          <span style={{
+          <span className="sidebar-logo-text" style={{
             fontFamily: "var(--font-manrope), Manrope, sans-serif",
-            fontSize: 16,
+            fontSize: 17,
             fontWeight: 900,
             fontStyle: "italic",
-            color: "var(--primary)",
             letterSpacing: "-0.03em",
-          }}>AV</span>
+            overflow: "hidden",
+            whiteSpace: "nowrap",
+          }}>
+            <span className="sidebar-logo-short" style={{ color: "var(--primary)" }}>AV</span>
+            <span className="sidebar-logo-rest" style={{ color: "var(--primary)" }}>ACAR</span>
+          </span>
         </button>
 
         {/* Nav items */}
@@ -387,8 +391,7 @@ export default function AppLayout({
       pathname !== "/profile" &&
       FULL_SCREEN_PREFIXES.some((prefix) => pathname.startsWith(prefix)));
 
-  const showRightPanel =
-    !isFullScreen && (pathname === "/feed" || pathname.startsWith("/explore"));
+  const showRightPanel = false; // Right panel removed per design update
 
   if (isFullScreen) {
     return (
