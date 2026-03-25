@@ -273,10 +273,10 @@ export default function FeedPage() {
         )}
       </div>
 
-      {/* FAB — Design My Car / Upload — fixed above bottom nav */}
+      {/* FAB — mobile only, fixed above bottom nav */}
       <Link
         href="/upload"
-        className="fab-glow"
+        className="fab-glow mobile-fab"
         aria-label="Upload car photo"
         style={{
           position: "fixed",

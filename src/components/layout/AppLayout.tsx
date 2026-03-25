@@ -214,8 +214,15 @@ function DesktopTopNav({
 
   return (
     <div className="desktop-topnav">
-      {/* Wordmark — fixed width left anchor */}
-      <span className="desktop-topnav-wordmark" style={{ width: 180, flexShrink: 0 }}>AVACAR</span>
+      {/* Wordmark — clickable, links to feed */}
+      <button
+        className="desktop-topnav-wordmark"
+        style={{ width: 180, flexShrink: 0, background: "none", border: "none", cursor: "pointer", textAlign: "left", padding: 0 }}
+        onClick={() => router.push("/feed")}
+        aria-label="AVACAR home"
+      >
+        AVACAR
+      </button>
 
       {/* Search — centered */}
       <div style={{ flex: 1, display: "flex", justifyContent: "center" }}>
@@ -266,10 +273,11 @@ function DesktopSidebar({
 
   return (
     <aside className="desktop-sidebar">
-      {/* Logo */}
-      <div className="desktop-sidebar-logo">
-        <span>AVACAR</span>
-      </div>
+      {/* Logo — monogram when collapsed, wordmark when expanded */}
+      <button className="desktop-sidebar-logo" onClick={() => router.push("/feed")} aria-label="Go to feed">
+        <span className="sidebar-monogram">AV</span>
+        <span className="sidebar-wordmark">AVACAR</span>
+      </button>
 
       {/* Nav items */}
       <nav className="desktop-sidebar-nav">
@@ -289,18 +297,9 @@ function DesktopSidebar({
         })}
       </nav>
 
-      {/* Upload CTA */}
-      <button
-        className="desktop-upload-btn"
-        onClick={() => router.push("/upload")}
-      >
-        <Camera size={18} />
-        <span>Upload My Car</span>
-      </button>
-
       {/* Footer */}
       <div className="desktop-sidebar-footer">
-        <span style={{ fontSize: 11, color: "var(--on-surface-variant)", opacity: 0.5 }}>© 2026 AVACAR</span>
+        <span style={{ fontSize: 11, color: "var(--on-surface-variant)" }}>© 2026 AVACAR</span>
       </div>
     </aside>
   );
@@ -332,7 +331,7 @@ function RightPanel() {
           style={{ width: "100%", marginTop: 12 }}
         >
           <Camera size={16} />
-          Upload My Car
+          <span>Design My Car</span>
         </button>
       </div>
 
