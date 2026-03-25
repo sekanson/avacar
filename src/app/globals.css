@@ -1261,6 +1261,24 @@ html, body {
     min-height: 100%;
   }
 
+  /* Full-width layout — no max-width cap, fills all available space */
+  .desktop-full-col {
+    display: flex;
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  .desktop-full-col::-webkit-scrollbar { display: none; }
+
+  .desktop-full-col .desktop-content {
+    flex: 1;
+    width: 100%;
+    overflow: visible;
+    height: fit-content;
+    min-height: 100%;
+  }
+
   /* Right panel - sticky, doesn't scroll with page */
   .desktop-right-panel {
     width: 340px;

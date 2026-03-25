@@ -418,7 +418,9 @@ export default function AppLayout({
       pathname !== "/profile" &&
       FULL_SCREEN_PREFIXES.some((prefix) => pathname.startsWith(prefix)));
 
-  const showRightPanel = false; // Right panel removed per design update
+  const showRightPanel = false;
+  const isFeedLayout = pathname === "/feed" || pathname === "/" || pathname.startsWith("/explore");
+  const contentColClass = isFeedLayout ? "desktop-two-col" : "desktop-full-col";
 
   if (isFullScreen) {
     return (
@@ -458,7 +460,7 @@ export default function AppLayout({
           mobilePreview={mobilePreview}
           onToggleMobilePreview={() => setMobilePreview(p => !p)}
         />
-        <div className={showRightPanel && !mobilePreview ? "desktop-three-col" : "desktop-two-col"}>
+        <div className={showRightPanel && !mobilePreview ? "desktop-three-col" : contentColClass}>
           <div className={mobilePreview ? "desktop-content desktop-mobile-preview" : "desktop-content"}>
             {children}
           </div>
