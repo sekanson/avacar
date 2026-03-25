@@ -217,6 +217,11 @@ html, body {
 .animate-slide-right { animation: slideInRight .2s ease; }
 .animate-slide-left { animation: slideInLeft .2s ease; }
 
+/* ─── Responsive layout toggle (CSS-only, no JS hydration) ─── */
+/* Mobile: show mobile chrome, hide desktop */
+.mobile-only-chrome { display: contents; }
+.desktop-only-chrome { display: none; }
+
 /* ─── Component Classes ─── */
 @layer components {
   /* Phone container */
@@ -911,6 +916,10 @@ html, body {
     flex-direction: row !important;
     overflow: hidden;
   }
+
+  /* CSS-driven responsive layout — no JS hydration mismatch */
+  .mobile-only-chrome { display: none !important; }
+  .desktop-only-chrome { display: flex !important; }
 
   /* Desktop sidebar nav */
   .desktop-sidebar {

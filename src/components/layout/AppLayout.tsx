@@ -409,16 +409,7 @@ export default function AppLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-  const [isDesktop, setIsDesktop] = useState(false);
   const { darkMode, toggleTheme } = useTheme();
-
-  useEffect(() => {
-    const mq = window.matchMedia("(min-width: 768px)");
-    setIsDesktop(mq.matches);
-    const handler = (e: MediaQueryListEvent) => setIsDesktop(e.matches);
-    mq.addEventListener("change", handler);
-    return () => mq.removeEventListener("change", handler);
-  }, []);
 
   const isFullScreen =
     FULL_SCREEN_ROUTES.has(pathname) ||
@@ -427,41 +418,55 @@ export default function AppLayout({
       FULL_SCREEN_PREFIXES.some((prefix) => pathname.startsWith(prefix)));
 
   const showRightPanel =
-    isDesktop && !isFullScreen && (pathname === "/feed" || pathname.startsWith("/explore"));
+    !isFullScreen && (pathname === "/feed" || pathname.startsWith("/explore"));
+
+  if (isFullScreen) {
+    return (
+      <div className="phone">
+        <main style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "auto", minHeight: 0 }}>
+          {children}
+        </main>
+        <Toast />
+      </div>
+    );
+  }
 
   return (
     <div className="phone">
-      {/* MOBILE chrome */}
-      {!isDesktop && !isFullScreen && <TopBar />}
+      {/* MOBILE-only chrome (hidden on desktop via CSS) */}
+      <div className="mobile-only-chrome">
+        <TopBar />
+      </div>
 
-      {/* DESKTOP sidebar */}
-      {isDesktop && !isFullScreen && (
+      {/* DESKTOP-only sidebar (hidden on mobile via CSS) */}
+      <div className="desktop-only-chrome">
         <DesktopSidebar
           pathname={pathname}
           darkMode={darkMode}
           onToggleTheme={toggleTheme}
         />
-      )}
+      </div>
 
-      {/* Content area */}
-      {isDesktop && !isFullScreen ? (
-        <div className="desktop-main">
-          <DesktopTopNav darkMode={darkMode} onToggleTheme={toggleTheme} />
-          <div className={showRightPanel ? "desktop-three-col" : "desktop-two-col"}>
-            <div className="desktop-content">
-              {children}
-            </div>
-            {showRightPanel && <RightPanel />}
+      {/* MOBILE content wrapper (hidden on desktop via CSS) */}
+      <main className="mobile-only-chrome" style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "auto", minHeight: 0 }}>
+        {children}
+      </main>
+
+      {/* DESKTOP content area (hidden on mobile via CSS) */}
+      <div className="desktop-only-chrome desktop-main">
+        <DesktopTopNav darkMode={darkMode} onToggleTheme={toggleTheme} />
+        <div className={showRightPanel ? "desktop-three-col" : "desktop-two-col"}>
+          <div className="desktop-content">
+            {children}
           </div>
+          {showRightPanel && <RightPanel />}
         </div>
-      ) : (
-        <main style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "auto", minHeight: 0 }}>
-          {children}
-        </main>
-      )}
+      </div>
 
-      {/* MOBILE tab bar */}
-      {!isDesktop && !isFullScreen && <TabBar />}
+      {/* MOBILE tab bar (hidden on desktop via CSS) */}
+      <div className="mobile-only-chrome">
+        <TabBar />
+      </div>
 
       <Toast />
     </div>
