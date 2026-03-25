@@ -418,7 +418,7 @@ export default function AppLayout({
       pathname !== "/profile" &&
       FULL_SCREEN_PREFIXES.some((prefix) => pathname.startsWith(prefix)));
 
-  const showRightPanel = false;
+  const showRightPanel = true;
   const isFeedLayout = pathname === "/feed" || pathname === "/" || pathname.startsWith("/explore");
   const isFullWidthLayout = pathname.startsWith("/marketplace") || pathname.startsWith("/garage") || pathname.startsWith("/profile");
   const contentColClass = isFeedLayout ? "desktop-two-col" : isFullWidthLayout ? "desktop-full-col" : "desktop-two-col";
