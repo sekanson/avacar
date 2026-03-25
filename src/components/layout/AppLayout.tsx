@@ -396,7 +396,7 @@ export default function AppLayout({
       pathname !== "/profile" &&
       FULL_SCREEN_PREFIXES.some((prefix) => pathname.startsWith(prefix)));
 
-  const showRightPanel = true;
+  const showRightPanel = false; // Right panel removed per design update
 
   if (isFullScreen) {
     return (
