@@ -1,32 +1,5 @@
-"use client";
-
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { useAppStore } from "@/store/appStore";
+import { redirect } from "next/navigation";
 
 export default function RootPage() {
-  const router = useRouter();
-  const { hasSeenOnboarding } = useAppStore();
-
-  useEffect(() => {
-    if (hasSeenOnboarding) {
-      router.replace("/feed");
-    } else {
-      router.replace("/splash");
-    }
-  }, [hasSeenOnboarding, router]);
-
-  return (
-    <div
-      style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        minHeight: "100vh",
-        background: "var(--bg)",
-      }}
-    >
-      <div className="spinner" style={{ width: 40, height: 40 }} />
-    </div>
-  );
+  redirect("/splash");
 }
