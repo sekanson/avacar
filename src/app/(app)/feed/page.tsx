@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { Bell, ChevronRight, MapPin, Flame } from "lucide-react";
+import { ChevronRight, MapPin, Flame } from "lucide-react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils/cn";
 
@@ -94,66 +94,6 @@ export default function FeedPage() {
         paddingBottom: 24,
       }}
     >
-      {/* ── TopBar ─────────────────────────────────────────────────────────── */}
-      <div
-        style={{
-          position: "sticky",
-          top: 0,
-          zIndex: 30,
-          height: 56,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          padding: "0 20px",
-          background: "rgba(12,12,16,0.80)",
-          backdropFilter: "blur(16px)",
-          borderBottom: "1px solid rgba(42,42,54,0.50)",
-        }}
-      >
-        <span
-          style={{
-            fontFamily: "var(--font-manrope, Manrope, sans-serif)",
-            fontWeight: 900,
-            fontSize: 22,
-            letterSpacing: "-0.04em",
-            color: "#FFFFFF",
-          }}
-        >
-          <span style={{ color: "#44CCFF" }}>A</span>VACAR
-        </span>
-        <button
-          aria-label="Notifications"
-          style={{
-            width: 40,
-            height: 40,
-            borderRadius: "50%",
-            background: "#14141A",
-            border: "1px solid #2A2A36",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            cursor: "pointer",
-            position: "relative",
-          }}
-          onClick={() => router.push("/notifications")}
-        >
-          <Bell size={18} color="#A0A0B0" />
-          {/* unread dot */}
-          <span
-            style={{
-              position: "absolute",
-              top: 9,
-              right: 9,
-              width: 7,
-              height: 7,
-              borderRadius: "50%",
-              background: "#44CCFF",
-              border: "2px solid #0C0C10",
-            }}
-          />
-        </button>
-      </div>
-
       {/* ── Hero ───────────────────────────────────────────────────────────── */}
       <motion.div
         initial={{ opacity: 0, y: 16 }}
@@ -166,31 +106,7 @@ export default function FeedPage() {
           marginBottom: 28,
         }}
       >
-        <div
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: 6,
-            background: "rgba(68,204,255,0.08)",
-            border: "1px solid rgba(68,204,255,0.2)",
-            borderRadius: 999,
-            padding: "4px 12px",
-            marginBottom: 16,
-          }}
-        >
-          <Flame size={12} color="#44CCFF" />
-          <span
-            style={{
-              fontSize: 11,
-              fontWeight: 700,
-              color: "#44CCFF",
-              letterSpacing: "0.08em",
-              textTransform: "uppercase",
-            }}
-          >
-            Sprint 1
-          </span>
-        </div>
+
 
         <h1
           style={{

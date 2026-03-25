@@ -237,8 +237,24 @@ function DesktopTopNav({
 
   return (
     <div className="desktop-topnav">
-      {/* Row 1: search + actions */}
+      {/* Row 1: logo + search + actions */}
       <div className="desktop-topnav-row1">
+        {/* AVACAR wordmark */}
+        <button
+          onClick={() => router.push("/feed")}
+          style={{ background: "none", border: "none", cursor: "pointer", padding: "0 8px 0 0", flexShrink: 0 }}
+          aria-label="AVACAR home"
+        >
+          <span style={{
+            fontFamily: "var(--font-manrope, Manrope, sans-serif)",
+            fontWeight: 900,
+            fontSize: 20,
+            fontStyle: "italic",
+            letterSpacing: "-0.03em",
+            color: "var(--color-cyan)",
+            whiteSpace: "nowrap",
+          }}>AVACAR</span>
+        </button>
         <div style={{ flex: 1, display: "flex", justifyContent: "center" }}>
           <input
             className="desktop-topnav-search"
@@ -300,23 +316,7 @@ function DesktopSidebar({
   return (
     <aside className="desktop-sidebar">
       <div className="desktop-sidebar-inner">
-        {/* Logo — AV collapsed, AVACAR on hover */}
-        <button className="desktop-sidebar-logo" onClick={() => router.push("/feed")} aria-label="AVACAR home">
-          <span className="sidebar-logo-text" style={{
-            fontFamily: "var(--font-manrope), Manrope, sans-serif",
-            fontSize: 17,
-            fontWeight: 900,
-            fontStyle: "italic",
-            letterSpacing: "-0.03em",
-            overflow: "hidden",
-            whiteSpace: "nowrap",
-          }}>
-            <span className="sidebar-logo-short" style={{ color: "var(--primary)" }}>AV</span>
-            <span className="sidebar-logo-rest" style={{ color: "var(--primary)" }}>ACAR</span>
-          </span>
-        </button>
-
-        {/* Nav items */}
+        {/* Nav items — start from top, no logo */}
         <nav className="desktop-sidebar-nav">
           {TABS.map((tab) => {
             const isActive = activeTab === tab.id;
@@ -341,11 +341,6 @@ function DesktopSidebar({
             <span>Shop</span>
           </button>
         </nav>
-
-        {/* Footer */}
-        <div className="desktop-sidebar-footer">
-          <span style={{ fontSize: 11, color: "var(--on-surface-variant)" }}>© 2026 AVACAR</span>
-        </div>
       </div>
     </aside>
   );

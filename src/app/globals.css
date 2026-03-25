@@ -214,7 +214,7 @@ body {
   display: flex;
   flex-direction: column;
   height: 100%;
-  padding: 16px 0;
+  padding: 72px 0 16px; /* 72px = topnav row1 height (64px) + a bit, so nav icons align with content below pills */
   gap: 8px;
 }
 
