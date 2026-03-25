@@ -925,14 +925,14 @@ html, body {
   /* Hide mobile-only FAB on desktop */
   .mobile-fab { display: none !important; }
 
-  /* Desktop sidebar — transparent until hover, #131620 on expand */
+  /* Desktop sidebar — bg color by default, #131620 on hover expand */
   .desktop-sidebar {
     display: flex;
     flex-direction: column;
     width: 64px;
     min-width: 64px;
     height: 100dvh;
-    background: transparent;
+    background: var(--bg);
     border-right: none;
     padding: 0;
     flex-shrink: 0;
@@ -942,13 +942,13 @@ html, body {
     overflow: visible;
   }
 
-  /* Inner wrapper — transparent collapsed, #131620 on hover */
+  /* Inner wrapper — matches page bg collapsed, #131620 on hover */
   .desktop-sidebar-inner {
     display: flex;
     flex-direction: column;
     width: 64px;
     height: 100dvh;
-    background: transparent;
+    background: var(--bg);
     overflow: hidden;
     transition: width 220ms cubic-bezier(0.4, 0, 0.2, 1), background 180ms;
     position: relative;
@@ -1239,21 +1239,24 @@ html, body {
     height: 100dvh;
   }
 
-  /* 2-col layout wrapper — centers content */
+  /* 2-col layout wrapper — full area scrollable, content centered */
   .desktop-two-col {
     display: flex;
     flex: 1;
     min-height: 0;
-    overflow: hidden;
+    overflow-y: auto;
+    overflow-x: hidden;
     justify-content: center;
   }
+  .desktop-two-col::-webkit-scrollbar { display: none; }
 
   .desktop-two-col .desktop-content {
     width: 100%;
     max-width: 680px;
-    overflow-y: auto;
-    overflow-x: hidden;
+    overflow: visible;
     flex-shrink: 0;
+    height: fit-content;
+    min-height: 100%;
   }
 
   /* Right panel - sticky, doesn't scroll with page */
@@ -1470,12 +1473,13 @@ html, body {
 @media (min-width: 768px) {
   [data-theme="dark"] .desktop-sidebar,
   [data-theme="dark"] .desktop-sidebar-inner {
-    background: #131620;
+    background: var(--bg);
     border-right: none;
     box-shadow: none;
   }
 
   [data-theme="dark"] .desktop-sidebar:hover .desktop-sidebar-inner {
+    background: #131620;
     box-shadow: 4px 0 40px rgba(0, 0, 0, 0.6);
   }
 

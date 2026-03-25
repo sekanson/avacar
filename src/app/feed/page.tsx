@@ -91,14 +91,8 @@ export default function FeedPage() {
     <div
       ref={scrollRef}
       style={{
-        flex: 1,
-        overflowY: "auto",
-        overflowX: "hidden",
         background: "var(--bg)",
         paddingBottom: 100,
-        scrollbarWidth: "none",
-        maxWidth: 620,
-        margin: "0 auto",
         width: "100%",
       }}
     >
