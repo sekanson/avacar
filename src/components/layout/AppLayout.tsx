@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
-import { Home, Compass, User, Bell, Sun, Moon, Camera, Sparkles, Car } from "lucide-react";
+import { Home, Compass, User, Bell, Sun, Moon, Sparkles, Car, Smartphone } from "lucide-react";
 import { useAppStore } from "@/store/appStore";
 import type { NavTab } from "@/types";
 import { useState, useEffect } from "react";
@@ -206,37 +206,41 @@ function TabBar() {
 function DesktopTopNav({
   darkMode,
   onToggleTheme,
+  mobilePreview,
+  onToggleMobilePreview,
 }: {
   darkMode: boolean;
   onToggleTheme: () => void;
+  mobilePreview: boolean;
+  onToggleMobilePreview: () => void;
 }) {
   const router = useRouter();
 
   return (
     <div className="desktop-topnav">
-      {/* Wordmark — clickable, links to feed */}
-      <button
-        className="desktop-topnav-wordmark"
-        style={{ width: 180, flexShrink: 0, background: "none", border: "none", cursor: "pointer", textAlign: "left", padding: 0 }}
-        onClick={() => router.push("/feed")}
-        aria-label="AVACAR home"
-      >
-        AVACAR
-      </button>
-
-      {/* Search — centered */}
+      {/* Search — full width centered, no wordmark */}
       <div style={{ flex: 1, display: "flex", justifyContent: "center" }}>
         <input
           className="desktop-topnav-search"
           type="search"
           placeholder="Search builds, cars, people..."
           aria-label="Search"
-          style={{ width: "100%", maxWidth: 480 }}
+          style={{ width: "100%", maxWidth: 560 }}
         />
       </div>
 
-      {/* Actions — fixed width right anchor */}
-      <div style={{ width: 180, flexShrink: 0, display: "flex", alignItems: "center", gap: 4, justifyContent: "flex-end" }}>
+      {/* Actions */}
+      <div style={{ flexShrink: 0, display: "flex", alignItems: "center", gap: 4 }}>
+        {/* Mobile preview toggle */}
+        <button
+          className="tbb"
+          onClick={onToggleMobilePreview}
+          aria-label="Toggle mobile preview"
+          title="Mobile preview"
+          style={{ color: mobilePreview ? "var(--accent)" : undefined }}
+        >
+          <Smartphone size={18} />
+        </button>
         <button
           className="tbb"
           onClick={() => router.push("/notifications")}
@@ -313,8 +317,6 @@ function DesktopSidebar({
 
 /* ─── Desktop Right Panel ─── */
 function RightPanel() {
-  const router = useRouter();
-
   const suggestedBuilds = [
     { username: "wrapsbyalex", car: "2024 BMW M4", tag: "Satin Black Wrap", avatar: "W" },
     { username: "gta.wraps", car: "2024 Porsche 911", tag: "Satin Ceramic + PPF", avatar: "G" },
@@ -326,20 +328,6 @@ function RightPanel() {
 
   return (
     <aside className="desktop-right-panel">
-
-      <div className="rp-card rp-hero-card">
-        <p className="rp-overline">Start Building</p>
-        <p className="rp-title">Design your car, get quoted</p>
-        <p className="rp-sub">Upload a photo and see your build come to life</p>
-        <button
-          className="desktop-upload-btn"
-          onClick={() => router.push("/upload")}
-          style={{ width: "100%", marginTop: 12 }}
-        >
-          <Camera size={16} />
-          <span>Design My Car</span>
-        </button>
-      </div>
 
       <div className="rp-card">
         <p className="rp-overline">Trending</p>
@@ -389,6 +377,7 @@ export default function AppLayout({
 }) {
   const pathname = usePathname();
   const { darkMode, toggleTheme } = useTheme();
+  const [mobilePreview, setMobilePreview] = useState(false);
 
   const isFullScreen =
     FULL_SCREEN_ROUTES.has(pathname) ||
@@ -431,12 +420,17 @@ export default function AppLayout({
 
       {/* DESKTOP content area (hidden on mobile via CSS) */}
       <div className="desktop-only-chrome desktop-main">
-        <DesktopTopNav darkMode={darkMode} onToggleTheme={toggleTheme} />
-        <div className={showRightPanel ? "desktop-three-col" : "desktop-two-col"}>
-          <div className="desktop-content">
+        <DesktopTopNav
+          darkMode={darkMode}
+          onToggleTheme={toggleTheme}
+          mobilePreview={mobilePreview}
+          onToggleMobilePreview={() => setMobilePreview(p => !p)}
+        />
+        <div className={showRightPanel && !mobilePreview ? "desktop-three-col" : "desktop-two-col"}>
+          <div className={mobilePreview ? "desktop-content desktop-mobile-preview" : "desktop-content"}>
             {children}
           </div>
-          {showRightPanel && <RightPanel />}
+          {showRightPanel && !mobilePreview && <RightPanel />}
         </div>
       </div>
 

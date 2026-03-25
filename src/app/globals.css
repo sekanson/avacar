@@ -924,7 +924,7 @@ html, body {
   /* Hide mobile-only FAB on desktop */
   .mobile-fab { display: none !important; }
 
-  /* Desktop sidebar — IG-style icon-only rail, always 64px */
+  /* Desktop sidebar — icon rail, expands to 220px on hover */
   .desktop-sidebar {
     display: flex;
     flex-direction: column;
@@ -940,6 +940,12 @@ html, body {
     top: 0;
     z-index: 30;
     overflow: hidden;
+    transition: width 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .desktop-sidebar:hover {
+    width: 220px;
+    align-items: flex-start;
   }
 
   /* Top logo icon — clicking goes to feed */
@@ -961,14 +967,19 @@ html, body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 8px 0;
-    gap: 4px;
+    padding: 8px 10px;
+    gap: 2px;
     overflow-y: auto;
     overflow-x: hidden;
     width: 100%;
+    transition: align-items 0.2s;
   }
 
-  /* Icon-only nav buttons — centered, no labels */
+  .desktop-sidebar:hover .desktop-sidebar-nav {
+    align-items: stretch;
+  }
+
+  /* Nav items: icons only collapsed, labels appear on hover */
   .desktop-nav-item {
     display: flex;
     align-items: center;
@@ -980,12 +991,33 @@ html, body {
     background: none;
     cursor: pointer;
     color: var(--on-surface-variant);
-    transition: background 0.15s, color 0.15s;
+    transition: background 0.15s, color 0.15s, width 0.15s, padding 0.15s;
     flex-shrink: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    gap: 0;
+    padding: 0;
   }
 
-  /* Hide labels entirely on desktop sidebar */
-  .desktop-nav-item span { display: none; }
+  .desktop-sidebar:hover .desktop-nav-item {
+    width: 100%;
+    justify-content: flex-start;
+    padding: 10px 14px;
+    gap: 12px;
+    border-radius: 10px;
+  }
+
+  .desktop-nav-item span {
+    display: block;
+    opacity: 0;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: var(--font-manrope), Manrope, sans-serif;
+    transition: opacity 100ms 80ms;
+    overflow: hidden;
+  }
+
+  .desktop-sidebar:hover .desktop-nav-item span { opacity: 1; }
 
   .desktop-nav-item:hover {
     background: var(--primary-alpha-08);
@@ -1010,6 +1042,17 @@ html, body {
   }
 
   .desktop-sidebar-footer span { display: none; }
+
+  /* Mobile preview mode — constrain center column to 390px */
+  .desktop-mobile-preview {
+    max-width: 390px !important;
+    margin: 0 auto;
+    box-shadow: 0 0 0 1px var(--ghost-border), 0 8px 40px rgba(0,0,0,0.1);
+    border-radius: 24px;
+    overflow: hidden;
+    height: calc(100dvh - 64px);
+    position: relative;
+  }
 
   /* Desktop main area */
   .desktop-main {
