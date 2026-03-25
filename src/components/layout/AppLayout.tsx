@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
-import { Home, Compass, Plus, User, Bell, Sun, Moon, Camera, MessageCircle } from "lucide-react";
+import { Home, Compass, User, Bell, Sun, Moon, Camera, Sparkles, Car } from "lucide-react";
 import { useAppStore } from "@/store/appStore";
 import type { NavTab } from "@/types";
 import { useState, useEffect } from "react";
@@ -26,9 +26,6 @@ const FULL_SCREEN_ROUTES = new Set([
 // Routes that start with these prefixes are also full-screen
 const FULL_SCREEN_PREFIXES = ["/feed/", "/shop/", "/profile/"] as const;
 
-// Mock unread DM count — replace with real store/API later
-const UNREAD_DMS = 3;
-
 interface TabConfig {
   id: NavTab;
   href: string;
@@ -37,21 +34,29 @@ interface TabConfig {
 }
 
 const TABS: TabConfig[] = [
-  { id: "feed", href: "/feed", icon: Home, label: "Feed" },
-  { id: "explore", href: "/explore", icon: Compass, label: "Explore" },
-  { id: "messages", href: "/messages", icon: MessageCircle, label: "Messages" },
-  { id: "profile", href: "/profile", icon: User, label: "Profile" },
+  { id: "feed",    href: "/feed",    icon: Home,     label: "Feed"    },
+  { id: "explore", href: "/explore", icon: Compass,  label: "Explore" },
+  { id: "design",  href: "/upload",  icon: Sparkles, label: "Studio"  },
+  { id: "garage",  href: "/garage",  icon: Car,      label: "Garage"  },
+  { id: "profile", href: "/profile", icon: User,     label: "Profile" },
 ];
 
 function getActiveTab(pathname: string): NavTab | null {
   if (pathname === "/feed" || pathname === "/") return "feed";
   if (pathname.startsWith("/explore")) return "explore";
-  if (pathname.startsWith("/messages")) return "messages";
+  if (pathname.startsWith("/garage")) return "garage";
   if (pathname === "/profile") return "profile";
+  if (
+    pathname.startsWith("/upload") ||
+    pathname.startsWith("/customize") ||
+    pathname.startsWith("/rendering") ||
+    pathname.startsWith("/confirm-vehicle") ||
+    pathname.startsWith("/detecting")
+  ) return "design";
   return null;
 }
 
-/* ─── Theme hook (shared between mobile TopBar & desktop components) ─── */
+/* ─── Theme hook ─── */
 function useTheme() {
   const [darkMode, setDarkMode] = useState(false);
 
@@ -103,7 +108,7 @@ function TopBar() {
   );
 }
 
-/* ─── Mobile TabBar ─── */
+/* ─── Mobile TabBar — 5 tabs, Design Studio center elevated ─── */
 function TabBar() {
   const pathname = usePathname();
   const router = useRouter();
@@ -117,43 +122,60 @@ function TabBar() {
   };
 
   return (
-    <nav className="tabbar" style={{ position: "relative" }}>
-      {/* FAB Upload button */}
-      <div
-        style={{
-          position: "absolute",
-          top: -28,
-          left: "50%",
-          transform: "translateX(-50%)",
-          zIndex: 10,
-        }}
-      >
-        <button
-          onClick={() => router.push("/upload")}
-          aria-label="Upload car photo"
-          style={{
-            width: 56,
-            height: 56,
-            borderRadius: 28,
-            background: "var(--accent, #007FFF)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            border: "none",
-            cursor: "pointer",
-            boxShadow: "0 4px 20px rgba(0,127,255,.35)",
-            transition: "transform .2s",
-            color: "#fff",
-          }}
-        >
-          <Plus size={24} />
-        </button>
-      </div>
-
-      {/* First two tabs */}
-      {TABS.slice(0, 2).map((tab) => {
+    <nav className="tabbar">
+      {TABS.map((tab) => {
         const isActive = activeTab === tab.id;
+        const isCenter = tab.id === "design";
         const Icon = tab.icon;
+
+        if (isCenter) {
+          return (
+            <button
+              key={tab.id}
+              onClick={() => handleTabPress(tab)}
+              aria-label={tab.label}
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: 3,
+                flex: "0 0 auto",
+                padding: "0 8px",
+                background: "none",
+                border: "none",
+                cursor: "pointer",
+              }}
+            >
+              <div
+                style={{
+                  width: 48,
+                  height: 48,
+                  borderRadius: "50%",
+                  background: "#007FFF",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  marginTop: -14,
+                  boxShadow: "0 4px 20px rgba(0,127,255,0.4)",
+                }}
+              >
+                <Icon size={22} color="#fff" strokeWidth={2} />
+              </div>
+              <span
+                style={{
+                  fontSize: 9,
+                  fontWeight: 700,
+                  letterSpacing: "0.06em",
+                  textTransform: "uppercase",
+                  color: "#007FFF",
+                }}
+              >
+                {tab.label}
+              </span>
+            </button>
+          );
+        }
+
         return (
           <button
             key={tab.id}
@@ -162,55 +184,17 @@ function TabBar() {
             aria-label={tab.label}
           >
             <Icon
-              size={24}
+              size={22}
               className="tab-icon"
-              color={isActive ? "var(--primary)" : "var(--muted)"}
+              color={isActive ? "var(--accent, #007FFF)" : "var(--on-surface-variant)"}
               strokeWidth={2}
             />
-            <span className="tab-label">{tab.label}</span>
-          </button>
-        );
-      })}
-
-      {/* Spacer for FAB */}
-      <div style={{ width: 64 }} aria-hidden="true" />
-
-      {/* Last two tabs */}
-      {TABS.slice(2).map((tab) => {
-        const isActive = activeTab === tab.id;
-        const Icon = tab.icon;
-        const showBadge = tab.id === "messages" && UNREAD_DMS > 0;
-        return (
-          <button
-            key={tab.id}
-            onClick={() => handleTabPress(tab)}
-            className={`tab-item${isActive ? " active" : ""}`}
-            aria-label={tab.label}
-            style={{ position: "relative" }}
-          >
-            <div style={{ position: "relative", display: "inline-flex" }}>
-              <Icon
-                size={24}
-                className="tab-icon"
-                color={isActive ? "var(--primary)" : "var(--muted)"}
-                strokeWidth={2}
-              />
-              {showBadge && (
-                <div
-                  style={{
-                    position: "absolute",
-                    top: -2,
-                    right: -4,
-                    width: 8,
-                    height: 8,
-                    borderRadius: "50%",
-                    background: "#dc2626",
-                    border: "1.5px solid var(--bg)",
-                  }}
-                />
-              )}
-            </div>
-            <span className="tab-label">{tab.label}</span>
+            <span
+              className="tab-label"
+              style={{ opacity: isActive ? 1 : 0.6 }}
+            >
+              {tab.label}
+            </span>
           </button>
         );
       })}
@@ -249,31 +233,13 @@ function DesktopSidebar({
         {TABS.map((tab) => {
           const isActive = activeTab === tab.id;
           const Icon = tab.icon;
-          const showBadge = tab.id === "messages" && UNREAD_DMS > 0;
           return (
             <button
               key={tab.id}
               onClick={() => handleNav(tab)}
               className={`desktop-nav-item${isActive ? " active" : ""}`}
-              style={{ position: "relative" }}
             >
-              <div style={{ position: "relative", display: "inline-flex" }}>
-                <Icon size={20} strokeWidth={2} />
-                {showBadge && (
-                  <div
-                    style={{
-                      position: "absolute",
-                      top: -2,
-                      right: -4,
-                      width: 8,
-                      height: 8,
-                      borderRadius: "50%",
-                      background: "#dc2626",
-                      border: "1.5px solid var(--surface-card)",
-                    }}
-                  />
-                )}
-              </div>
+              <Icon size={20} strokeWidth={2} />
               <span>{tab.label}</span>
             </button>
           );

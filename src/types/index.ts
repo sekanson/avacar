@@ -207,4 +207,4 @@ export type AppScreen =
   | 'booking-review'
   | 'booking-confirmed';
 
-export type NavTab = 'feed' | 'explore' | 'upload' | 'garage' | 'profile' | 'messages';
+export type NavTab = 'feed' | 'explore' | 'upload' | 'garage' | 'profile' | 'messages' | 'design';
