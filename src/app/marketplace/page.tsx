@@ -21,7 +21,7 @@ const BUILD_STYLES = [
     desc: "Subtle upgrades, factory-perfect",
     color: "#1c1c1e",
     accent: "#007FFF",
-    bgImage: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=400&h=200&fit=crop&q=60",
+    bgImage: "https://images.unsplash.com/photo-1617814076367-b759c7d7e738?w=400&h=200&fit=crop&q=60",
   },
   {
     id: "full-send-jdm",
@@ -29,7 +29,7 @@ const BUILD_STYLES = [
     desc: "Aggressive stance, louder everything",
     color: "#1a2744",
     accent: "#ff3b30",
-    bgImage: "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=400&h=200&fit=crop&q=60",
+    bgImage: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=200&fit=crop&q=60",
   },
   {
     id: "euro-spec",
@@ -37,7 +37,7 @@ const BUILD_STYLES = [
     desc: "Restrained, precise, sophisticated",
     color: "#2d1a44",
     accent: "#c8a84b",
-    bgImage: "https://images.unsplash.com/photo-1555215695-3004980ad54e?w=400&h=200&fit=crop&q=60",
+    bgImage: "https://images.unsplash.com/photo-1542282088-72c9c27ed0cd?w=400&h=200&fit=crop&q=60",
   },
   {
     id: "track-monster",
@@ -45,7 +45,7 @@ const BUILD_STYLES = [
     desc: "Aero, lightweight, focused",
     color: "#1a2a1a",
     accent: "#22c55e",
-    bgImage: "https://images.unsplash.com/photo-1541038702891-a8fb7e3b7555?w=400&h=200&fit=crop&q=60",
+    bgImage: "https://images.unsplash.com/photo-1567808291548-fc3ee04dbcf0?w=400&h=200&fit=crop&q=60",
   },
 ];
 
@@ -63,7 +63,7 @@ export default function MarketplacePage() {
         style={{
           backgroundImage: `
             linear-gradient(135deg, rgba(10,14,26,0.85) 0%, rgba(13,26,53,0.80) 50%, rgba(10,22,40,0.85) 100%),
-            url('https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=1600&h=600&fit=crop&q=80')
+            url('https://images.unsplash.com/photo-1603386329225-868f9b1ee6c9?w=1600&h=600&fit=crop&q=80')
           `,
           backgroundSize: "cover",
           backgroundPosition: "center",
@@ -501,7 +501,7 @@ export default function MarketplacePage() {
               />
             ) : (
               <img
-                src="https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=800&h=500&fit=crop&q=80"
+                src="https://images.unsplash.com/photo-1603386329225-868f9b1ee6c9?w=800&h=500&fit=crop&q=80"
                 alt="BMW M4 community build"
                 onError={() => setBuildImgError(true)}
                 style={{
