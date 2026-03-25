@@ -104,14 +104,48 @@ body {
 /* ─── Light mode variables ─── */
 [data-theme="light"] {
   --color-bg: #F0F0F5;
-  --color-surface: #FFFFFF;
-  --color-surface-elevated: #F5F5FA;
-  --color-surface-hover: #EAEAF2;
-  --color-border: #E0E0EA;
+  --color-surface: #E8E8F0;
+  --color-surface-elevated: #DCDCE8;
+  --color-surface-hover: #D0D0E0;
+  --color-border: #C8C8D8;
   --color-text-primary: #0C0C10;
-  --color-text-secondary: #4A4A6A;
-  --color-text-tertiary: #7A7A9A;
-  --color-text-disabled: #AAAACC;
+  --color-text-secondary: #2A2A40;
+  --color-text-tertiary: #5A5A7A;
+  --color-text-disabled: #9090B0;
+}
+
+/* Light mode sidebar always dark (better contrast for icons) */
+[data-theme="light"] .desktop-sidebar {
+  background: #1C1C28;
+}
+[data-theme="light"] .desktop-sidebar:hover {
+  background: #131620;
+}
+[data-theme="light"] .desktop-nav-item {
+  color: #A0A0B8;
+}
+[data-theme="light"] .desktop-nav-item:hover {
+  color: #FFFFFF;
+  background: rgba(255,255,255,0.08);
+}
+[data-theme="light"] .desktop-topnav {
+  background: #E8E8F0;
+  border-bottom-color: #C8C8D8;
+}
+[data-theme="light"] .desktop-topnav-search {
+  background: #DCDCE8;
+  border-color: #C0C0D0;
+  color: #0C0C10;
+}
+[data-theme="light"] .desktop-topnav-search::placeholder {
+  color: #7070A0;
+}
+[data-theme="light"] .tbb {
+  color: #3A3A5A;
+}
+[data-theme="light"] .tbb:hover {
+  background: #D0D0E0;
+  color: #0C0C10;
 }
 
 /* ─── App shell ─── */
