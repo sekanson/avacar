@@ -214,19 +214,22 @@ function DesktopTopNav({
 
   return (
     <div className="desktop-topnav">
-      {/* Wordmark */}
-      <span className="desktop-topnav-wordmark">AVACAR</span>
+      {/* Wordmark — fixed width left anchor */}
+      <span className="desktop-topnav-wordmark" style={{ width: 180, flexShrink: 0 }}>AVACAR</span>
 
-      {/* Search */}
-      <input
-        className="desktop-topnav-search"
-        type="search"
-        placeholder="Search builds, cars, people..."
-        aria-label="Search"
-      />
+      {/* Search — centered */}
+      <div style={{ flex: 1, display: "flex", justifyContent: "center" }}>
+        <input
+          className="desktop-topnav-search"
+          type="search"
+          placeholder="Search builds, cars, people..."
+          aria-label="Search"
+          style={{ width: "100%", maxWidth: 480 }}
+        />
+      </div>
 
-      {/* Actions */}
-      <div style={{ display: "flex", alignItems: "center", gap: 4, marginLeft: "auto" }}>
+      {/* Actions — fixed width right anchor */}
+      <div style={{ width: 180, flexShrink: 0, display: "flex", alignItems: "center", gap: 4, justifyContent: "flex-end" }}>
         <button
           className="tbb"
           onClick={() => router.push("/notifications")}

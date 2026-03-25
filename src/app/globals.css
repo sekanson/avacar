@@ -1063,10 +1063,10 @@ html, body {
     gap: 16px;
     padding: 0 24px;
     height: 64px;
-    background: var(--topbar-bg);
+    background: var(--surface-card);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    box-shadow: 0 1px 0 rgba(0,0,0,0.04);
+    border-bottom: 1px solid var(--ghost-border);
     position: sticky;
     top: 0;
     z-index: 40;
