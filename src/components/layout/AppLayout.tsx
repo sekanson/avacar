@@ -252,12 +252,8 @@ function DesktopTopNav({
 /* ─── Desktop Sidebar ─── */
 function DesktopSidebar({
   pathname,
-  darkMode,
-  onToggleTheme,
 }: {
   pathname: string;
-  darkMode: boolean;
-  onToggleTheme: () => void;
 }) {
   const router = useRouter();
   const { setActiveTab } = useAppStore();
@@ -304,20 +300,7 @@ function DesktopSidebar({
 
       {/* Footer */}
       <div className="desktop-sidebar-footer">
-        <button
-          className="tbb"
-          onClick={() => router.push("/notifications")}
-          aria-label="Notifications"
-        >
-          <Bell size={18} />
-        </button>
-        <button
-          className="tbb"
-          onClick={onToggleTheme}
-          aria-label={`Toggle ${darkMode ? "light" : "dark"} mode`}
-        >
-          {darkMode ? <Sun size={18} /> : <Moon size={18} />}
-        </button>
+        <span style={{ fontSize: 11, color: "var(--on-surface-variant)", opacity: 0.5 }}>© 2026 AVACAR</span>
       </div>
     </aside>
   );
@@ -326,7 +309,6 @@ function DesktopSidebar({
 /* ─── Desktop Right Panel ─── */
 function RightPanel() {
   const router = useRouter();
-  const { darkMode, toggleTheme } = useTheme();
 
   const suggestedBuilds = [
     { username: "wrapsbyalex", car: "2024 BMW M4", tag: "Satin Black Wrap", avatar: "W" },
@@ -339,14 +321,6 @@ function RightPanel() {
 
   return (
     <aside className="desktop-right-panel">
-      <div className="desktop-right-panel-actions">
-        <button className="tbb" onClick={() => router.push("/notifications")} aria-label="Notifications">
-          <Bell size={18} />
-        </button>
-        <button className="tbb" onClick={toggleTheme} aria-label="Toggle theme">
-          {darkMode ? <Sun size={18} /> : <Moon size={18} />}
-        </button>
-      </div>
 
       <div className="rp-card rp-hero-card">
         <p className="rp-overline">Start Building</p>
@@ -442,8 +416,6 @@ export default function AppLayout({
       <div className="desktop-only-chrome">
         <DesktopSidebar
           pathname={pathname}
-          darkMode={darkMode}
-          onToggleTheme={toggleTheme}
         />
       </div>
 
