@@ -439,31 +439,29 @@ export default function AppLayout({
         <TopBar />
       </div>
 
-      {/* DESKTOP-only sidebar (hidden on mobile via CSS) */}
-      <div className="desktop-only-chrome">
-        <DesktopSidebar
-          pathname={pathname}
-        />
-      </div>
-
       {/* MOBILE content wrapper (hidden on desktop via CSS) */}
       <main className="mobile-only-chrome" style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "auto", minHeight: 0 }}>
         {children}
       </main>
 
-      {/* DESKTOP content area (hidden on mobile via CSS) */}
-      <div className="desktop-only-chrome desktop-main">
+      {/* DESKTOP layout: topnav full-width on top, sidebar+content below */}
+      <div className="desktop-only-chrome desktop-shell">
+        {/* Top nav spans full width */}
         <DesktopTopNav
           darkMode={darkMode}
           onToggleTheme={toggleTheme}
           mobilePreview={mobilePreview}
           onToggleMobilePreview={() => setMobilePreview(p => !p)}
         />
-        <div className={showRightPanel && !mobilePreview ? "desktop-three-col" : contentColClass}>
-          <div className={mobilePreview ? "desktop-content desktop-mobile-preview" : "desktop-content"}>
-            {children}
+        {/* Body row: sidebar overlays content */}
+        <div className="desktop-body">
+          <DesktopSidebar pathname={pathname} />
+          <div className={showRightPanel && !mobilePreview ? "desktop-three-col" : contentColClass}>
+            <div className={mobilePreview ? "desktop-content desktop-mobile-preview" : "desktop-content"}>
+              {children}
+            </div>
+            {showRightPanel && !mobilePreview && <RightPanel />}
           </div>
-          {showRightPanel && !mobilePreview && <RightPanel />}
         </div>
       </div>
 

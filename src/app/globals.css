@@ -198,29 +198,26 @@ body {
 /* ─── Desktop Sidebar ─── */
 .desktop-sidebar {
   width: 28px;
-  height: 100vh;
   background: #0e0e14;
   overflow: hidden;
   transition: width 200ms ease;
   flex-shrink: 0;
-  position: relative;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
   z-index: 50;
 }
 
 .desktop-sidebar:hover {
   width: 160px;
-  background: #0e0e14;
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100vh;
 }
 
 .desktop-sidebar-inner {
   display: flex;
   flex-direction: column;
   height: 100%;
-  padding: 84px 0 16px; /* 84px = 48px topnav row1 + 36px filter pills row */
+  padding: 8px 0 16px; /* topnav is now above, sidebar starts fresh below it */
   gap: 8px;
 }
 
@@ -301,7 +298,25 @@ body {
   margin-top: auto;
 }
 
-/* ─── Desktop Main ─── */
+/* ─── Desktop Shell (full-width column wrapper) ─── */
+.desktop-shell {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+}
+
+/* ─── Desktop Body (sidebar + content row, below topnav) ─── */
+.desktop-body {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+/* ─── Desktop Main (legacy, keep for safety) ─── */
 .desktop-main {
   display: flex;
   flex-direction: column;
@@ -385,6 +400,7 @@ body {
   display: flex;
   overflow: hidden;
   justify-content: center;
+  padding-left: 28px; /* leave room for collapsed sidebar */
 }
 
 .desktop-three-col {
@@ -392,12 +408,14 @@ body {
   display: flex;
   gap: 0;
   overflow: hidden;
+  padding-left: 28px;
 }
 
 .desktop-full-col {
   flex: 1;
   display: flex;
   overflow: hidden;
+  padding-left: 28px;
 }
 
 .desktop-content {
