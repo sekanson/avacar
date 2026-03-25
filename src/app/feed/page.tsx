@@ -104,6 +104,7 @@ export default function FeedPage() {
     >
       {/* Story / Progress strip — 80px horizontal scroll */}
       <div
+        className="story-strip-mobile"
         style={{
           display: "flex",
           gap: 16,

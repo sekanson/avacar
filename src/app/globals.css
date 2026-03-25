@@ -933,10 +933,11 @@ html, body {
     padding: 24px 20px 20px;
     font-family: var(--font-manrope), Manrope, sans-serif;
     font-size: 20px;
-    font-weight: 900;
+    font-weight: 800;
     font-style: italic;
+    text-transform: uppercase;
     color: var(--on-surface);
-    letter-spacing: -0.02em;
+    letter-spacing: -0.03em;
     border-bottom: 1px solid var(--ghost-border);
     display: flex;
     align-items: center;
@@ -1012,7 +1013,7 @@ html, body {
 
   .desktop-sidebar-footer {
     padding: 12px;
-    border-top: 1px solid var(--ghost-border);
+    background: var(--surface-low);
     display: flex;
     align-items: center;
     gap: 8px;
@@ -1055,6 +1056,56 @@ html, body {
     gap: 8px;
   }
 
+  /* Desktop top nav — sticky bar above content column */
+  .desktop-topnav {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 0 24px;
+    height: 64px;
+    background: var(--topbar-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: 0 1px 0 rgba(0,0,0,0.04);
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    flex-shrink: 0;
+  }
+
+  .desktop-topnav-wordmark {
+    font-family: var(--font-manrope), Manrope, sans-serif;
+    font-size: 20px;
+    font-weight: 800;
+    font-style: italic;
+    text-transform: uppercase;
+    letter-spacing: -0.03em;
+    color: var(--on-surface);
+    flex-shrink: 0;
+  }
+
+  .desktop-topnav-search {
+    flex: 1;
+    max-width: 480px;
+    padding: 10px 18px;
+    border-radius: 9999px;
+    background: var(--surface-low);
+    border: none;
+    outline: none;
+    font-family: var(--font-manrope), Manrope, sans-serif;
+    font-size: 14px;
+    color: var(--on-surface);
+  }
+
+  .desktop-topnav-search::placeholder {
+    color: var(--on-surface-variant);
+    opacity: 0.6;
+  }
+
+  .desktop-topnav-search:focus {
+    background: var(--surface-container);
+  }
+
   /* Desktop content area — scrollable (default for two-col) */
   .desktop-content {
     flex: 1;
@@ -1068,7 +1119,7 @@ html, body {
     display: flex;
     flex-direction: row;
     flex: 1;
-    height: 100dvh;
+    min-height: 0;
     overflow-y: auto;
     overflow-x: hidden;
     align-items: flex-start;
@@ -1100,7 +1151,7 @@ html, body {
   .desktop-two-col {
     display: flex;
     flex: 1;
-    height: 100dvh;
+    min-height: 0;
     overflow: hidden;
   }
 
@@ -1114,7 +1165,7 @@ html, body {
   .desktop-right-panel {
     width: 340px;
     min-width: 340px;
-    height: 100dvh;
+    height: calc(100dvh - 64px);
     position: sticky;
     top: 0;
     overflow-y: auto;
@@ -1381,6 +1432,11 @@ html, body {
     background: var(--surface-card);
     box-shadow: 0 2px 20px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.04);
   }
+}
+
+/* Hide story strip on desktop */
+@media (min-width: 768px) {
+  .story-strip-mobile { display: none !important; }
 }
 
 /* ─── Dark mode btn-secondary ghost style ─── */

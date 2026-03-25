@@ -202,6 +202,50 @@ function TabBar() {
   );
 }
 
+/* ─── Desktop Top Nav ─── */
+function DesktopTopNav({
+  darkMode,
+  onToggleTheme,
+}: {
+  darkMode: boolean;
+  onToggleTheme: () => void;
+}) {
+  const router = useRouter();
+
+  return (
+    <div className="desktop-topnav">
+      {/* Wordmark */}
+      <span className="desktop-topnav-wordmark">AVACAR</span>
+
+      {/* Search */}
+      <input
+        className="desktop-topnav-search"
+        type="search"
+        placeholder="Search builds, cars, people..."
+        aria-label="Search"
+      />
+
+      {/* Actions */}
+      <div style={{ display: "flex", alignItems: "center", gap: 4, marginLeft: "auto" }}>
+        <button
+          className="tbb"
+          onClick={() => router.push("/notifications")}
+          aria-label="Notifications"
+        >
+          <Bell size={20} />
+        </button>
+        <button
+          className="tbb"
+          onClick={onToggleTheme}
+          aria-label={`Toggle ${darkMode ? "light" : "dark"} mode`}
+        >
+          {darkMode ? <Sun size={18} /> : <Moon size={18} />}
+        </button>
+      </div>
+    </div>
+  );
+}
+
 /* ─── Desktop Sidebar ─── */
 function DesktopSidebar({
   pathname,
@@ -399,6 +443,7 @@ export default function AppLayout({
       {/* Content area */}
       {isDesktop && !isFullScreen ? (
         <div className="desktop-main">
+          <DesktopTopNav darkMode={darkMode} onToggleTheme={toggleTheme} />
           <div className={showRightPanel ? "desktop-three-col" : "desktop-two-col"}>
             <div className="desktop-content">
               {children}
