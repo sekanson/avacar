@@ -15,16 +15,45 @@ const CATEGORIES = [
 ];
 
 const BUILD_STYLES = [
-  { id: "oem-plus", label: "Clean OEM+", desc: "Subtle upgrades, factory-perfect", color: "#1c1c1e", accent: "#007FFF" },
-  { id: "full-send-jdm", label: "Full Send JDM", desc: "Aggressive stance, louder everything", color: "#1a2744", accent: "#ff3b30" },
-  { id: "euro-spec", label: "Euro Spec", desc: "Restrained, precise, sophisticated", color: "#2d1a44", accent: "#c8a84b" },
-  { id: "track-monster", label: "Track Monster", desc: "Aero, lightweight, focused", color: "#1a2a1a", accent: "#22c55e" },
+  {
+    id: "oem-plus",
+    label: "Clean OEM+",
+    desc: "Subtle upgrades, factory-perfect",
+    color: "#1c1c1e",
+    accent: "#007FFF",
+    bgImage: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=400&h=200&fit=crop&q=60",
+  },
+  {
+    id: "full-send-jdm",
+    label: "Full Send JDM",
+    desc: "Aggressive stance, louder everything",
+    color: "#1a2744",
+    accent: "#ff3b30",
+    bgImage: "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=400&h=200&fit=crop&q=60",
+  },
+  {
+    id: "euro-spec",
+    label: "Euro Spec",
+    desc: "Restrained, precise, sophisticated",
+    color: "#2d1a44",
+    accent: "#c8a84b",
+    bgImage: "https://images.unsplash.com/photo-1555215695-3004980ad54e?w=400&h=200&fit=crop&q=60",
+  },
+  {
+    id: "track-monster",
+    label: "Track Monster",
+    desc: "Aero, lightweight, focused",
+    color: "#1a2a1a",
+    accent: "#22c55e",
+    bgImage: "https://images.unsplash.com/photo-1541038702891-a8fb7e3b7555?w=400&h=200&fit=crop&q=60",
+  },
 ];
 
 const TRENDING = [...marketplaceWraps.slice(0, 3), ...marketplaceWheels.slice(0, 2)];
 
 export default function MarketplacePage() {
   const [activeCat, setActiveCat] = useState("wraps");
+  const [buildImgError, setBuildImgError] = useState(false);
 
   return (
     <div style={{ background: "var(--bg)", minHeight: "100%", paddingBottom: 100 }}>
@@ -32,7 +61,12 @@ export default function MarketplacePage() {
       {/* ── Hero ── */}
       <div
         style={{
-          background: "linear-gradient(135deg, #0a0e1a 0%, #0d1a35 50%, #0a1628 100%)",
+          backgroundImage: `
+            linear-gradient(135deg, rgba(10,14,26,0.85) 0%, rgba(13,26,53,0.80) 50%, rgba(10,22,40,0.85) 100%),
+            url('https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=1600&h=600&fit=crop&q=80')
+          `,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
           padding: "48px 24px 40px",
           position: "relative",
           overflow: "hidden",
@@ -86,7 +120,7 @@ export default function MarketplacePage() {
             gap: 6,
             padding: "14px 28px",
             borderRadius: 100,
-            background: "#007FFF",
+            background: "linear-gradient(45deg, #005ab7, #0072e5)",
             color: "#fff",
             fontWeight: 700,
             fontSize: 14,
@@ -101,12 +135,12 @@ export default function MarketplacePage() {
       </div>
 
       {/* ── Category Quick Links ── */}
-      <div style={{ padding: "20px 0 0" }}>
+      <div style={{ padding: "48px 0 0" }}>
         <p
           style={{
             fontSize: 10,
             fontWeight: 700,
-            letterSpacing: "0.2em",
+            letterSpacing: "0.25em",
             color: "var(--primary)",
             textTransform: "uppercase",
             padding: "0 20px",
@@ -139,8 +173,8 @@ export default function MarketplacePage() {
                 cursor: "pointer",
                 fontSize: 13,
                 fontWeight: 600,
-                background: activeCat === cat.id ? "var(--chip-active-bg)" : "var(--chip-bg)",
-                color: activeCat === cat.id ? "#fff" : "var(--on-surface-variant)",
+                background: activeCat === cat.id ? "var(--primary)" : "var(--surface-container)",
+                color: activeCat === cat.id ? "#000" : "var(--on-surface-variant)",
                 transition: "all 0.15s",
               }}
             >
@@ -152,9 +186,9 @@ export default function MarketplacePage() {
       </div>
 
       {/* ── Featured Brands ── */}
-      <div style={{ padding: "24px 0 0" }}>
+      <div style={{ padding: "48px 0 0" }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 20px", marginBottom: 14 }}>
-          <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.2em", color: "var(--primary)", textTransform: "uppercase" }}>
+          <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.25em", color: "var(--primary)", textTransform: "uppercase" }}>
             Featured Brands
           </p>
           <Link href="/marketplace/products" style={{ fontSize: 12, color: "var(--on-surface-variant)", textDecoration: "none" }}>
@@ -205,7 +239,6 @@ export default function MarketplacePage() {
               </div>
             </Link>
           ))}
-          {/* Extra non-linked brand pills */}
           {["Vossen", "Rotiform", "BBS", "Hexis"].map((b) => (
             <div
               key={b}
@@ -248,13 +281,13 @@ export default function MarketplacePage() {
       </div>
 
       {/* ── Trending Products ── */}
-      <div style={{ padding: "28px 0 0" }}>
+      <div style={{ padding: "48px 0 0" }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 20px", marginBottom: 14 }}>
           <div>
-            <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.2em", color: "var(--primary)", textTransform: "uppercase" }}>
+            <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.25em", color: "var(--primary)", textTransform: "uppercase" }}>
               What&apos;s Hot Right Now
             </p>
-            <p style={{ fontSize: 18, fontWeight: 800, color: "var(--on-surface)", letterSpacing: "-0.01em", marginTop: 2 }}>
+            <p style={{ fontSize: 24, fontWeight: 800, color: "var(--on-surface)", letterSpacing: "-0.02em", marginTop: 4 }}>
               Trending Products
             </p>
           </div>
@@ -263,88 +296,107 @@ export default function MarketplacePage() {
           </Link>
         </div>
         <div style={{ display: "flex", gap: 12, overflowX: "auto", scrollbarWidth: "none", padding: "0 20px 4px" }}>
-          {TRENDING.map((product) => (
-            <Link
-              key={product.slug}
-              href={`/marketplace/products/${product.slug}`}
-              style={{
-                flexShrink: 0,
-                width: 160,
-                background: "var(--surface-card)",
-                borderRadius: 16,
-                overflow: "hidden",
-                textDecoration: "none",
-                boxShadow: "var(--shadow-card)",
-              }}
-            >
-              {/* Product image */}
-              <div
+          {TRENDING.map((product) => {
+            const hex = product.primaryColorHex ?? "#333";
+            return (
+              <Link
+                key={product.slug}
+                href={`/marketplace/products/${product.slug}`}
                 style={{
-                  width: "100%",
-                  aspectRatio: "1 / 1",
-                  background: `radial-gradient(ellipse at 35% 35%, ${product.primaryColorHex}cc, ${product.primaryColorHex})`,
-                  position: "relative",
+                  flexShrink: 0,
+                  width: 160,
+                  background: "var(--surface-card)",
+                  borderRadius: 16,
                   overflow: "hidden",
+                  textDecoration: "none",
+                  boxShadow: "var(--shadow-card)",
                 }}
               >
+                {/* Product color swatch */}
                 <div
                   style={{
-                    position: "absolute",
-                    inset: 0,
-                    background: "linear-gradient(135deg, rgba(255,255,255,0.12) 0%, transparent 55%)",
-                  }}
-                />
-                {/* Brand chip overlay */}
-                <div
-                  style={{
-                    position: "absolute",
-                    top: 8,
-                    left: 8,
-                    padding: "3px 8px",
-                    borderRadius: 100,
-                    background: "rgba(0,0,0,0.55)",
-                    backdropFilter: "blur(8px)",
-                    fontSize: 9,
-                    fontWeight: 700,
-                    color: "#fff",
-                    letterSpacing: "0.05em",
+                    width: "100%",
+                    aspectRatio: "1 / 1",
+                    background: `linear-gradient(135deg, ${hex}, ${hex}99)`,
+                    position: "relative",
+                    overflow: "hidden",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
                   }}
                 >
-                  {product.brand}
+                  <div
+                    style={{
+                      position: "absolute",
+                      inset: 0,
+                      background: "linear-gradient(135deg, rgba(255,255,255,0.12) 0%, transparent 55%)",
+                    }}
+                  />
+                  {/* Icon */}
+                  <span
+                    style={{
+                      fontSize: 28,
+                      opacity: 0.35,
+                      filter: "brightness(1.6)",
+                      zIndex: 1,
+                      userSelect: "none",
+                    }}
+                  >
+                    {product.category === "wheels" ? "⚙️" : "🎨"}
+                  </span>
+                  {/* Brand chip overlay */}
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: 8,
+                      left: 8,
+                      padding: "3px 8px",
+                      borderRadius: 100,
+                      background: "rgba(0,0,0,0.55)",
+                      backdropFilter: "blur(8px)",
+                      fontSize: 9,
+                      fontWeight: 700,
+                      color: "#fff",
+                      letterSpacing: "0.05em",
+                      zIndex: 2,
+                    }}
+                  >
+                    {product.brand}
+                  </div>
                 </div>
-              </div>
-              <div style={{ padding: "10px 12px 12px" }}>
-                <p style={{ fontSize: 12, fontWeight: 700, color: "var(--on-surface)", lineHeight: 1.3 }}>{product.name}</p>
-                <p style={{ fontSize: 11, color: "var(--on-surface-variant)", marginTop: 2, textTransform: "capitalize" }}>
-                  {product.finish}
-                </p>
-                <p style={{ fontSize: 13, fontWeight: 700, color: "var(--on-surface)", marginTop: 6 }}>
-                  from ${product.fromPrice}
-                  <span style={{ fontSize: 10, fontWeight: 400, color: "var(--on-surface-variant)" }}> {product.unit}</span>
-                </p>
-                <p
-                  style={{
-                    fontSize: 11,
-                    fontWeight: 600,
-                    color: "#007FFF",
-                    marginTop: 6,
-                    cursor: "pointer",
-                  }}
-                >
-                  Visualize on My Car →
-                </p>
-              </div>
-            </Link>
-          ))}
+                <div style={{ padding: "10px 12px 12px" }}>
+                  <p style={{ fontSize: 12, fontWeight: 700, color: "var(--on-surface)", lineHeight: 1.3 }}>{product.name}</p>
+                  <p style={{ fontSize: 11, color: "var(--on-surface-variant)", marginTop: 2, textTransform: "capitalize" }}>
+                    {product.finish}
+                  </p>
+                  <p style={{ fontSize: 13, fontWeight: 700, color: "var(--on-surface)", marginTop: 6 }}>
+                    from ${product.fromPrice}
+                    <span style={{ fontSize: 10, fontWeight: 400, color: "var(--on-surface-variant)" }}> {product.unit}</span>
+                  </p>
+                  <p
+                    style={{
+                      fontSize: 11,
+                      fontWeight: 600,
+                      color: "#007FFF",
+                      marginTop: 6,
+                      cursor: "pointer",
+                    }}
+                  >
+                    Visualize on My Car →
+                  </p>
+                </div>
+              </Link>
+            );
+          })}
         </div>
       </div>
 
       {/* ── Shop by Build Style ── */}
-      <div style={{ padding: "28px 20px 0" }}>
-        <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.2em", color: "var(--primary)", textTransform: "uppercase", marginBottom: 6 }}>
+      <div style={{ padding: "48px 20px 0" }}>
+        <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.25em", color: "var(--primary)", textTransform: "uppercase", marginBottom: 6 }}>
           Shop by Style
         </p>
-        <p style={{ fontSize: 18, fontWeight: 800, color: "var(--on-surface)", letterSpacing: "-0.01em", marginBottom: 14 }}>
+        <p style={{ fontSize: 24, fontWeight: 800, color: "var(--on-surface)", letterSpacing: "-0.02em", marginBottom: 14 }}>
           Find Your Aesthetic
         </p>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
@@ -355,16 +407,25 @@ export default function MarketplacePage() {
               style={{
                 borderRadius: 16,
                 overflow: "hidden",
-                background: style.color,
-                padding: "20px 14px",
+                backgroundImage: `url('${style.bgImage}')`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
                 textDecoration: "none",
-                display: "flex",
-                flexDirection: "column",
-                gap: 4,
+                display: "block",
                 minHeight: 100,
                 position: "relative",
               }}
             >
+              {/* Color tint overlay */}
+              <div
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  background: style.color,
+                  opacity: 0.75,
+                }}
+              />
+              {/* Accent glow */}
               <div
                 style={{
                   position: "absolute",
@@ -373,29 +434,41 @@ export default function MarketplacePage() {
                   width: 80,
                   height: 80,
                   borderRadius: "50%",
-                  background: `radial-gradient(circle, ${style.accent}33, transparent 70%)`,
+                  background: `radial-gradient(circle, ${style.accent}44, transparent 70%)`,
                   transform: "translate(20%, -20%)",
                 }}
               />
+              {/* Content */}
               <div
                 style={{
-                  width: 6,
-                  height: 6,
-                  borderRadius: "50%",
-                  background: style.accent,
-                  marginBottom: 4,
+                  position: "relative",
+                  zIndex: 1,
+                  padding: "20px 14px",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 4,
                 }}
-              />
-              <p style={{ fontSize: 13, fontWeight: 800, color: "#f0f2f5", letterSpacing: "-0.01em" }}>{style.label}</p>
-              <p style={{ fontSize: 10, color: "rgba(240,242,245,0.55)", lineHeight: 1.4 }}>{style.desc}</p>
+              >
+                <div
+                  style={{
+                    width: 6,
+                    height: 6,
+                    borderRadius: "50%",
+                    background: style.accent,
+                    marginBottom: 4,
+                  }}
+                />
+                <p style={{ fontSize: 13, fontWeight: 800, color: "#f0f2f5", letterSpacing: "-0.01em" }}>{style.label}</p>
+                <p style={{ fontSize: 10, color: "rgba(240,242,245,0.65)", lineHeight: 1.4 }}>{style.desc}</p>
+              </div>
             </Link>
           ))}
         </div>
       </div>
 
       {/* ── Featured Build Editorial ── */}
-      <div style={{ padding: "28px 20px 0" }}>
-        <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.2em", color: "var(--primary)", textTransform: "uppercase", marginBottom: 10 }}>
+      <div style={{ padding: "48px 20px 0" }}>
+        <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.25em", color: "var(--primary)", textTransform: "uppercase", marginBottom: 10 }}>
           Community Build
         </p>
         <div
@@ -406,20 +479,50 @@ export default function MarketplacePage() {
             boxShadow: "var(--shadow-card)",
           }}
         >
-          {/* Build image placeholder */}
+          {/* Build image */}
           <div
             style={{
               width: "100%",
               aspectRatio: "16/9",
-              background: "linear-gradient(135deg, #0d1117 0%, #1a1a2e 50%, #1c1c1e 100%)",
               position: "relative",
               display: "flex",
               alignItems: "flex-end",
-              padding: 16,
+              overflow: "hidden",
             }}
           >
-            <div>
-              <p style={{ fontSize: 10, color: "rgba(240,242,245,0.5)", fontWeight: 600, letterSpacing: "0.1em", marginBottom: 4 }}>
+            {buildImgError ? (
+              /* Fallback placeholder */
+              <div
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  background: "linear-gradient(135deg, #0d1117 0%, #1a1a2e 50%, #1c1c1e 100%)",
+                }}
+              />
+            ) : (
+              <img
+                src="https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=800&h=500&fit=crop&q=80"
+                alt="BMW M4 community build"
+                onError={() => setBuildImgError(true)}
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                }}
+              />
+            )}
+            {/* Dark gradient overlay for legibility */}
+            <div
+              style={{
+                position: "absolute",
+                inset: 0,
+                background: "linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.1) 60%, transparent 100%)",
+              }}
+            />
+            <div style={{ position: "relative", zIndex: 1, padding: 16 }}>
+              <p style={{ fontSize: 10, color: "rgba(240,242,245,0.65)", fontWeight: 600, letterSpacing: "0.1em", marginBottom: 4 }}>
                 @wrapsbyalex · 2024 BMW M4
               </p>
               <p style={{ fontSize: 18, fontWeight: 800, color: "#f0f2f5", letterSpacing: "-0.01em" }}>
@@ -461,7 +564,7 @@ export default function MarketplacePage() {
       {/* ── Find a Shop ── */}
       <div
         style={{
-          margin: "28px 20px 0",
+          margin: "48px 20px 0",
           background: "linear-gradient(135deg, #0d1a35, #0a2244)",
           borderRadius: 20,
           padding: "24px 20px",
@@ -480,7 +583,7 @@ export default function MarketplacePage() {
             background: "radial-gradient(circle, rgba(0,127,255,0.2), transparent 70%)",
           }}
         />
-        <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.2em", color: "#007FFF", textTransform: "uppercase", marginBottom: 8 }}>
+        <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.25em", color: "#007FFF", textTransform: "uppercase", marginBottom: 8 }}>
           Find a Shop
         </p>
         <p style={{ fontSize: 20, fontWeight: 800, color: "#f0f2f5", letterSpacing: "-0.01em", marginBottom: 6 }}>
@@ -514,7 +617,7 @@ export default function MarketplacePage() {
       </div>
 
       {/* ── Professional Supplies CTA ── */}
-      <div style={{ margin: "20px 20px 0", padding: "20px", background: "var(--surface-card)", borderRadius: 16, boxShadow: "var(--shadow-card)" }}>
+      <div style={{ margin: "48px 20px 0", padding: "20px", background: "var(--surface-card)", borderRadius: 16, boxShadow: "var(--shadow-card)" }}>
         <p style={{ fontSize: 13, fontWeight: 700, color: "var(--on-surface)", marginBottom: 4 }}>
           Are you a shop or installer?
         </p>
