@@ -233,10 +233,6 @@ body {
   display: inline;
 }
 
-.sidebar-logo-rest {
-  display: inline;
-}
-
 .desktop-sidebar-nav {
   display: flex;
   flex-direction: column;
@@ -257,13 +253,31 @@ body {
   background: none;
   border: none;
   cursor: pointer;
-  width: 100%;
+  width: 220px; /* fixed width so text is always rendered but clipped by sidebar overflow */
   text-align: left;
   white-space: nowrap;
   overflow: hidden;
   font-size: 14px;
   font-weight: 500;
   transition: background var(--transition-fast), color var(--transition-fast);
+}
+
+/* Hide icon labels when sidebar is collapsed — show only on hover */
+.desktop-nav-item span {
+  opacity: 0;
+  transition: opacity 150ms ease;
+}
+.desktop-sidebar:hover .desktop-nav-item span {
+  opacity: 1;
+}
+
+/* Also hide logo 'ACAR' text when collapsed */
+.sidebar-logo-rest {
+  opacity: 0;
+  transition: opacity 150ms ease;
+}
+.desktop-sidebar:hover .sidebar-logo-rest {
+  opacity: 1;
 }
 
 .desktop-nav-item:hover {
