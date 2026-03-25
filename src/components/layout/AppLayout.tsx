@@ -203,6 +203,8 @@ function TabBar() {
 }
 
 /* ─── Desktop Top Nav ─── */
+const FEED_CATEGORIES = ["All", "Wraps", "Wheels", "Tint", "PPF", "Suspension", "Performance"];
+
 function DesktopTopNav({
   darkMode,
   onToggleTheme,
@@ -215,47 +217,50 @@ function DesktopTopNav({
   onToggleMobilePreview: () => void;
 }) {
   const router = useRouter();
+  const pathname = usePathname();
+  const [activeCat, setActiveCat] = useState("All");
+  const isFeed = pathname === "/feed" || pathname === "/";
 
   return (
     <div className="desktop-topnav">
-      {/* Search — full width centered, no wordmark */}
-      <div style={{ flex: 1, display: "flex", justifyContent: "center" }}>
-        <input
-          className="desktop-topnav-search"
-          type="search"
-          placeholder="Search builds, cars, people..."
-          aria-label="Search"
-          style={{ width: "100%", maxWidth: 560 }}
-        />
+      {/* Row 1: search + actions */}
+      <div className="desktop-topnav-row1">
+        <div style={{ flex: 1, display: "flex", justifyContent: "center" }}>
+          <input
+            className="desktop-topnav-search"
+            type="search"
+            placeholder="Search builds, cars, people..."
+            aria-label="Search"
+            style={{ width: "100%", maxWidth: 560 }}
+          />
+        </div>
+        <div style={{ flexShrink: 0, display: "flex", alignItems: "center", gap: 4 }}>
+          <button className="tbb" onClick={onToggleMobilePreview} aria-label="Toggle mobile preview" title="Mobile preview" style={{ color: mobilePreview ? "var(--accent)" : undefined }}>
+            <Smartphone size={18} />
+          </button>
+          <button className="tbb" onClick={() => router.push("/notifications")} aria-label="Notifications">
+            <Bell size={20} />
+          </button>
+          <button className="tbb" onClick={onToggleTheme} aria-label={`Toggle ${darkMode ? "light" : "dark"} mode`}>
+            {darkMode ? <Sun size={18} /> : <Moon size={18} />}
+          </button>
+        </div>
       </div>
 
-      {/* Actions */}
-      <div style={{ flexShrink: 0, display: "flex", alignItems: "center", gap: 4 }}>
-        {/* Mobile preview toggle */}
-        <button
-          className="tbb"
-          onClick={onToggleMobilePreview}
-          aria-label="Toggle mobile preview"
-          title="Mobile preview"
-          style={{ color: mobilePreview ? "var(--accent)" : undefined }}
-        >
-          <Smartphone size={18} />
-        </button>
-        <button
-          className="tbb"
-          onClick={() => router.push("/notifications")}
-          aria-label="Notifications"
-        >
-          <Bell size={20} />
-        </button>
-        <button
-          className="tbb"
-          onClick={onToggleTheme}
-          aria-label={`Toggle ${darkMode ? "light" : "dark"} mode`}
-        >
-          {darkMode ? <Sun size={18} /> : <Moon size={18} />}
-        </button>
-      </div>
+      {/* Row 2: category pills — only on feed */}
+      {isFeed && (
+        <div className="desktop-topnav-pills">
+          {FEED_CATEGORIES.map((cat) => (
+            <button
+              key={cat}
+              onClick={() => setActiveCat(cat)}
+              className={`topnav-pill${activeCat === cat ? " active" : ""}`}
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

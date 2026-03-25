@@ -7,7 +7,7 @@ import PostCard from "@/components/ui/PostCard";
 import { mockFeedPosts } from "@/data/feedPosts";
 import { mockPrebuilds as prebuilds } from "@/data/products";
 
-const CATEGORIES = ["All", "Wraps", "Wheels", "Tint", "PPF", "Suspension", "Performance"];
+// Categories now rendered in DesktopTopNav — kept for future mobile filter wiring
 
 const STORY_USERS = [
   {
@@ -67,7 +67,7 @@ const STORY_USERS = [
 ];
 
 export default function FeedPage() {
-  const [feedCat, setFeedCat] = useState("All");
+  const [feedCat] = useState("All"); // filtering driven by topnav pills
   const [feedTab, setFeedTab] = useState<"feed" | "trending">("feed");
   const [feedLikes, setFeedLikes] = useState<Record<string, boolean>>({});
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -172,49 +172,7 @@ export default function FeedPage() {
         ))}
       </div>
 
-      {/* Filter pills — sticky, glassmorphic, below topnav */}
-      <div
-        style={{
-          position: "sticky",
-          top: 56,
-          zIndex: 10,
-          background: "rgba(var(--bg-rgb, 247,249,251), 0.9)",
-          backdropFilter: "blur(16px)",
-          WebkitBackdropFilter: "blur(16px)",
-          borderBottom: "1px solid var(--ghost-border-04)",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            gap: 8,
-            overflowX: "auto",
-            scrollbarWidth: "none",
-            padding: "10px 16px",
-          }}
-        >
-          {CATEGORIES.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setFeedCat(cat)}
-              style={{
-                padding: "6px 14px",
-                borderRadius: 999,
-                fontSize: 13,
-                fontWeight: 600,
-                border: "none",
-                cursor: "pointer",
-                flexShrink: 0,
-                background: feedCat === cat ? "var(--on-surface)" : "var(--surface-container)",
-                color: feedCat === cat ? "var(--bg)" : "var(--on-surface)",
-                transition: "all .15s",
-              }}
-            >
-              {cat}
-            </button>
-          ))}
-        </div>
-      </div>
+      {/* Filter pills live in desktop topnav — removed from scroll area */}
 
       {/* Feed / Trending toggle */}
       <div

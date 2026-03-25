@@ -925,14 +925,14 @@ html, body {
   /* Hide mobile-only FAB on desktop */
   .mobile-fab { display: none !important; }
 
-  /* Desktop sidebar — #131620 rail, overlays on hover */
+  /* Desktop sidebar — transparent until hover, #131620 on expand */
   .desktop-sidebar {
     display: flex;
     flex-direction: column;
     width: 64px;
     min-width: 64px;
     height: 100dvh;
-    background: #131620;
+    background: transparent;
     border-right: none;
     padding: 0;
     flex-shrink: 0;
@@ -942,22 +942,23 @@ html, body {
     overflow: visible;
   }
 
-  /* Inner wrapper — expands as overlay, same bg */
+  /* Inner wrapper — transparent collapsed, #131620 on hover */
   .desktop-sidebar-inner {
     display: flex;
     flex-direction: column;
     width: 64px;
     height: 100dvh;
-    background: #131620;
+    background: transparent;
     overflow: hidden;
-    transition: width 220ms cubic-bezier(0.4, 0, 0.2, 1);
+    transition: width 220ms cubic-bezier(0.4, 0, 0.2, 1), background 180ms;
     position: relative;
     z-index: 30;
   }
 
   .desktop-sidebar:hover .desktop-sidebar-inner {
     width: 240px;
-    box-shadow: 4px 0 32px rgba(0, 0, 0, 0.3);
+    background: #131620;
+    box-shadow: 4px 0 32px rgba(0, 0, 0, 0.35);
   }
 
   /* Top logo — "AV" collapsed, "AVACAR" expanded */
@@ -1112,11 +1113,8 @@ html, body {
   /* Desktop top nav — sticky bar above content column */
   .desktop-topnav {
     display: flex;
-    align-items: center;
-    gap: 16px;
-    padding: 0 24px;
-    height: 56px;
-    background: rgba(var(--bg-rgb, 247,249,251), 0.85);
+    flex-direction: column;
+    background: rgba(var(--bg-rgb, 247,249,251), 0.88);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--ghost-border-04);
@@ -1124,6 +1122,47 @@ html, body {
     top: 0;
     z-index: 40;
     flex-shrink: 0;
+  }
+
+  .desktop-topnav-row1 {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 0 24px;
+    height: 56px;
+  }
+
+  /* Category pills row — permanently under search */
+  .desktop-topnav-pills {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 8px 24px 10px;
+  }
+  .desktop-topnav-pills::-webkit-scrollbar { display: none; }
+
+  .topnav-pill {
+    padding: 6px 14px;
+    border-radius: 9999px;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: var(--font-manrope), Manrope, sans-serif;
+    border: none;
+    cursor: pointer;
+    flex-shrink: 0;
+    background: var(--surface-container);
+    color: var(--on-surface);
+    transition: background 0.15s, color 0.15s;
+  }
+
+  .topnav-pill.active {
+    background: var(--on-surface);
+    color: var(--bg);
+  }
+
+  .topnav-pill:hover:not(.active) {
+    background: var(--surface-high);
   }
 
   .desktop-topnav-wordmark {
@@ -1200,18 +1239,21 @@ html, body {
     height: 100dvh;
   }
 
-  /* 2-col layout wrapper (garage, profile) */
+  /* 2-col layout wrapper — centers content */
   .desktop-two-col {
     display: flex;
     flex: 1;
     min-height: 0;
     overflow: hidden;
+    justify-content: center;
   }
 
   .desktop-two-col .desktop-content {
-    flex: 1;
+    width: 100%;
+    max-width: 680px;
     overflow-y: auto;
     overflow-x: hidden;
+    flex-shrink: 0;
   }
 
   /* Right panel - sticky, doesn't scroll with page */
