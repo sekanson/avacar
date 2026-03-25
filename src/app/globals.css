@@ -1089,8 +1089,8 @@ html, body {
     max-width: 480px;
     padding: 10px 18px;
     border-radius: 9999px;
-    background: var(--surface-low);
-    border: none;
+    background: var(--surface-container);
+    border: 1px solid var(--ghost-border);
     outline: none;
     font-family: var(--font-manrope), Manrope, sans-serif;
     font-size: 14px;
@@ -1434,7 +1434,8 @@ html, body {
   }
 }
 
-/* Hide story strip on desktop */
+/* Story strip: flex on mobile, hidden on desktop */
+.story-strip-mobile { display: flex; }
 @media (min-width: 768px) {
   .story-strip-mobile { display: none !important; }
 }

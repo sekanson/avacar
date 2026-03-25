@@ -106,7 +106,6 @@ export default function FeedPage() {
       <div
         className="story-strip-mobile"
         style={{
-          display: "flex",
           gap: 16,
           overflowX: "auto",
           scrollbarWidth: "none",
