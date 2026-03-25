@@ -327,7 +327,7 @@ function DesktopSidebar({
                 onClick={() => handleNav(tab)}
                 className={`desktop-nav-item${isActive ? " active" : ""}`}
               >
-                <Icon size={20} strokeWidth={2} />
+                <Icon size={18} strokeWidth={2} />
                 <span>{tab.label}</span>
               </button>
             );
@@ -337,7 +337,7 @@ function DesktopSidebar({
             onClick={() => router.push("/marketplace")}
             className={`desktop-nav-item${pathname.startsWith("/marketplace") ? " active" : ""}`}
           >
-            <Store size={20} strokeWidth={2} />
+            <Store size={18} strokeWidth={2} />
             <span>Shop</span>
           </button>
         </nav>
