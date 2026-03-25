@@ -1273,10 +1273,18 @@ html, body {
 
   .desktop-full-col .desktop-content {
     flex: 1;
-    width: 100%;
-    overflow: visible;
+    width: 100% !important;
+    max-width: none !important;
+    overflow-y: auto;
+    overflow-x: hidden;
     height: fit-content;
     min-height: 100%;
+  }
+
+  /* Ensure marketplace pages fill full width inside content */
+  .desktop-full-col .desktop-content > * {
+    width: 100% !important;
+    max-width: none !important;
   }
 
   /* Right panel - sticky, doesn't scroll with page */
