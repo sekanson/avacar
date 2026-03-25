@@ -206,6 +206,7 @@ body {
 .desktop-sidebar-nav {
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
   gap: 4px;
   flex: 1;
   padding: 8px 0;

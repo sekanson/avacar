@@ -59,21 +59,28 @@ function getActiveTab(pathname: string): NavTab | null {
 
 /* ─── Theme hook ─── */
 function useTheme() {
-  const [darkMode, setDarkMode] = useState(false);
+  // CSS :root defaults to dark — darkMode=true means "dark is active"
+  const [darkMode, setDarkMode] = useState(true);
 
   useEffect(() => {
     const saved = localStorage.getItem("avacar-theme");
-    if (saved === "dark") {
-      setDarkMode(true);
-      document.documentElement.setAttribute("data-theme", "dark");
+    if (saved === "light") {
+      setDarkMode(false);
+      document.documentElement.setAttribute("data-theme", "light");
     }
+    // dark is CSS default — no attribute needed
   }, []);
 
   const toggleTheme = () => {
-    const next = !darkMode;
-    setDarkMode(next);
-    document.documentElement.setAttribute("data-theme", next ? "dark" : "light");
-    localStorage.setItem("avacar-theme", next ? "dark" : "light");
+    const nextDark = !darkMode;
+    setDarkMode(nextDark);
+    if (nextDark) {
+      document.documentElement.removeAttribute("data-theme");
+      localStorage.setItem("avacar-theme", "dark");
+    } else {
+      document.documentElement.setAttribute("data-theme", "light");
+      localStorage.setItem("avacar-theme", "light");
+    }
   };
 
   return { darkMode, toggleTheme };
@@ -133,7 +140,7 @@ function TabBar() {
   };
 
   return (
-    <nav className="tabbar">
+    <nav className="tab-bar">
       {TABS.map((tab) => {
         const isActive = activeTab === tab.id;
         const isCenter = tab.id === "design";
@@ -191,19 +198,15 @@ function TabBar() {
           <button
             key={tab.id}
             onClick={() => handleTabPress(tab)}
-            className={`tab-item${isActive ? " active" : ""}`}
+            className={`tab-bar-item${isActive ? " active" : ""}`}
             aria-label={tab.label}
           >
             <Icon
               size={22}
-              className="tab-icon"
-              color={isActive ? "var(--accent, #007FFF)" : "var(--on-surface-variant)"}
+              color={isActive ? "var(--color-cyan)" : "var(--color-text-tertiary)"}
               strokeWidth={2}
             />
-            <span
-              className="tab-label"
-              style={{ opacity: isActive ? 1 : 0.6 }}
-            >
+            <span style={{ fontSize: 10, fontWeight: 500, opacity: isActive ? 1 : 0.6 }}>
               {tab.label}
             </span>
           </button>
