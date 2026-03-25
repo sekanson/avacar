@@ -203,11 +203,17 @@ body {
   overflow: hidden;
   transition: width 200ms ease;
   flex-shrink: 0;
+  position: relative;
+  z-index: 50;
 }
 
 .desktop-sidebar:hover {
   width: 160px;
   background: #0e0e14;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100vh;
 }
 
 .desktop-sidebar-inner {
