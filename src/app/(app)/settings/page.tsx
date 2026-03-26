@@ -524,7 +524,7 @@ export default function SettingsPage() {
           <SettingRow
             icon={Info}
             label="About AVACAR"
-            sublabel="Version 1.0.0 — Sprint 1"
+            sublabel="Version 1.0"
             accent="#44CCFF"
           />
           <SettingRow

@@ -437,6 +437,13 @@ body {
   min-width: 0;
 }
 
+/* Inner content wrapper — applies max-width constraint */
+.desktop-content > * {
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .desktop-content.desktop-mobile-preview {
   max-width: 390px;
   margin: 0 auto;

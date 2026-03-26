@@ -6,12 +6,6 @@ import { allMarketplaceProducts } from "@/data/marketplace";
 import type { MarketplaceProduct } from "@/data/marketplace";
 import { SlidersHorizontal, X, Search } from "lucide-react";
 
-const MODE_TABS = [
-  { id: "designs",  label: "Designs",  href: "/marketplace/designs" },
-  { id: "products", label: "Products", href: "/marketplace/products" },
-  { id: "shops",    label: "Shops",    href: "/marketplace/shops" },
-  { id: "training", label: "Training", href: "/marketplace/training" },
-];
 
 const WHEEL_IMAGES = [
   "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=600&q=80&fm=webp",
@@ -19,6 +13,35 @@ const WHEEL_IMAGES = [
   "https://images.unsplash.com/photo-1580273916550-e323be2ae537?w=600&q=80&fm=webp",
 ];
 const PPF_IMAGE = "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=600&q=80&fm=webp";
+
+// Generate a rich gradient for wrap products based on their finish type and color
+function getWrapGradient(hex: string, finish: string): string {
+  const f = (finish || "").toLowerCase();
+  if (f.includes("chrome")) {
+    return `linear-gradient(135deg, #c8c8c8 0%, #f0f0f0 25%, #a0a0a0 50%, #e8e8e8 75%, #b8b8b8 100%)`;
+  }
+  if (f.includes("color-shift") || f.includes("colour shift") || f.includes("cosmic") || f.includes("shift")) {
+    return `linear-gradient(135deg, ${hex} 0%, #9b59b6 33%, #3498db 66%, ${hex} 100%)`;
+  }
+  if (f.includes("matte")) {
+    // Matte: flat with subtle edge shadow, no shine
+    return `linear-gradient(160deg, ${hex}ee 0%, ${hex}cc 40%, ${hex}bb 70%, ${hex}aa 100%)`;
+  }
+  if (f.includes("satin")) {
+    // Satin: slight sheen
+    return `linear-gradient(135deg, ${hex}dd 0%, ${hex}ff 30%, ${hex}ee 60%, ${hex}cc 100%)`;
+  }
+  // Gloss: strong highlight
+  return `linear-gradient(135deg, ${hex} 0%, ${adjustBrightness(hex, 60)} 30%, ${hex} 60%, ${adjustBrightness(hex, -20)} 100%)`;
+}
+
+function adjustBrightness(hex: string, amount: number): string {
+  const num = parseInt(hex.replace("#", ""), 16);
+  const r = Math.min(255, Math.max(0, (num >> 16) + amount));
+  const g = Math.min(255, Math.max(0, ((num >> 8) & 0xff) + amount));
+  const b = Math.min(255, Math.max(0, (num & 0xff) + amount));
+  return `#${[r, g, b].map(v => v.toString(16).padStart(2, "0")).join("")}`;
+}
 
 const FINISHES = ["All", "Matte", "Satin", "Gloss", "Chrome", "Color-Shift"];
 const CATEGORIES = [
@@ -50,7 +73,7 @@ function ProductCard({ product, sponsored }: { product: MarketplaceProduct; spon
             width: "100%",
             aspectRatio: "1 / 1",
             background: product.category === "wraps"
-              ? product.primaryColorHex
+              ? getWrapGradient(product.primaryColorHex, product.finish)
               : "#111",
             position: "relative",
             overflow: "hidden",
@@ -73,13 +96,29 @@ function ProductCard({ product, sponsored }: { product: MarketplaceProduct; spon
             />
           )}
           {product.category === "wraps" && (
-            <div
-              style={{
-                position: "absolute",
-                inset: 0,
-                background: "linear-gradient(135deg, rgba(255,255,255,0.10) 0%, transparent 55%)",
-              }}
-            />
+            <>
+              {/* Texture overlay to simulate material finish */}
+              <div style={{
+                position: "absolute", inset: 0,
+                background: product.finish?.toLowerCase().includes("matte")
+                  ? "radial-gradient(ellipse at 30% 20%, rgba(255,255,255,0.04) 0%, transparent 60%)"
+                  : "radial-gradient(ellipse at 30% 20%, rgba(255,255,255,0.25) 0%, transparent 50%)",
+              }} />
+              {/* Car silhouette overlay */}
+              <div style={{
+                position: "absolute", bottom: 0, left: 0, right: 0,
+                display: "flex", alignItems: "flex-end", justifyContent: "center",
+                padding: "0 8px 6px",
+              }}>
+                <span style={{
+                  fontSize: 11, fontWeight: 700, color: "rgba(0,0,0,0.5)",
+                  textTransform: "uppercase", letterSpacing: "0.08em",
+                  textShadow: "0 1px 2px rgba(255,255,255,0.15)",
+                }}>
+                  {product.finish}
+                </span>
+              </div>
+            </>
           )}
           {/* Brand logo overlay top-left */}
           <div
@@ -359,39 +398,6 @@ export default function ProductCatalogPage() {
   return (
     <div style={{ background: "var(--bg)", minHeight: "100%", paddingBottom: 100 }}>
 
-      {/* Mode Tabs */}
-      <div
-        style={{
-          display: "flex",
-          gap: 0,
-          borderBottom: "1px solid rgba(255,255,255,0.06)",
-          padding: "0 20px",
-          overflowX: "auto",
-          scrollbarWidth: "none",
-        }}
-      >
-        {MODE_TABS.map((tab) => {
-          const isActive = tab.id === "products";
-          return (
-            <Link
-              key={tab.id}
-              href={tab.href}
-              style={{
-                flexShrink: 0,
-                padding: "14px 18px",
-                fontSize: 14,
-                fontWeight: 600,
-                color: isActive ? "#44CCFF" : "var(--color-text-tertiary)",
-                textDecoration: "none",
-                borderBottom: isActive ? "2px solid #44CCFF" : "2px solid transparent",
-                transition: "all 0.15s",
-              }}
-            >
-              {tab.label}
-            </Link>
-          );
-        })}
-      </div>
 
       {/* Header */}
       <div style={{ padding: "20px 20px 0" }}>

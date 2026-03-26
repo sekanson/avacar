@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { MapPin, Star, Heart, MessageCircle, Eye, Sparkles, ShoppingCart } from "lucide-react";
+import { MapPin, Star, Heart, MessageCircle, Eye, Sparkles, ShoppingCart, Car } from "lucide-react";
 import { motion } from "framer-motion";
 
 // ─── Feed Mock Data ────────────────────────────────────────────────────────────
@@ -12,7 +12,8 @@ const FEED_POSTS = [
     handle: "wrapsbyalex",
     avatar: "W",
     age: "3h",
-    caption: "Finally did the Murdered Out look on my G-Wagon 🖤",
+    vehicle: "2022 Mercedes G-Wagon",
+    caption: "Finally did the Murdered Out look on my G-Wagon. Full 3M Satin Black + tint.",
     image: "https://images.unsplash.com/photo-1525609004556-c46c70d0cf4c?w=800&q=80&fm=webp",
     tags: ["3M Satin Black", "HRE P101"],
     likes: "342",
@@ -24,7 +25,8 @@ const FEED_POSTS = [
     handle: "driftking",
     avatar: "D",
     age: "6h",
-    caption: "Supra on P101s at Mosport. The fitment is chef's kiss 🤌",
+    vehicle: "2023 Toyota Supra A90",
+    caption: "Supra on P101s at Mosport. The fitment is chef's kiss.",
     image: "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=800&q=80&fm=webp",
     tags: ["HRE P101", "Stance"],
     likes: "218",
@@ -36,6 +38,7 @@ const FEED_POSTS = [
     handle: "euroboy",
     avatar: "E",
     age: "12h",
+    vehicle: "2022 Audi RS6 Avant",
     caption: "RS6 in 3M Nardo Gray. This color was made for Audis.",
     image: "https://images.unsplash.com/photo-1580273916550-e323be2ae537?w=800&q=80&fm=webp",
     tags: ["3M Nardo Gray", "Vossen CV3"],
@@ -48,7 +51,8 @@ const FEED_POSTS = [
     handle: "jdm.wraps",
     avatar: "J",
     age: "1d",
-    caption: "Full JDM build on the Civic. Rocket Bunny + Inozetek 🔥",
+    vehicle: "2023 Honda Civic Type R",
+    caption: "Full JDM build on the Civic. Rocket Bunny + Inozetek. This thing is loud.",
     image: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=800&q=80&fm=webp",
     tags: ["Rocket Bunny", "Inozetek Purple"],
     likes: "134",
@@ -60,7 +64,8 @@ const FEED_POSTS = [
     handle: "carbonwerks",
     avatar: "C",
     age: "1d",
-    caption: "M4 in our studio. Carbon fiber everything.",
+    vehicle: "2024 BMW M4 Competition",
+    caption: "M4 in our studio. Carbon fiber everything. Client wanted maximum aggression.",
     image: "https://images.unsplash.com/photo-1583121274602-3e2820c69888?w=800&q=80&fm=webp",
     tags: ["Carbon Fiber", "BBS CH-R"],
     likes: "891",
@@ -72,6 +77,7 @@ const FEED_POSTS = [
     handle: "ev.wraps",
     avatar: "E",
     age: "2d",
+    vehicle: "2023 Tesla Model 3",
     caption: "Tesla Model 3 — Satin White Pearl. Clean is the new loud.",
     image: "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=800&q=80&fm=webp",
     tags: ["3M White Pearl", "Tint 20%"],
@@ -79,7 +85,126 @@ const FEED_POSTS = [
     comments: "31",
     views: "9.8K",
   },
+  {
+    id: "p7",
+    handle: "ppf.obsessed",
+    avatar: "P",
+    age: "2d",
+    vehicle: "2024 BMW M3",
+    caption: "Full XPEL Ultimate Plus on the M3. Rock solid protection and it still looks factory.",
+    image: "https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?w=800&q=80&fm=webp",
+    tags: ["XPEL Ultimate Plus", "PPF"],
+    likes: "445",
+    comments: "52",
+    views: "18.3K",
+  },
+  {
+    id: "p8",
+    handle: "chromedelete_co",
+    avatar: "C",
+    age: "3d",
+    vehicle: "2023 BMW 5 Series",
+    caption: "Full chrome delete on the 5 Series. Every piece blacked out. Zero chrome, all class.",
+    image: "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=800&q=80&fm=webp",
+    tags: ["3M Matte Black", "Chrome Delete"],
+    likes: "278",
+    comments: "33",
+    views: "11.2K",
+  },
+  {
+    id: "p9",
+    handle: "tintpros_gta",
+    avatar: "T",
+    age: "3d",
+    vehicle: "2022 Porsche 911 GT3",
+    caption: "GT3 came in for 35% all around ceramic tint. The reflection on this car is insane.",
+    image: "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=800&q=80&fm=webp",
+    tags: ["Ceramic Tint 35%", "XPEL"],
+    likes: "523",
+    comments: "67",
+    views: "22.1K",
+  },
+  {
+    id: "p10",
+    handle: "rimcity_official",
+    avatar: "R",
+    age: "4d",
+    vehicle: "2021 Nissan GT-R R35",
+    caption: "GT-R on Vossen HF-5 in Gloss Gold. The perfect contrast with the Gunmetal wrap.",
+    image: "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=800&q=80&fm=webp",
+    tags: ["Vossen HF-5", "Inozetek Gunmetal"],
+    likes: "387",
+    comments: "44",
+    views: "16.8K",
+  },
+  {
+    id: "p11",
+    handle: "civicbuilder",
+    avatar: "C",
+    age: "4d",
+    vehicle: "2022 Honda Civic",
+    caption: "Stock to stunner in one weekend. Avery SW900 Gloss White and 18s. Civic owners rise up.",
+    image: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=800&q=80&fm=webp",
+    tags: ["Avery SW900", "Enkei Wheels"],
+    likes: "192",
+    comments: "38",
+    views: "7.4K",
+  },
+  {
+    id: "p12",
+    handle: "supragang",
+    avatar: "S",
+    age: "5d",
+    vehicle: "2023 Toyota Supra A90",
+    caption: "Murdered Out Supra. Full Inozetek Super Gloss Deep Black. This thing looks like it costs $300K.",
+    image: "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=800&q=80&fm=webp",
+    tags: ["Inozetek Deep Black", "HRE R101"],
+    likes: "634",
+    comments: "78",
+    views: "29.5K",
+  },
+  {
+    id: "p13",
+    handle: "m4builds",
+    avatar: "M",
+    age: "5d",
+    vehicle: "2024 BMW M4 Competition",
+    caption: "M4 in Avery SW900 Gloss Nardo Gray. Satin Black roof. The stance is perfect.",
+    image: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=800&q=80&fm=webp",
+    tags: ["Avery Nardo Gray", "Satin Black Roof"],
+    likes: "451",
+    comments: "56",
+    views: "19.2K",
+  },
+  {
+    id: "p14",
+    handle: "armorshield_ppf",
+    avatar: "A",
+    age: "6d",
+    vehicle: "2023 Lamborghini Urus",
+    caption: "Full front clip PPF on the Urus. Client drives hard, we protect harder.",
+    image: "https://images.unsplash.com/photo-1580273916550-e323be2ae537?w=800&q=80&fm=webp",
+    tags: ["XPEL Ultimate Plus", "Front Clip PPF"],
+    likes: "712",
+    comments: "93",
+    views: "35.8K",
+  },
+  {
+    id: "p15",
+    handle: "jdmfan",
+    avatar: "J",
+    age: "1w",
+    vehicle: "2021 Toyota GR86",
+    caption: "GR86 got the full JDM treatment. Widebody kit, Volk TE37s, and Matte White wrap. Perfection.",
+    image: "https://images.unsplash.com/photo-1583121274602-3e2820c69888?w=800&q=80&fm=webp",
+    tags: ["Matte White Wrap", "Volk TE37"],
+    likes: "298",
+    comments: "41",
+    views: "13.7K",
+  },
 ];
+
+const VEHICLE_FILTERS = ["All Cars", "Honda Civic", "BMW M4", "Toyota Supra", "G-Wagon", "Porsche 911", "More"];
 
 const FEED_TABS = ["For You", "Following", "Trending"];
 
@@ -134,7 +259,7 @@ function FeedPost({ post, index }: { post: typeof FEED_POSTS[0]; index: number }
       }}
     >
       {/* Header */}
-      <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "14px 16px 12px", justifyContent: "space-between" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "14px 16px 10px", justifyContent: "space-between" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
           <div style={{
             width: 36, height: 36, borderRadius: "50%",
@@ -160,6 +285,21 @@ function FeedPost({ post, index }: { post: typeof FEED_POSTS[0]; index: number }
           + Follow
         </button>
       </div>
+
+      {/* Vehicle tag */}
+      {post.vehicle && (
+        <div style={{ padding: "0 16px 10px" }}>
+          <button style={{
+            display: "inline-flex", alignItems: "center", gap: 5,
+            fontSize: 11, fontWeight: 600, color: "var(--color-text-secondary)",
+            background: "var(--color-surface-elevated)", border: "none",
+            borderRadius: 999, padding: "4px 10px", cursor: "pointer",
+          }}>
+            <Car size={11} />
+            {post.vehicle}
+          </button>
+        </div>
+      )}
 
       {/* Caption */}
       <p style={{ fontSize: 14, color: "var(--color-text-primary)", margin: "0 16px 12px", lineHeight: 1.5 }}>
@@ -230,6 +370,7 @@ function FeedPost({ post, index }: { post: typeof FEED_POSTS[0]; index: number }
 export default function ExplorePage() {
   const [activeTab, setActiveTab] = useState(0);
   const [activeCategory, setActiveCategory] = useState("All");
+  const [activeVehicle, setActiveVehicle] = useState("All Cars");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -337,7 +478,7 @@ export default function ExplorePage() {
 
       {/* Category chips */}
       <div style={{
-        display: "flex", gap: 8, padding: "0 20px 16px",
+        display: "flex", gap: 8, padding: "0 20px 10px",
         overflowX: "auto", scrollbarWidth: "none", whiteSpace: "nowrap",
         WebkitOverflowScrolling: "touch",
       } as React.CSSProperties}>
@@ -357,6 +498,35 @@ export default function ExplorePage() {
               }}
             >
               {cat}
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Vehicle filters */}
+      <div style={{
+        display: "flex", gap: 8, padding: "0 20px 16px",
+        overflowX: "auto", scrollbarWidth: "none", whiteSpace: "nowrap",
+        WebkitOverflowScrolling: "touch",
+      } as React.CSSProperties}>
+        {VEHICLE_FILTERS.map((v) => {
+          const isActive = v === activeVehicle;
+          return (
+            <button
+              key={v}
+              onClick={() => setActiveVehicle(v)}
+              style={{
+                flexShrink: 0, padding: "5px 12px", borderRadius: 999,
+                fontSize: 12, fontWeight: 600, cursor: "pointer",
+                border: isActive ? "1px solid rgba(52,211,153,0.35)" : "1px solid var(--color-border)",
+                background: isActive ? "rgba(52,211,153,0.12)" : "transparent",
+                color: isActive ? "#34D399" : "#6B6B7B",
+                transition: "all 0.2s",
+                display: "flex", alignItems: "center", gap: 5,
+              }}
+            >
+              {v !== "All Cars" && v !== "More" && <Car size={10} />}
+              {v}
             </button>
           );
         })}

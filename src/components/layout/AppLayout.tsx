@@ -3,9 +3,8 @@
 import { usePathname, useRouter } from "next/navigation";
 import {
   Home, Compass, User, Bell, Sun, Moon, Sparkles, Car,
-  Smartphone, Store, ShoppingCart, Folder, MapPin,
-  ChevronDown, ChevronRight,
-  Wrench, Disc3, Palette, Globe, Paintbrush, Film, Camera,
+  Smartphone, Store, ShoppingCart, MapPin, Plus,
+  Wrench, Disc3, Palette, Globe, Paintbrush, Film, Camera, MessageCircle,
 } from "lucide-react";
 import { useAppStore } from "@/store/appStore";
 import { useState, useEffect } from "react";
@@ -404,6 +403,9 @@ function DesktopTopNav({
           >
             <Smartphone size={18} />
           </button>
+          <button className="tbb" onClick={() => router.push("/messages")} aria-label="Messages">
+            <MessageCircle size={18} />
+          </button>
           <button className="tbb" onClick={onToggleCart} aria-label="Cart">
             <ShoppingCart size={18} />
           </button>
@@ -435,50 +437,15 @@ function DesktopTopNav({
 
 /* ─── Desktop Sidebar ─── */
 
-const CREATE_SUBMENU = [
-  { label: "Quick Build",    href: "/create" },
-  { label: "Swap Wheels",    href: "/create/customize?category=modify&sub=wheels" },
-  { label: "Change Wrap",    href: "/create/customize?category=modify&sub=wraps" },
-  { label: "Scene My Car",   href: "/create/customize?category=scenes" },
-  { label: "Style Explorer", href: "/create/customize?category=styles" },
-  { label: "Touch Up",       href: "/create/touchup" },
-  { label: "Car in Motion",  href: "/create/video" },
-];
-
-const CATALOG_SUBMENU = [
-  { label: "Wheels",       href: "/marketplace/products?cat=wheels" },
-  { label: "Wraps",        href: "/marketplace/products?cat=wraps" },
-  { label: "Body Kits",    href: "/marketplace/products?cat=bodykits" },
-  { label: "Tints & PPF",  href: "/marketplace/products?cat=tints" },
-  { label: "Collections",  href: "/marketplace/products?cat=collections" },
-  { label: "Designs",      href: "/marketplace/designs" },
-];
-
-const STUFF_SUBMENU = [
-  { label: "My Garage",    href: "/garage" },
-  { label: "My Workshop",  href: "/garage/workshop" },
-  { label: "Templates",    href: "/garage/templates" },
-  { label: "History",      href: "/garage/history" },
-];
-
-type MenuKey = "create" | "catalog" | "stuff";
-
-const SUBMENUS: Record<MenuKey, { label: string; href: string }[]> = {
-  create:  CREATE_SUBMENU,
-  catalog: CATALOG_SUBMENU,
-  stuff:   STUFF_SUBMENU,
-};
-
 function DesktopSidebar({ pathname }: { pathname: string }) {
   const router = useRouter();
-  const [expandedMenu, setExpandedMenu] = useState<MenuKey | null>(null);
 
   const mainItems = [
     { id: "home",    href: "/feed",              icon: Home,     label: "Home",    isActive: pathname === "/feed" || pathname === "/" },
     { id: "explore", href: "/explore",           icon: Compass,  label: "Explore", isActive: pathname.startsWith("/explore") },
-    { id: "create",  menu: "create" as MenuKey,  icon: Sparkles, label: "Create",  isActive: pathname.startsWith("/create") },
-    { id: "catalog", menu: "catalog" as MenuKey, icon: Store,    label: "Catalog", isActive: pathname.startsWith("/marketplace") },
-    { id: "stuff",   menu: "stuff" as MenuKey,   icon: Folder,   label: "My Stuff",isActive: pathname.startsWith("/garage") },
+    { id: "create",  href: "/create",            icon: Plus,     label: "Create",  isActive: pathname.startsWith("/create"), isAccent: true },
+    { id: "catalog", href: "/marketplace",       icon: Store,    label: "Catalog", isActive: pathname.startsWith("/marketplace") },
+    { id: "garage",  href: "/garage",            icon: Car,      label: "My Garage",isActive: pathname.startsWith("/garage") },
     { id: "shop",    href: "/marketplace/shops", icon: MapPin,   label: "Shop",    isActive: pathname === "/marketplace/shops" },
     { id: "profile", href: "/profile",           icon: User,     label: "Profile", isActive: pathname === "/profile" },
   ];
@@ -489,55 +456,37 @@ function DesktopSidebar({ pathname }: { pathname: string }) {
         <nav className="desktop-sidebar-nav">
           {mainItems.map((item) => {
             const Icon = item.icon;
-            const hasMenu = !!item.menu;
-            const isOpen = hasMenu && expandedMenu === item.menu;
+
+            if (item.isAccent) {
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => router.push(item.href)}
+                  className="desktop-nav-item"
+                  style={{
+                    background: "rgba(68,204,255,0.12)",
+                    border: "1px solid rgba(68,204,255,0.25)",
+                    color: "#44CCFF",
+                    borderRadius: 10,
+                    margin: "4px 0",
+                    fontWeight: 800,
+                  }}
+                >
+                  <Icon size={18} strokeWidth={2.5} color="#44CCFF" />
+                  <span style={{ color: "#44CCFF" }}>{item.label}</span>
+                </button>
+              );
+            }
 
             return (
-              <div key={item.id}>
-                <button
-                  onClick={() => {
-                    if (hasMenu) {
-                      setExpandedMenu(isOpen ? null : item.menu!);
-                    } else {
-                      router.push(item.href!);
-                    }
-                  }}
-                  className={`desktop-nav-item${item.isActive ? " active" : ""}`}
-                >
-                  <Icon size={18} strokeWidth={2} />
-                  <span>{item.label}</span>
-                  {hasMenu && (
-                    <span className="desktop-nav-chevron" style={{ marginLeft: "auto", display: "flex" }}>
-                      {isOpen ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
-                    </span>
-                  )}
-                </button>
-
-                {/* Submenu */}
-                {hasMenu && isOpen && (
-                  <div style={{
-                    borderLeft: "2px solid #44CCFF",
-                    marginLeft: 16,
-                    paddingLeft: 4,
-                    marginBottom: 4,
-                  }}>
-                    {SUBMENUS[item.menu!].map((sub) => {
-                      const subBase = sub.href.split("?")[0];
-                      const isSubActive = pathname === subBase || pathname.startsWith(subBase + "/");
-                      return (
-                        <button
-                          key={sub.label}
-                          onClick={() => router.push(sub.href)}
-                          className={`desktop-nav-item${isSubActive ? " active" : ""}`}
-                          style={{ fontSize: 12 }}
-                        >
-                          <span>{sub.label}</span>
-                        </button>
-                      );
-                    })}
-                  </div>
-                )}
-              </div>
+              <button
+                key={item.id}
+                onClick={() => router.push(item.href)}
+                className={`desktop-nav-item${item.isActive ? " active" : ""}`}
+              >
+                <Icon size={18} strokeWidth={2} />
+                <span>{item.label}</span>
+              </button>
             );
           })}
         </nav>
