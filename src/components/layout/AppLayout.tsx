@@ -7,7 +7,7 @@ import {
   Wrench, Disc3, Palette, Globe, Paintbrush, Film, Camera, MessageCircle,
 } from "lucide-react";
 import { useAppStore } from "@/store/appStore";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import CartPanel from "@/components/commerce/CartPanel";
 
 // Routes that render full-screen without chrome
@@ -554,6 +554,17 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   const { darkMode, toggleTheme } = useTheme();
   const [mobilePreview, setMobilePreview] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  // Forward wheel events from anywhere in desktop-body to the content scroller
+  const handleBodyWheel = useCallback((e: React.WheelEvent<HTMLDivElement>) => {
+    const target = e.target as HTMLElement;
+    // Don't intercept if already scrolling inside right panel or content itself
+    if (target.closest('.desktop-right-panel') || target.closest('.desktop-content')) return;
+    if (contentRef.current) {
+      contentRef.current.scrollTop += e.deltaY;
+    }
+  }, []);
 
   const isFullScreen =
     FULL_SCREEN_ROUTES.has(pathname) ||
@@ -597,12 +608,13 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           onToggleMobilePreview={() => setMobilePreview(p => !p)}
           onToggleCart={() => setCartOpen(p => !p)}
         />
-        <div className="desktop-body">
+        <div className="desktop-body" onWheel={handleBodyWheel}>
           <DesktopSidebar pathname={pathname} />
           <div className={showRightPanel && !mobilePreview ? "desktop-three-col" : contentColClass}>
             <div
+              ref={contentRef}
               className={mobilePreview ? "desktop-content desktop-mobile-preview" : "desktop-content"}
-              style={isFeedLayout && !mobilePreview ? { maxWidth: 680, flex: '1 1 auto', marginLeft: 'auto', marginRight: 'auto' } : undefined}
+              style={isFeedLayout && !mobilePreview ? { maxWidth: 680, flex: '1 1 auto', marginLeft: 'auto', marginRight: 'auto', minHeight: 0 } : undefined}
             >
               {children}
             </div>
