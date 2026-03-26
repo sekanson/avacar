@@ -438,9 +438,10 @@ body {
   min-width: 0;
 }
 
-/* Feed/explore only: inner content centered at 680px */
+/* Feed/explore only: inner content centered at 680px, fluid on narrow windows */
 .desktop-center-scroll.feed-layout .desktop-content {
-  max-width: 680px;
+  max-width: min(680px, calc(100% - 32px));
+  width: 100%;
   margin-left: auto;
   margin-right: auto;
 }
@@ -663,6 +664,40 @@ body {
   color: #000;
   border: none;
   cursor: pointer;
+}
+
+/* ─── Masonry grid — responsive columns ─── */
+.masonry-grid {
+  columns: 4;
+  column-gap: 10px;
+}
+
+@media (max-width: 1279px) {
+  .masonry-grid { columns: 3; }
+}
+
+@media (max-width: 1023px) {
+  .masonry-grid { columns: 2; }
+}
+
+/* ─── Horizontal scroll row — prevent page overflow ─── */
+.scroll-row {
+  overflow-x: auto;
+  scrollbar-width: none;
+  max-width: 100%;
+}
+
+.scroll-row::-webkit-scrollbar {
+  display: none;
+}
+
+/* ─── Fluid headings ─── */
+h1, .heading-xl {
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+h2, .heading-lg {
+  font-size: clamp(1.25rem, 2vw, 1.75rem);
 }
 
 /* ─── Toast ─── */

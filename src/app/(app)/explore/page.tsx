@@ -411,7 +411,7 @@ export default function ExplorePage() {
         <h2 style={{ fontFamily: "var(--font-manrope, Manrope, sans-serif)", fontWeight: 800, fontSize: 18, color: "var(--color-text-primary)", margin: "0 0 14px", letterSpacing: "-0.02em" }}>
           Trending Now
         </h2>
-        <div style={{ display: "flex", gap: 12, overflowX: "auto", scrollbarWidth: "none", paddingBottom: 4 }}>
+        <div className="scroll-row" style={{ display: "flex", gap: 12, paddingBottom: 4 }}>
           {TRENDING_CARDS.map((card) => (
             <div key={card.title} style={{
               flexShrink: 0, width: 280, height: 160, borderRadius: 16, overflow: "hidden",
@@ -433,7 +433,7 @@ export default function ExplorePage() {
         <h2 style={{ fontFamily: "var(--font-manrope, Manrope, sans-serif)", fontWeight: 800, fontSize: 18, color: "var(--color-text-primary)", margin: "0 0 14px", letterSpacing: "-0.02em" }}>
           Browse by Vehicle
         </h2>
-        <div style={{ display: "flex", gap: 10, overflowX: "auto", scrollbarWidth: "none", paddingBottom: 4 }}>
+        <div className="scroll-row" style={{ display: "flex", gap: 10, paddingBottom: 4 }}>
           {VEHICLE_PILLS.map((v) => {
             const inner = (
               <div style={{
@@ -459,7 +459,7 @@ export default function ExplorePage() {
         <h2 style={{ fontFamily: "var(--font-manrope, Manrope, sans-serif)", fontWeight: 800, fontSize: 18, color: "var(--color-text-primary)", margin: "0 0 14px", letterSpacing: "-0.02em" }}>
           Featured Collections
         </h2>
-        <div style={{ display: "flex", gap: 12, overflowX: "auto", scrollbarWidth: "none", paddingBottom: 4 }}>
+        <div className="scroll-row" style={{ display: "flex", gap: 12, paddingBottom: 4 }}>
           {COLLECTIONS.map((col) => (
             <div key={col.title} style={{ flexShrink: 0, width: 180, cursor: "pointer" }}>
               <div style={{ width: 180, height: 160, borderRadius: 14, overflow: "hidden", display: "grid", gridTemplateColumns: "1fr 1fr", gridTemplateRows: "1fr 1fr", gap: 2 }}>
@@ -483,7 +483,7 @@ export default function ExplorePage() {
         padding: "12px 20px",
         marginTop: 24,
       }}>
-        <div style={{ display: "flex", gap: 8, overflowX: "auto", scrollbarWidth: "none", flex: 1 }}>
+        <div className="scroll-row" style={{ display: "flex", gap: 8, flex: 1 }}>
           {INTEREST_PILLS.map((pill) => (
             <button key={pill} onClick={() => setActiveFilter(pill)} style={{
               flexShrink: 0, height: 32, padding: "0 14px", borderRadius: 999,
@@ -507,7 +507,7 @@ export default function ExplorePage() {
 
       {/* MASONRY GRID */}
       <div style={{ padding: "16px 12px 0" }}>
-        <div style={{ columns: "4 200px", columnGap: 10 }}>
+        <div className="masonry-grid">
           {filteredPosts.map((post) => (
             <MasonryCard key={post.id} post={post} />
           ))}

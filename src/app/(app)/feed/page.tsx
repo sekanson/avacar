@@ -123,12 +123,10 @@ export default function FeedPage() {
             + New Build
           </button>
         </div>
-        <div style={{
+        <div className="scroll-row" style={{
           display: "flex",
           gap: 12,
-          overflowX: "auto",
           padding: "4px 20px 8px",
-          scrollbarWidth: "none",
         }}>
           {RECENT_BUILDS.map((build) => (
             <div
@@ -137,7 +135,7 @@ export default function FeedPage() {
               style={{ flexShrink: 0, cursor: "pointer" }}
             >
               <div style={{
-                width: 120,
+                width: "clamp(90px, 10vw, 120px)",
                 height: 90,
                 borderRadius: 12,
                 overflow: "hidden",
@@ -155,7 +153,7 @@ export default function FeedPage() {
                 fontSize: 11,
                 color: "var(--color-text-secondary)",
                 margin: 0,
-                width: 120,
+                width: "clamp(90px, 10vw, 120px)",
                 overflow: "hidden",
                 textOverflow: "ellipsis",
                 whiteSpace: "nowrap",
@@ -207,7 +205,7 @@ export default function FeedPage() {
         </div>
 
         {/* 2-col template grid */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: 12 }}>
           {TEMPLATES.map((template) => {
             const badge = TYPE_BADGE_COLORS[template.type];
             return (
@@ -304,19 +302,17 @@ export default function FeedPage() {
           </button>
         </div>
 
-        <div style={{
+        <div className="scroll-row" style={{
           display: "flex",
           gap: 14,
-          overflowX: "auto",
           padding: "4px 20px 8px",
-          scrollbarWidth: "none",
         }}>
           {COMMUNITY_POSTS.map((post) => (
             <div
               key={post.username}
               style={{
                 flexShrink: 0,
-                width: 220,
+                width: "clamp(180px, 30vw, 220px)",
                 borderRadius: 16,
                 background: "var(--color-surface)",
                 border: "1px solid var(--color-border)",

@@ -243,7 +243,7 @@ export default function PublicProfilePage() {
         </h3>
 
         {posts.length > 0 ? (
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 6 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: 6 }}>
             {posts.map((post) => (
               <Link key={post.id} href={`/feed/${post.id}`}>
                 <div
