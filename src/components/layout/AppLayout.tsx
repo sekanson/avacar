@@ -3,8 +3,8 @@
 import { usePathname, useRouter } from "next/navigation";
 import {
   Home, Compass, User, Bell, Sun, Moon, Sparkles, Car,
-  Smartphone, Store, ShoppingCart, MapPin, Plus, Users,
-  Wrench, Disc3, Palette, Globe, Paintbrush, Film, Camera, MessageCircle,
+  Store, ShoppingCart, MapPin, Plus, Users, Search,
+  Disc3, Palette, Globe, Paintbrush, Film, Camera,
 } from "lucide-react";
 import { useAppStore } from "@/store/appStore";
 import { useState, useEffect, useRef, useCallback } from "react";
@@ -333,20 +333,16 @@ const FEED_CATEGORIES = ["All", "Wraps", "Wheels", "Tint", "PPF", "Suspension", 
 function DesktopTopNav({
   darkMode,
   onToggleTheme,
-  mobilePreview,
-  onToggleMobilePreview,
   onToggleCart,
 }: {
   darkMode: boolean;
   onToggleTheme: () => void;
-  mobilePreview: boolean;
-  onToggleMobilePreview: () => void;
   onToggleCart: () => void;
 }) {
   const router = useRouter();
   const pathname = usePathname();
   const [activeCat, setActiveCat] = useState("All");
-  const [searchFocused, setSearchFocused] = useState(false);
+  const [searchExpanded, setSearchExpanded] = useState(false);
   const showCategoryPills = pathname.startsWith("/explore");
 
   return (
@@ -363,55 +359,31 @@ function DesktopTopNav({
             style={{ height: 20, width: "auto" }}
           />
         </button>
+
+        {/* Center: expandable search */}
         <div style={{ flex: 1, display: "flex", justifyContent: "center", position: "relative" }}>
-          <input
-            className="desktop-topnav-search"
-            type="search"
-            placeholder="Search wheels, wraps, or describe your build..."
-            aria-label="Search"
-            style={{ width: "100%", maxWidth: 560 }}
-            onFocus={() => setSearchFocused(true)}
-            onBlur={() => setTimeout(() => setSearchFocused(false), 150)}
-          />
-          {searchFocused && (
-            <div style={{
-              position: "absolute", top: "100%", left: "50%", transform: "translateX(-50%)",
-              width: "100%", maxWidth: 560, marginTop: 6,
-              background: "var(--color-surface)", borderRadius: 12,
-              padding: 12, boxShadow: "0 4px 20px rgba(0,0,0,0.4)",
-              zIndex: 100, border: "1px solid var(--color-border)",
-            }}>
-              <p style={{ fontSize: 11, fontWeight: 700, color: "#44CCFF", margin: "0 0 8px" }}>🔍 Try:</p>
-              <p style={{ fontSize: 12, color: "var(--color-text-secondary)", margin: "0 0 6px" }}>
-                <span style={{ color: "var(--color-text-primary)", fontWeight: 600 }}>&ldquo;HRE P101&rdquo;</span> → find the product
-              </p>
-              <p style={{ fontSize: 12, color: "var(--color-text-secondary)", margin: "0 0 6px" }}>
-                <span style={{ color: "var(--color-text-primary)", fontWeight: 600 }}>&ldquo;matte black G-Wagon Tokyo&rdquo;</span> → create
-              </p>
-              <p style={{ fontSize: 12, color: "var(--color-text-secondary)", margin: 0 }}>
-                <span style={{ color: "var(--color-text-primary)", fontWeight: 600 }}>&ldquo;@wrapsbyalex&rdquo;</span> → find creator
-              </p>
-            </div>
-          )}
+          {searchExpanded ? (
+            <input
+              autoFocus
+              className="desktop-topnav-search"
+              type="search"
+              placeholder="Search wheels, wraps, or describe your build..."
+              aria-label="Search"
+              style={{ width: "100%", maxWidth: 520 }}
+              onBlur={() => setSearchExpanded(false)}
+            />
+          ) : null}
         </div>
+
         <div style={{ flexShrink: 0, display: "flex", alignItems: "center", gap: 4 }}>
-          <button
-            className="tbb"
-            onClick={onToggleMobilePreview}
-            aria-label="Toggle mobile preview"
-            title="Mobile preview"
-            style={{ color: mobilePreview ? "var(--accent)" : undefined }}
-          >
-            <Smartphone size={18} />
-          </button>
-          <button className="tbb" onClick={() => router.push("/messages")} aria-label="Messages">
-            <MessageCircle size={18} />
+          <button className="tbb" onClick={() => setSearchExpanded(s => !s)} aria-label="Search">
+            <Search size={18} />
           </button>
           <button className="tbb" onClick={onToggleCart} aria-label="Cart">
             <ShoppingCart size={18} />
           </button>
           <button className="tbb" onClick={() => router.push("/notifications")} aria-label="Notifications">
-            <Bell size={20} />
+            <Bell size={18} />
           </button>
           <button className="tbb" onClick={onToggleTheme} aria-label={`Toggle ${darkMode ? "light" : "dark"} mode`}>
             {darkMode ? <Sun size={18} /> : <Moon size={18} />}
@@ -465,17 +437,17 @@ function DesktopSidebar({ pathname }: { pathname: string }) {
                   key={item.id}
                   onClick={() => router.push(item.href)}
                   className="desktop-nav-item"
+                  data-tooltip={item.label}
                   style={{
                     background: "rgba(68,204,255,0.12)",
                     border: "1px solid rgba(68,204,255,0.25)",
                     color: "#44CCFF",
                     borderRadius: 10,
-                    margin: "4px 0",
+                    margin: "4px 6px",
                     fontWeight: 800,
                   }}
                 >
                   <Icon size={18} strokeWidth={2.5} color="#44CCFF" />
-                  <span style={{ color: "#44CCFF" }}>{item.label}</span>
                 </button>
               );
             }
@@ -485,9 +457,9 @@ function DesktopSidebar({ pathname }: { pathname: string }) {
                 key={item.id}
                 onClick={() => router.push(item.href)}
                 className={`desktop-nav-item${item.isActive ? " active" : ""}`}
+                data-tooltip={item.label}
               >
                 <Icon size={18} strokeWidth={2} />
-                <span>{item.label}</span>
               </button>
             );
           })}
@@ -554,7 +526,6 @@ function Toast() {
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const { darkMode, toggleTheme } = useTheme();
-  const [mobilePreview, setMobilePreview] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
 
@@ -606,23 +577,21 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         <DesktopTopNav
           darkMode={darkMode}
           onToggleTheme={toggleTheme}
-          mobilePreview={mobilePreview}
-          onToggleMobilePreview={() => setMobilePreview(p => !p)}
           onToggleCart={() => setCartOpen(p => !p)}
         />
         <div className="desktop-body" onWheel={handleBodyWheel}>
           <DesktopSidebar pathname={pathname} />
-          <div className={showRightPanel && !mobilePreview ? "desktop-three-col" : contentColClass}>
+          <div className={showRightPanel ? "desktop-three-col" : contentColClass}>
             {/* Scroll wrapper spans full center width — scrollbar appears at far right */}
             <div
               ref={contentRef}
-              className={isExplorePage && !mobilePreview ? "desktop-center-scroll feed-layout" : "desktop-center-scroll"}
+              className={isExplorePage ? "desktop-center-scroll feed-layout" : "desktop-center-scroll"}
             >
-              <div className={mobilePreview ? "desktop-content desktop-mobile-preview" : "desktop-content"}>
+              <div className="desktop-content">
                 {children}
               </div>
             </div>
-            {showRightPanel && !mobilePreview && <RightPanel />}
+            {showRightPanel && <RightPanel />}
           </div>
         </div>
       </div>

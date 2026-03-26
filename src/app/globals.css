@@ -210,7 +210,7 @@ body {
 }
 
 .desktop-sidebar:hover {
-  width: 160px;
+  width: 48px; /* icon-only, no expand */
 }
 
 .desktop-sidebar-inner {
@@ -249,9 +249,9 @@ body {
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
   gap: 12px;
-  padding: 10px 0 10px 14px;
+  padding: 10px 0;
   border-radius: 0;
   color: var(--color-text-secondary);
   background: none;
@@ -259,10 +259,12 @@ body {
   cursor: pointer;
   text-align: left;
   white-space: nowrap;
-  overflow: hidden;
+  overflow: visible;
   font-size: 13px;
   font-weight: 500;
   transition: background var(--transition-fast), color var(--transition-fast);
+  position: relative;
+  width: 100%;
 }
 
 .desktop-nav-item svg {
@@ -270,25 +272,33 @@ body {
   min-width: 20px;
 }
 
-/* Hide icon labels when sidebar is collapsed — zero width so they don't push icon off-center */
-.desktop-nav-item span {
+/* Tooltip on sidebar nav items */
+.desktop-nav-item::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  left: 52px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #1C1C24;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 6px;
+  white-space: nowrap;
   opacity: 0;
-  max-width: 0;
-  overflow: hidden;
-  transition: opacity 150ms ease, max-width 150ms ease;
+  pointer-events: none;
+  transition: opacity 0.15s;
+  z-index: 100;
+  border: 1px solid #2A2A36;
 }
-.desktop-sidebar:hover .desktop-nav-item span {
+.desktop-nav-item:hover::after {
   opacity: 1;
-  max-width: 120px;
 }
 
-/* Also hide logo 'ACAR' text when collapsed */
+/* Also hide logo 'ACAR' text always */
 .sidebar-logo-rest {
   opacity: 0;
-  transition: opacity 150ms ease;
-}
-.desktop-sidebar:hover .sidebar-logo-rest {
-  opacity: 1;
 }
 
 .desktop-nav-item:hover {
@@ -299,11 +309,6 @@ body {
 .desktop-nav-item.active {
   color: var(--color-cyan);
   background: var(--color-cyan-subtle);
-}
-
-/* On hover-expand, update padding only — justify-content already flex-start */
-.desktop-sidebar:hover .desktop-nav-item {
-  padding: 10px 14px 10px 14px;
 }
 
 .desktop-sidebar-footer {
@@ -342,7 +347,8 @@ body {
 .desktop-topnav {
   display: flex;
   flex-direction: column;
-  background: var(--color-surface);
+  background: rgba(12,12,16,0.95);
+  backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--color-border);
   flex-shrink: 0;
   z-index: var(--z-sticky);
@@ -353,8 +359,8 @@ body {
   flex-direction: row;
   align-items: center;
   gap: 8px;
-  padding: 8px 16px;
-  height: 48px;
+  padding: 6px 16px;
+  height: 44px;
 }
 
 .desktop-topnav-search {
@@ -672,18 +678,19 @@ body {
   cursor: pointer;
 }
 
-/* ─── Masonry grid — responsive columns ─── */
+/* ─── Uniform card grid (explore + feed) ─── */
 .masonry-grid {
-  columns: 4;
-  column-gap: 10px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
 }
 
 @media (max-width: 1279px) {
-  .masonry-grid { columns: 3; }
+  .masonry-grid { grid-template-columns: repeat(3, 1fr); }
 }
 
 @media (max-width: 1023px) {
-  .masonry-grid { columns: 2; }
+  .masonry-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
 /* ─── Horizontal scroll row — prevent page overflow ─── */
