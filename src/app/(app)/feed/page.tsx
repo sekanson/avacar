@@ -53,6 +53,7 @@ export default function FeedPage() {
 
   return (
     <div style={{ background: "var(--color-bg)", minHeight: "100vh", paddingBottom: 32 }}>
+      <div className="desktop-feed-col">
 
       {/* ── Row 1: Intent Filter Pills ──────────────────────────────────────── */}
       <div style={{
@@ -374,6 +375,7 @@ export default function FeedPage() {
           ))}
         </div>
       </section>
+      </div>
     </div>
   );
 }

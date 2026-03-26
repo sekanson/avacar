@@ -331,12 +331,12 @@ function FeedPost({ post, index }: { post: typeof FEED_POSTS[0]; index: number }
       </p>
 
       {/* Image */}
-      <div style={{ position: "relative" }}>
+      <div style={{ position: "relative", maxHeight: 600, overflow: "hidden" }}>
         <img
           src={post.image}
           alt={post.caption}
           loading="lazy"
-          style={{ width: "100%", aspectRatio: (post.ratio || "4/5"), objectFit: "cover", display: "block" }}
+          style={{ width: "100%", aspectRatio: (post.ratio || "4/5"), objectFit: "cover", display: "block", maxHeight: 600 }}
         />
       </div>
 
@@ -444,6 +444,7 @@ export default function ExplorePage() {
         </div>
       </div>
 
+      <div className="desktop-feed-col">
       {/* Post input bar */}
       <div style={{
         margin: "16px 20px 0",
@@ -528,6 +529,7 @@ export default function ExplorePage() {
         ))}
       </div>
       )}
+      </div>
 
       {/* ── FEATURED BUILDS section ───────────────────────────────────────── */}
       <div style={{ padding: "8px 20px 0" }}>
