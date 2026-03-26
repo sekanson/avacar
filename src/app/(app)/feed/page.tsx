@@ -2,19 +2,20 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Zap, Circle, Palette, Globe, Sparkles, Paintbrush, Video } from "lucide-react";
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
 const INTENT_PILLS = ["All", "Modify", "Scene", "Style", "Content", "Browse", "Shop"];
 
 const TOOL_LAUNCHERS = [
-  { icon: "🔧", label: "Quick Build", href: "/create" },
-  { icon: "🛞", label: "Swap Wheels", href: "/create/customize?category=modify&sub=wheels" },
-  { icon: "🎨", label: "Change Wrap", href: "/create/customize?category=modify&sub=wraps" },
-  { icon: "🌍", label: "Scene My Car", href: "/create/customize?category=scenes" },
-  { icon: "✨", label: "Style Explorer", href: "/create/customize?category=styles" },
-  { icon: "🖌️", label: "Touch Up", href: "/create/touchup" },
-  { icon: "🎬", label: "Car in Motion", href: "/create/video" },
+  { icon: Zap,        label: "Quick Build",    href: "/create" },
+  { icon: Circle,     label: "Swap Wheels",    href: "/create/customize?category=modify&sub=wheels" },
+  { icon: Palette,    label: "Change Wrap",    href: "/create/customize?category=modify&sub=wraps" },
+  { icon: Globe,      label: "Scene My Car",   href: "/create/customize?category=scenes" },
+  { icon: Sparkles,   label: "Style Explorer", href: "/create/customize?category=styles" },
+  { icon: Paintbrush, label: "Touch Up",       href: "/create/touchup" },
+  { icon: Video,      label: "Car in Motion",  href: "/create/video" },
 ];
 
 const RECENT_BUILDS = [
@@ -105,29 +106,32 @@ export default function FeedPage() {
         padding: "8px 20px 16px",
         scrollbarWidth: "none",
       }}>
-        {TOOL_LAUNCHERS.map((tool) => (
-          <button
-            key={tool.label}
-            onClick={() => router.push(tool.href)}
-            style={{
-              flexShrink: 0,
-              height: 48,
-              padding: "0 16px",
-              borderRadius: 16,
-              border: "1px solid var(--color-border)",
-              background: "var(--color-surface)",
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              gap: 6,
-            }}
-          >
-            <span style={{ fontSize: 18 }}>{tool.icon}</span>
-            <span style={{ fontSize: 12, fontWeight: 500, color: "var(--color-text-primary)", whiteSpace: "nowrap" }}>
-              {tool.label}
-            </span>
-          </button>
-        ))}
+        {TOOL_LAUNCHERS.map((tool) => {
+          const Icon = tool.icon;
+          return (
+            <button
+              key={tool.label}
+              onClick={() => router.push(tool.href)}
+              style={{
+                flexShrink: 0,
+                height: 48,
+                padding: "0 16px",
+                borderRadius: 16,
+                border: "1px solid var(--color-border)",
+                background: "var(--color-surface)",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                gap: 6,
+              }}
+            >
+              <Icon size={18} color="var(--color-text-secondary)" strokeWidth={2} />
+              <span style={{ fontSize: 12, fontWeight: 500, color: "var(--color-text-primary)", whiteSpace: "nowrap" }}>
+                {tool.label}
+              </span>
+            </button>
+          );
+        })}
       </div>
 
       {/* ── Row 3: My Garage (Recent) ───────────────────────────────────────── */}

@@ -108,14 +108,16 @@ function useTheme() {
 /* ─── Mobile TopBar ─── */
 function TopBar({ onToggleCart }: { onToggleCart: () => void }) {
   const router = useRouter();
-  const pathname = usePathname();
   const { darkMode, toggleTheme } = useTheme();
-  const isMarketplace = pathname.startsWith("/marketplace");
 
   return (
     <header className="topbar">
       <div className="flex items-center gap-1">
-        <span className="topbar-title">{isMarketplace ? "Shop" : "AVA.CAR"}</span>
+        <img
+          src={darkMode ? "/logo/avacar-logo-white.png" : "/logo/avacar-logo-black.png"}
+          alt="AVA.CAR"
+          style={{ height: 20, width: "auto" }}
+        />
       </div>
       <div className="flex gap-0.5">
         <button className="tbb" onClick={onToggleCart} aria-label="Cart">
@@ -342,7 +344,7 @@ function DesktopTopNav({
   const pathname = usePathname();
   const [activeCat, setActiveCat] = useState("All");
   const [searchFocused, setSearchFocused] = useState(false);
-  const isFeed = pathname === "/feed" || pathname === "/";
+  const showCategoryPills = pathname.startsWith("/explore");
 
   return (
     <div className="desktop-topnav">
@@ -411,7 +413,7 @@ function DesktopTopNav({
         </div>
       </div>
 
-      {isFeed && (
+      {showCategoryPills && (
         <div className="desktop-topnav-pills">
           {FEED_CATEGORIES.map((cat) => (
             <button
@@ -607,7 +609,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       pathname !== "/profile" &&
       FULL_SCREEN_PREFIXES.some((prefix) => pathname.startsWith(prefix)));
 
-  const showRightPanel = pathname === "/feed" || pathname === "/" || pathname.startsWith("/explore");
+  const showRightPanel = pathname.startsWith("/explore");
   const isFeedLayout = pathname === "/feed" || pathname === "/" || pathname.startsWith("/explore");
   const isFullWidthLayout = pathname.startsWith("/marketplace") || pathname.startsWith("/garage") || pathname.startsWith("/profile");
   const contentColClass = isFeedLayout ? "desktop-two-col" : isFullWidthLayout ? "desktop-full-col" : "desktop-two-col";
