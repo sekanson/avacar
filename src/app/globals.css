@@ -438,9 +438,15 @@ body {
   min-width: 0;
 }
 
-/* Feed/explore only: inner content centered at 680px, fluid on narrow windows */
+/* Explore page: masonry grid uses full available width */
 .desktop-center-scroll.feed-layout .desktop-content {
-  max-width: min(680px, calc(100% - 32px));
+  max-width: 100%;
+  width: 100%;
+}
+
+/* Home feed: centered column, not full width but not too narrow */
+.desktop-center-scroll:not(.feed-layout) .desktop-content {
+  max-width: min(960px, 100%);
   width: 100%;
   margin-left: auto;
   margin-right: auto;
