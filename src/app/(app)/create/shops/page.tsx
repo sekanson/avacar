@@ -1,361 +1,297 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { MapPin, Star, ChevronLeft, ChevronRight } from "lucide-react";
-import { cn } from "@/lib/utils/cn";
-import { mockShops } from "@/lib/data/shops";
-import type { Shop, ProductCategory } from "@/lib/types";
+import { ChevronLeft, MapPin, Star, Map, Navigation } from "lucide-react";
 
-// ── Helpers ───────────────────────────────────────────────────────────────────
+// ── Mock data ──────────────────────────────────────────────────────────────────
 
-const SERVICE_LABELS: Record<ProductCategory, string> = {
-  wrap: "Wrap",
-  wheel: "Wheels",
-  tint: "Tint",
-  ppf: "PPF",
-  bodykit: "Body Kit",
-  accessory: "Accessories",
-};
+const SHOPS = [
+  {
+    id: "wrapsbyalex",
+    name: "WrapsbyAlex",
+    city: "Mississauga, ON",
+    rating: 4.9,
+    reviews: 342,
+    badges: ["Zeno Certified", "3M Preferred"],
+    services: ["Wraps", "PPF", "Tint", "Chrome Delete"],
+    priceRange: "$450–$650",
+    nextAvailable: "Tomorrow, 10:00 AM",
+    hero: "https://images.unsplash.com/photo-1621939514649-280e2ee25f60?w=800&q=80&fm=webp",
+  },
+  {
+    id: "carbonwerks-gta",
+    name: "CarbonWerks GTA",
+    city: "Toronto, ON",
+    rating: 4.8,
+    reviews: 218,
+    badges: ["Zeno Certified"],
+    services: ["Wraps", "PPF", "Carbon Fiber"],
+    priceRange: "$500–$750",
+    nextAvailable: "Friday, 2:00 PM",
+    hero: "https://images.unsplash.com/photo-1597007066704-67bf2068d527?w=800&q=80&fm=webp",
+  },
+  {
+    id: "armorshield-pro",
+    name: "ArmorShield Pro",
+    city: "Brampton, ON",
+    rating: 4.7,
+    reviews: 156,
+    badges: ["Zeno Certified", "XPEL Preferred"],
+    services: ["PPF", "Wraps", "Tint", "Ceramic Coat"],
+    priceRange: "$400–$600",
+    nextAvailable: "Next Monday",
+    hero: "https://images.unsplash.com/photo-1580273916550-e323be2ae537?w=800&q=80&fm=webp",
+  },
+];
 
-const PRICE_TIER_LABELS: Record<number, string> = { 1: "$", 2: "$$", 3: "$$$" };
+// ── Badge chip ─────────────────────────────────────────────────────────────────
 
-const TIER_COLORS: Record<string, string> = {
-  standard: "#6B7280",
-  certified: "#44CCFF",
-  elite: "#FBBF24",
-};
-
-type SortMode = "closest" | "top-rated" | "best-value";
-
-// ── Shop Logo Placeholder ─────────────────────────────────────────────────────
-
-function ShopAvatar({ name, tier }: { name: string; tier: string }) {
-  const color = TIER_COLORS[tier] ?? "#6B7280";
-  return (
-    <div
-      className="flex-shrink-0 flex items-center justify-center rounded-card"
-      style={{
-        width: 48,
-        height: 48,
-        background: `linear-gradient(135deg, ${color}22 0%, ${color}11 100%)`,
-        border: `1.5px solid ${color}44`,
-      }}
-    >
-      <span className="font-display font-bold text-display-xs" style={{ color }}>
-        {name[0]}
-      </span>
-    </div>
-  );
-}
-
-// ── Tier Badge ────────────────────────────────────────────────────────────────
-
-function TierBadge({ tier }: { tier: string }) {
-  const color = TIER_COLORS[tier] ?? "#6B7280";
-  const label = tier.charAt(0).toUpperCase() + tier.slice(1);
+function Badge({ label }: { label: string }) {
+  const isZeno = label.includes("Zeno");
   return (
     <span
-      className="text-body-xs font-medium px-2 py-0.5 rounded-chip"
+      className="text-[11px] font-semibold px-2 py-0.5 rounded-full"
       style={{
-        color,
-        background: `${color}18`,
-        border: `1px solid ${color}33`,
+        background: isZeno ? "rgba(68,204,255,0.12)" : "rgba(251,191,36,0.12)",
+        color: isZeno ? "#44CCFF" : "#FBBF24",
+        border: `1px solid ${isZeno ? "rgba(68,204,255,0.3)" : "rgba(251,191,36,0.3)"}`,
       }}
     >
-      {label}
+      {isZeno ? "🏆 " : "✦ "}{label}
     </span>
   );
 }
 
-// ── Shop Card ─────────────────────────────────────────────────────────────────
+// ── Shop card ──────────────────────────────────────────────────────────────────
 
-function ShopCard({ shop, onClick }: { shop: Shop; onClick: () => void }) {
-  return (
-    <button
-      onClick={onClick}
-      className="w-full text-left rounded-card p-4 flex items-start gap-3 transition-colors active:bg-surface-hover"
-      style={{
-        background: "#14141A",
-        border: "1px solid #2A2A36",
-        boxShadow: "0 2px 8px rgba(0,0,0,0.3)",
-      }}
-    >
-      <ShopAvatar name={shop.name} tier={shop.tier} />
-
-      <div className="flex-1 min-w-0">
-        {/* Name + tier + price */}
-        <div className="flex items-center gap-2 mb-0.5 flex-wrap">
-          <span className="text-display-xs font-display text-text-primary leading-tight">
-            {shop.name}
-          </span>
-          <TierBadge tier={shop.tier} />
-          <span className="text-body-xs text-warning ml-auto flex-shrink-0">
-            {PRICE_TIER_LABELS[shop.priceTier] ?? "$"}
-          </span>
-        </div>
-
-        {/* Location + distance */}
-        <div className="flex items-center gap-1 mb-1.5">
-          <MapPin size={11} className="text-text-tertiary flex-shrink-0" />
-          <span className="text-body-xs text-text-secondary truncate">
-            {shop.city}, {shop.stateProvince} · {shop.distanceKm} km away
-          </span>
-        </div>
-
-        {/* Rating */}
-        <div className="flex items-center gap-1 mb-2">
-          <Star size={12} className="text-warning flex-shrink-0" fill="#FBBF24" strokeWidth={0} />
-          <span className="text-data-sm text-text-primary">{shop.avgRating.toFixed(1)}</span>
-          <span className="text-body-xs text-text-tertiary">({shop.reviewCount})</span>
-        </div>
-
-        {/* Service chips */}
-        <div className="flex flex-wrap gap-1.5">
-          {shop.services.slice(0, 4).map((svc) => (
-            <span
-              key={svc}
-              className="text-body-xs text-text-tertiary px-2 py-0.5 rounded-chip"
-              style={{ background: "#1C1C24", border: "1px solid #2A2A36" }}
-            >
-              {SERVICE_LABELS[svc] ?? svc}
-            </span>
-          ))}
-          {shop.services.length > 4 && (
-            <span className="text-body-xs text-text-tertiary">+{shop.services.length - 4}</span>
-          )}
-        </div>
-      </div>
-
-      <ChevronRight size={16} className="text-text-tertiary flex-shrink-0 mt-1" />
-    </button>
-  );
-}
-
-// ── Chip Selector ─────────────────────────────────────────────────────────────
-
-function ChipSelector<T extends string>({
-  options,
-  value,
-  onChange,
+function ShopCard({
+  shop,
+  onSelect,
 }: {
-  options: { label: string; value: T }[];
-  value: T;
-  onChange: (v: T) => void;
+  shop: (typeof SHOPS)[0];
+  onSelect: () => void;
 }) {
   return (
-    <div className="flex gap-2">
-      {options.map((opt) => (
-        <button
-          key={opt.value}
-          onClick={() => onChange(opt.value)}
-          className={cn(
-            "text-body-sm px-3 py-1.5 rounded-chip transition-colors flex-shrink-0",
-            value === opt.value
-              ? "bg-cyan-muted text-cyan border border-cyan"
-              : "text-text-secondary border border-surface-border"
-          )}
-          style={value !== opt.value ? { background: "#1C1C24" } : undefined}
-        >
-          {opt.label}
-        </button>
-      ))}
-    </div>
-  );
-}
-
-// ── Map Placeholder ───────────────────────────────────────────────────────────
-
-function MapPlaceholder() {
-  return (
     <div
-      className="relative rounded-card flex items-center justify-center overflow-hidden"
-      style={{ height: 280, background: "#1C1C24", border: "1px solid #2A2A36" }}
+      className="rounded-[1.5rem] overflow-hidden"
+      style={{ background: "var(--color-surface)" }}
     >
-      {/* Dot grid */}
-      <div
-        className="absolute inset-0"
-        style={{
-          backgroundImage:
-            "radial-gradient(circle, #2A2A36 1px, transparent 1px)",
-          backgroundSize: "24px 24px",
-          opacity: 0.7,
-        }}
-      />
-      {/* Subtle radial fade */}
-      <div
-        className="absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(ellipse at center, transparent 40%, #1C1C24 100%)",
-        }}
-      />
-      {/* Center content */}
-      <div className="relative flex flex-col items-center gap-2 text-center">
+      {/* Hero */}
+      <div className="relative" style={{ height: 200, overflow: "hidden" }}>
+        <img
+          src={shop.hero}
+          alt={shop.name}
+          loading="lazy"
+          className="w-full h-full object-cover"
+        />
         <div
-          className="w-12 h-12 rounded-full flex items-center justify-center"
-          style={{ background: "rgba(68,204,255,0.12)", border: "1px solid rgba(68,204,255,0.25)" }}
-        >
-          <MapPin size={22} className="text-cyan" />
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(to bottom, transparent 50%, rgba(0,0,0,0.5) 100%)",
+          }}
+        />
+      </div>
+
+      {/* Info */}
+      <div className="px-4 pt-4 pb-5 space-y-3">
+        {/* Name row */}
+        <div className="flex items-center gap-3">
+          <div
+            className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 font-bold text-base"
+            style={{
+              background: "rgba(68,204,255,0.15)",
+              color: "#44CCFF",
+              border: "1.5px solid rgba(68,204,255,0.3)",
+            }}
+          >
+            {shop.name[0]}
+          </div>
+          <div>
+            <p className="font-display font-bold text-text-primary leading-tight">
+              {shop.name}
+            </p>
+            <div className="flex items-center gap-1.5 mt-0.5">
+              <Star size={12} fill="#FBBF24" strokeWidth={0} className="text-yellow-400" />
+              <span className="text-[13px] font-semibold text-text-primary">
+                {shop.rating}
+              </span>
+              <span className="text-[12px] text-text-tertiary">
+                · {shop.reviews} reviews · {shop.city}
+              </span>
+            </div>
+          </div>
         </div>
-        <p className="text-body-sm text-text-secondary">Map view coming soon</p>
-        <p className="text-body-xs text-text-tertiary">Showing shops near Los Angeles, CA</p>
+
+        {/* Badges */}
+        <div className="flex flex-wrap gap-1.5">
+          {shop.badges.map((b) => (
+            <Badge key={b} label={b} />
+          ))}
+        </div>
+
+        {/* Services */}
+        <p className="text-[13px] text-text-secondary">
+          <span className="text-text-tertiary">Services: </span>
+          {shop.services.join(" · ")}
+        </p>
+
+        {/* Price + availability */}
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="text-[11px] text-text-tertiary uppercase tracking-wider mb-0.5">
+              Est. for your build
+            </p>
+            <p className="text-[15px] font-bold text-cyan">{shop.priceRange}</p>
+          </div>
+          <div className="text-right">
+            <p className="text-[11px] text-text-tertiary uppercase tracking-wider mb-0.5">
+              Next available
+            </p>
+            <p className="text-[13px] text-text-primary">{shop.nextAvailable}</p>
+          </div>
+        </div>
+
+        {/* CTA */}
+        <button
+          onClick={onSelect}
+          className="w-full font-display font-semibold text-[15px] rounded-2xl flex items-center justify-center gap-2 transition-opacity active:opacity-80"
+          style={{
+            height: 48,
+            background: "linear-gradient(135deg, #44CCFF 0%, #0099CC 100%)",
+            color: "#000",
+            boxShadow: "0 4px 20px rgba(68,204,255,0.35)",
+          }}
+        >
+          Select This Shop
+          <span style={{ fontSize: 18 }}>→</span>
+        </button>
       </div>
     </div>
   );
 }
-
-// ── Filter chips ──────────────────────────────────────────────────────────────
-
-type RatingFilter = "all" | "4.5+";
-type DistanceFilter = "all" | "close";
-type PriceFilter = "all" | 1 | 2 | 3;
 
 // ── Page ──────────────────────────────────────────────────────────────────────
 
 export default function ShopsPage() {
   const router = useRouter();
-  const [sortMode, setSortMode] = useState<SortMode>("closest");
-  const [ratingFilter, setRatingFilter] = useState<RatingFilter>("all");
-  const [distanceFilter, setDistanceFilter] = useState<DistanceFilter>("all");
-  const [priceFilter, setPriceFilter] = useState<PriceFilter>("all");
+  const [location, setLocation] = useState("");
+  const [mapView, setMapView] = useState(false);
 
-  const sortOptions: { label: string; value: SortMode }[] = [
-    { label: "Closest", value: "closest" },
-    { label: "Top Rated", value: "top-rated" },
-    { label: "Best Value", value: "best-value" },
-  ];
-
-  const filtered = useMemo(() => {
-    let shops = [...mockShops];
-
-    if (ratingFilter === "4.5+") shops = shops.filter((s) => s.avgRating >= 4.5);
-    if (distanceFilter === "close") shops = shops.filter((s) => (s.distanceKm ?? 0) <= 5);
-    if (priceFilter !== "all") shops = shops.filter((s) => s.priceTier === priceFilter);
-
-    if (sortMode === "closest") shops.sort((a, b) => (a.distanceKm ?? 0) - (b.distanceKm ?? 0));
-    else if (sortMode === "top-rated") shops.sort((a, b) => b.avgRating - a.avgRating);
-    else if (sortMode === "best-value") shops.sort((a, b) => a.priceTier - b.priceTier);
-
-    return shops;
-  }, [sortMode, ratingFilter, distanceFilter, priceFilter]);
+  function handleSelectShop(shopId: string) {
+    router.push(`/create/book?shop=${shopId}`);
+  }
 
   return (
-    <div className="min-h-screen bg-background pb-24">
-      {/* TopBar */}
+    <div className="min-h-screen pb-24" style={{ background: "var(--color-bg)" }}>
+      {/* Header */}
       <header
-        className="flex items-center gap-3 px-4 sticky top-0 z-10"
+        className="flex items-center gap-3 px-4 sticky top-0 z-20"
         style={{
           height: "3.5rem",
           background: "rgba(12,12,16,0.92)",
           backdropFilter: "blur(16px)",
-          borderBottom: "1px solid #2A2A36",
+          borderBottom: "1px solid var(--color-border)",
         }}
       >
         <button
-          onClick={() => router.push("/create/quote")}
-          className="w-9 h-9 flex items-center justify-center rounded-button text-text-secondary hover:text-text-primary transition-colors"
+          onClick={() => router.back()}
+          className="w-9 h-9 flex items-center justify-center rounded-xl text-text-secondary"
         >
           <ChevronLeft size={22} />
         </button>
-        <span className="text-display-xs font-display text-text-primary flex-1">
+        <span className="font-display font-bold text-text-primary flex-1 text-center tracking-wide uppercase text-[13px]">
           Find a Shop
         </span>
-        <span className="text-body-xs text-text-tertiary">Los Angeles, CA</span>
+        <button
+          onClick={() => setMapView((v) => !v)}
+          className="w-9 h-9 flex items-center justify-center rounded-xl transition-colors"
+          style={{
+            background: mapView ? "rgba(68,204,255,0.15)" : "transparent",
+            color: mapView ? "#44CCFF" : "var(--color-text-tertiary)",
+          }}
+        >
+          <Map size={18} />
+        </button>
       </header>
 
-      <div className="px-4 pt-4 space-y-4">
-        {/* Map placeholder */}
-        <MapPlaceholder />
-
-        {/* Sort */}
-        <div>
-          <p className="text-body-xs text-text-tertiary uppercase tracking-wider mb-2">Sort by</p>
-          <div className="overflow-x-auto">
-            <ChipSelector options={sortOptions} value={sortMode} onChange={setSortMode} />
+      <div className="px-4 pt-5 space-y-5">
+        {/* Build summary card */}
+        <div
+          className="rounded-2xl p-3 flex items-center gap-3"
+          style={{
+            background: "var(--color-surface)",
+            border: "1px solid var(--color-border)",
+          }}
+        >
+          <img
+            src="https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=120&q=80&fm=webp"
+            alt="Design preview"
+            loading="lazy"
+            className="w-14 h-14 rounded-xl object-cover flex-shrink-0"
+          />
+          <div className="flex-1 min-w-0">
+            <p className="font-semibold text-text-primary text-[14px] truncate">
+              Midnight Fury — GT-R R35
+            </p>
+            <p className="text-[12px] text-text-tertiary mt-0.5">
+              2022 Toyota GR86 · Full Wrap
+            </p>
+          </div>
+          <div className="text-right flex-shrink-0">
+            <p className="text-[10px] text-text-tertiary uppercase tracking-wider">
+              Est. cost
+            </p>
+            <p className="text-[14px] font-bold text-cyan">$549–$949</p>
           </div>
         </div>
 
-        {/* Filters */}
-        <div className="flex gap-2 overflow-x-auto pb-1">
-          {/* Rating */}
-          <button
-            onClick={() => setRatingFilter(ratingFilter === "4.5+" ? "all" : "4.5+")}
-            className={cn(
-              "text-body-xs px-3 py-1.5 rounded-chip flex-shrink-0 transition-colors",
-              ratingFilter === "4.5+"
-                ? "bg-warning/20 text-warning border border-warning/40"
-                : "text-text-tertiary border border-surface-border"
-            )}
-            style={ratingFilter !== "4.5+" ? { background: "#1C1C24" } : undefined}
+        {/* Location input */}
+        <div className="space-y-2">
+          <div
+            className="flex items-center gap-3 px-4 rounded-2xl"
+            style={{
+              background: "var(--color-surface)",
+              border: "1px solid var(--color-border)",
+              height: 48,
+            }}
           >
-            ★ 4.5+
-          </button>
-
-          {/* Distance */}
+            <MapPin size={18} style={{ color: "#44CCFF", flexShrink: 0 }} />
+            <input
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
+              placeholder="Enter your city or postal code..."
+              className="flex-1 bg-transparent outline-none text-[14px] text-text-primary placeholder:text-text-tertiary"
+            />
+          </div>
           <button
-            onClick={() => setDistanceFilter(distanceFilter === "close" ? "all" : "close")}
-            className={cn(
-              "text-body-xs px-3 py-1.5 rounded-chip flex-shrink-0 transition-colors",
-              distanceFilter === "close"
-                ? "bg-cyan-muted text-cyan border border-cyan/40"
-                : "text-text-tertiary border border-surface-border"
-            )}
-            style={distanceFilter !== "close" ? { background: "#1C1C24" } : undefined}
+            className="flex items-center gap-1.5 text-[12px] text-cyan pl-1"
+            onClick={() => setLocation("Mississauga, ON")}
           >
-            {"<"} 5 km
+            <Navigation size={12} />
+            Use my location
           </button>
+        </div>
 
-          {/* Price tiers */}
-          {([1, 2, 3] as const).map((tier) => (
-            <button
-              key={tier}
-              onClick={() => setPriceFilter(priceFilter === tier ? "all" : tier)}
-              className={cn(
-                "text-body-xs px-3 py-1.5 rounded-chip flex-shrink-0 transition-colors",
-                priceFilter === tier
-                  ? "bg-cyan-muted text-cyan border border-cyan/40"
-                  : "text-text-tertiary border border-surface-border"
-              )}
-              style={priceFilter !== tier ? { background: "#1C1C24" } : undefined}
-            >
-              {PRICE_TIER_LABELS[tier]}
-            </button>
+        {/* Results label */}
+        <div className="flex items-center justify-between">
+          <p className="text-[11px] text-text-tertiary uppercase tracking-wider">
+            Shops near you
+          </p>
+          <p className="text-[12px] text-text-tertiary">{SHOPS.length} found</p>
+        </div>
+
+        {/* Shop cards */}
+        <div className="space-y-4">
+          {SHOPS.map((shop) => (
+            <ShopCard
+              key={shop.id}
+              shop={shop}
+              onSelect={() => handleSelectShop(shop.id)}
+            />
           ))}
         </div>
-
-        {/* Results header */}
-        <div className="flex items-center justify-between">
-          <h2 className="text-display-sm font-display text-text-primary">Shops Near You</h2>
-          <span className="text-body-xs text-text-tertiary">{filtered.length} found</span>
-        </div>
-
-        {/* Shop list */}
-        {filtered.length === 0 ? (
-          <div className="flex flex-col items-center py-16 gap-3 text-center">
-            <p className="text-body-md text-text-secondary">No shops match your filters.</p>
-            <button
-              onClick={() => {
-                setRatingFilter("all");
-                setDistanceFilter("all");
-                setPriceFilter("all");
-              }}
-              className="text-body-sm text-cyan"
-            >
-              Clear filters
-            </button>
-          </div>
-        ) : (
-          <div className="space-y-3">
-            {filtered.map((shop) => (
-              <ShopCard
-                key={shop.id}
-                shop={shop}
-                onClick={() => router.push(`/create/shop/${shop.slug}`)}
-              />
-            ))}
-          </div>
-        )}
       </div>
     </div>
   );

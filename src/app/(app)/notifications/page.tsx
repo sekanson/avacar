@@ -103,7 +103,7 @@ export default function NotificationsPage() {
   };
 
   return (
-    <div style={{ background: "#0C0C10", minHeight: "100vh", paddingBottom: 24 }}>
+    <div style={{ background: "var(--color-bg)", minHeight: "100vh", paddingBottom: 24 }}>
       {/* TopBar */}
       <div
         style={{
@@ -127,15 +127,15 @@ export default function NotificationsPage() {
               width: 36,
               height: 36,
               borderRadius: "50%",
-              background: "#14141A",
-              border: "1px solid #2A2A36",
+              background: "var(--color-surface)",
+              border: "1px solid var(--color-border)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               cursor: "pointer",
             }}
           >
-            <ArrowLeft size={17} color="#A0A0B0" />
+            <ArrowLeft size={17} color="var(--color-text-secondary)" />
           </button>
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
             <h1
@@ -143,7 +143,7 @@ export default function NotificationsPage() {
                 fontFamily: "var(--font-manrope, Manrope, sans-serif)",
                 fontWeight: 900,
                 fontSize: 20,
-                color: "#FFFFFF",
+                color: "var(--color-text-primary)",
                 letterSpacing: "-0.04em",
                 margin: 0,
               }}
@@ -229,7 +229,7 @@ export default function NotificationsPage() {
                     fontFamily: "var(--font-manrope, Manrope, sans-serif)",
                     fontWeight: 900,
                     fontSize: 16,
-                    color: "#FFFFFF",
+                    color: "var(--color-text-primary)",
                   }}
                 >
                   {notif.initial}
@@ -260,14 +260,14 @@ export default function NotificationsPage() {
                   style={{
                     fontSize: 14,
                     fontWeight: notif.unread ? 600 : 400,
-                    color: notif.unread ? "#FFFFFF" : "#A0A0B0",
+                    color: notif.unread ? "var(--color-text-primary)" : "var(--color-text-secondary)",
                     margin: "0 0 3px",
                     lineHeight: 1.4,
                   }}
                 >
                   {notif.text}
                 </p>
-                <span style={{ fontSize: 12, color: "#6B6B7B" }}>{notif.time}</span>
+                <span style={{ fontSize: 12, color: "var(--color-text-tertiary)" }}>{notif.time}</span>
               </div>
 
               {/* Unread dot */}

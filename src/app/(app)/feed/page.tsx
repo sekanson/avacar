@@ -1,525 +1,411 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { ChevronRight, MapPin, Flame } from "lucide-react";
-import { motion } from "framer-motion";
-import { cn } from "@/lib/utils/cn";
 
-// ─── Mock Data ────────────────────────────────────────────────────────────────
+// ─── Data ─────────────────────────────────────────────────────────────────────
 
-const TRENDING_BUILDS = [
-  {
-    id: "1",
-    car: "2023 Supra",
-    style: "Matte Black Wrap",
-    priceRange: "$1,200–$1,800",
-    gradient: "linear-gradient(135deg, #0a0a12 0%, #1a1a2e 50%, #16213e 100%)",
-    accent: "#44CCFF",
-  },
-  {
-    id: "2",
-    car: "2022 GT500",
-    style: "Carbon Fiber Kit",
-    priceRange: "$2,400–$3,600",
-    gradient: "linear-gradient(135deg, #0d0d0d 0%, #1a0a0a 50%, #2d1515 100%)",
-    accent: "#F87171",
-  },
-  {
-    id: "3",
-    car: "2021 M3",
-    style: "Chrome Delete",
-    priceRange: "$800–$1,200",
-    gradient: "linear-gradient(135deg, #070712 0%, #0e1121 50%, #131726 100%)",
-    accent: "#34D399",
-  },
-  {
-    id: "4",
-    car: "2022 Civic Type R",
-    style: "Track Day Build",
-    priceRange: "$1,600–$2,400",
-    gradient: "linear-gradient(135deg, #0a0c0a 0%, #0c1a0c 50%, #0f2010 100%)",
-    accent: "#FBBF24",
-  },
-  {
-    id: "5",
-    car: "2023 RS7",
-    style: "Clean Luxury PPF",
-    priceRange: "$3,200–$4,800",
-    gradient: "linear-gradient(135deg, #0a080e 0%, #140e1e 50%, #1a1228 100%)",
-    accent: "#A78BFA",
-  },
+const INTENT_PILLS = ["All", "Modify", "Scene", "Style", "Content", "Browse", "Shop"];
+
+const TOOL_LAUNCHERS = [
+  { icon: "🔧", label: "Quick Build", href: "/create" },
+  { icon: "🛞", label: "Swap Wheels", href: "/create/customize?category=modify&sub=wheels" },
+  { icon: "🎨", label: "Change Wrap", href: "/create/customize?category=modify&sub=wraps" },
+  { icon: "🌍", label: "Scene My Car", href: "/create/customize?category=scenes" },
+  { icon: "✨", label: "Style Explorer", href: "/create/customize?category=styles" },
+  { icon: "🖌️", label: "Touch Up", href: "/create/touchup" },
+  { icon: "🎬", label: "Car in Motion", href: "/create/video" },
 ];
 
-const BUILD_STYLES = [
-  {
-    id: "street",
-    title: "Street Stealth",
-    tag: "Matte · Dark",
-    gradient: "linear-gradient(135deg, #0a0a12, #1a1a2e)",
-    border: "rgba(68,204,255,0.2)",
-  },
-  {
-    id: "chrome",
-    title: "Chrome Royale",
-    tag: "Metallic · Mirror",
-    gradient: "linear-gradient(135deg, #1a1a1a, #2e2e2e)",
-    border: "rgba(255,255,255,0.15)",
-  },
-  {
-    id: "track",
-    title: "Track Day",
-    tag: "Aggressive · Racing",
-    gradient: "linear-gradient(135deg, #1a0505, #2d0a0a)",
-    border: "rgba(248,113,113,0.25)",
-  },
-  {
-    id: "luxury",
-    title: "Clean Luxury",
-    tag: "Subtle · Premium",
-    gradient: "linear-gradient(135deg, #080a12, #10141e)",
-    border: "rgba(167,139,250,0.2)",
-  },
+const RECENT_BUILDS = [
+  { name: "GR86 — Satin Black", image: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=400&q=80&fm=webp" },
+  { name: "M4 — Euro Clean", image: "https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?w=400&q=80&fm=webp" },
+  { name: "Supra — Murdered Out", image: "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=400&q=80&fm=webp" },
+  { name: "RS6 — Nardo Gray", image: "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=400&q=80&fm=webp" },
+  { name: "Type R — JDM Build", image: "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=400&q=80&fm=webp" },
+];
+
+const TEMPLATE_FILTER_TABS = ["Templates", "Community", "Tutorials"];
+
+const TYPE_BADGE_COLORS: Record<string, { bg: string; color: string }> = {
+  Preset:   { bg: "rgba(68,204,255,0.15)",  color: "#44CCFF" },
+  Scene:    { bg: "rgba(52,211,153,0.15)",  color: "#34D399" },
+  Style:    { bg: "rgba(168,85,247,0.15)",  color: "#A855F7" },
+  Workflow: { bg: "rgba(251,191,36,0.15)",  color: "#FBBF24" },
+  Content:  { bg: "rgba(236,72,153,0.15)",  color: "#EC4899" },
+};
+
+const TEMPLATES = [
+  { name: "Murdered Out",        type: "Preset",   desc: "All black everything. One tap.",              image: "https://images.unsplash.com/photo-1525609004556-c46c70d0cf4c?w=600&q=80&fm=webp" },
+  { name: "Tokyo Night",         type: "Scene",    desc: "Neon-lit streets, rain reflections.",         image: "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=600&q=80&fm=webp" },
+  { name: "JDM Street Build",    type: "Style",    desc: "Slammed, wide, aggressive.",                  image: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=600&q=80&fm=webp" },
+  { name: "Studio Showroom",     type: "Scene",    desc: "Clean studio, dramatic lighting.",            image: "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=600&q=80&fm=webp" },
+  { name: "Golden Hour Shoot",   type: "Content",  desc: "Perfect Instagram light.",                   image: "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=600&q=80&fm=webp" },
+  { name: "Client Wrap Proposal",type: "Workflow", desc: "3 color options, pricing included.",         image: "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=600&q=80&fm=webp" },
+  { name: "Rolling Shot",        type: "Scene",    desc: "Highway speed, blurred background.",         image: "https://images.unsplash.com/photo-1580273916550-e323be2ae537?w=600&q=80&fm=webp" },
+  { name: "Before / After Maker",type: "Content",  desc: "Side-by-side comparison.",                   image: "https://images.unsplash.com/photo-1583121274602-3e2820c69888?w=600&q=80&fm=webp" },
+];
+
+const COMMUNITY_POSTS = [
+  { username: "wrapsbyalex", timeAgo: "3h ago",  caption: "Finally did the Murdered Out look on my G-Wagon", likes: "342", comments: "28",  views: "12.4K", image: "https://images.unsplash.com/photo-1525609004556-c46c70d0cf4c?w=600&q=80&fm=webp" },
+  { username: "driftking",   timeAgo: "5h ago",  caption: "Supra on HRE P101s at the track",                  likes: "218", comments: "45",  views: "8.7K",  image: "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=600&q=80&fm=webp" },
+  { username: "euroboy",     timeAgo: "8h ago",  caption: "RS6 in 3M Nardo Gray — perfection",                likes: "567", comments: "89",  views: "24.1K", image: "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=600&q=80&fm=webp" },
+  { username: "jdmfan",      timeAgo: "12h ago", caption: "Civic Type R — full JDM street build",             likes: "134", comments: "16",  views: "5.2K",  image: "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=600&q=80&fm=webp" },
 ];
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export default function FeedPage() {
   const router = useRouter();
+  const [activeIntent, setActiveIntent] = useState("All");
+  const [activeTemplateTab, setActiveTemplateTab] = useState("Templates");
 
   return (
-    <div
-      style={{
-        background: "#0C0C10",
-        minHeight: "100vh",
-        paddingBottom: 24,
-      }}
-    >
-      {/* ── Hero ───────────────────────────────────────────────────────────── */}
-      <motion.div
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        style={{
-          background: "linear-gradient(180deg, #14141A 0%, #0C0C10 100%)",
-          borderRadius: "0 0 2rem 2rem",
-          padding: "36px 24px 40px",
-          marginBottom: 28,
-        }}
-      >
+    <div style={{ background: "var(--color-bg)", minHeight: "100vh", paddingBottom: 32 }}>
 
-
-        <h1
-          style={{
-            fontFamily: "var(--font-manrope, Manrope, sans-serif)",
-            fontWeight: 900,
-            fontSize: "clamp(28px, 8vw, 40px)",
-            color: "#FFFFFF",
-            lineHeight: 1.05,
-            letterSpacing: "-0.04em",
-            margin: "0 0 12px",
-          }}
-        >
-          Design Your
-          <br />
-          <span style={{ color: "#44CCFF" }}>Dream Ride</span>
-        </h1>
-
-        <p
-          style={{
-            fontSize: 15,
-            color: "#A0A0B0",
-            margin: "0 0 28px",
-            lineHeight: 1.6,
-            maxWidth: 300,
-          }}
-        >
-          Upload your car, customize it, and book installation.
-        </p>
-
-        <button
-          onClick={() => router.push("/create")}
-          style={{
-            height: 52,
-            padding: "0 32px",
-            borderRadius: 12,
-            background: "#44CCFF",
-            color: "#0C0C10",
-            fontFamily: "var(--font-manrope, Manrope, sans-serif)",
-            fontSize: 15,
-            fontWeight: 800,
-            border: "none",
-            cursor: "pointer",
-            display: "inline-flex",
-            alignItems: "center",
-            gap: 8,
-            boxShadow: "0 0 32px rgba(68,204,255,0.40)",
-            letterSpacing: "-0.01em",
-          }}
-        >
-          Start Building
-          <ChevronRight size={18} />
-        </button>
-      </motion.div>
-
-      {/* ── Trending Builds ────────────────────────────────────────────────── */}
-      <section style={{ marginBottom: 32 }}>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            padding: "0 20px",
-            marginBottom: 16,
-          }}
-        >
-          <h2
-            style={{
-              fontFamily: "var(--font-manrope, Manrope, sans-serif)",
-              fontWeight: 800,
-              fontSize: 20,
-              color: "#FFFFFF",
-              letterSpacing: "-0.03em",
-              margin: 0,
-            }}
-          >
-            Trending Builds 🔥
-          </h2>
-          <button
-            style={{
-              fontSize: 13,
-              fontWeight: 600,
-              color: "#44CCFF",
-              background: "none",
-              border: "none",
-              cursor: "pointer",
-              padding: 0,
-            }}
-          >
-            See All
-          </button>
-        </div>
-
-        <div
-          style={{
-            display: "flex",
-            gap: 14,
-            overflowX: "auto",
-            padding: "4px 20px 8px",
-            scrollbarWidth: "none",
-          }}
-        >
-          {TRENDING_BUILDS.map((build, i) => (
-            <motion.div
-              key={build.id}
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: i * 0.08, duration: 0.4 }}
+      {/* ── Row 1: Intent Filter Pills ──────────────────────────────────────── */}
+      <div style={{
+        display: "flex",
+        gap: 8,
+        overflowX: "auto",
+        padding: "16px 20px 8px",
+        scrollbarWidth: "none",
+      }}>
+        {INTENT_PILLS.map((pill) => {
+          const isActive = pill === activeIntent;
+          return (
+            <button
+              key={pill}
+              onClick={() => setActiveIntent(pill)}
               style={{
                 flexShrink: 0,
-                width: 200,
-                height: 260,
-                borderRadius: 16,
-                background: "#14141A",
-                border: "1px solid #2A2A36",
-                overflow: "hidden",
-                display: "flex",
-                flexDirection: "column",
+                height: 34,
+                padding: "0 16px",
+                borderRadius: 999,
+                border: "none",
                 cursor: "pointer",
-              }}
-              onClick={() => router.push("/create")}
-            >
-              {/* Gradient image area */}
-              <div
-                style={{
-                  flex: 1,
-                  background: build.gradient,
-                  position: "relative",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                {/* Glowing accent orb */}
-                <div
-                  style={{
-                    width: 60,
-                    height: 60,
-                    borderRadius: "50%",
-                    background: build.accent,
-                    opacity: 0.18,
-                    filter: "blur(20px)",
-                    position: "absolute",
-                  }}
-                />
-                <span
-                  style={{
-                    fontSize: 11,
-                    fontWeight: 700,
-                    color: build.accent,
-                    letterSpacing: "0.06em",
-                    textTransform: "uppercase",
-                    position: "relative",
-                    zIndex: 1,
-                    padding: "4px 10px",
-                    background: `${build.accent}18`,
-                    border: `1px solid ${build.accent}30`,
-                    borderRadius: 999,
-                  }}
-                >
-                  #{i + 1} Trending
-                </span>
-              </div>
-
-              {/* Card details */}
-              <div style={{ padding: "12px 14px 14px" }}>
-                <p
-                  style={{
-                    fontFamily: "var(--font-manrope, Manrope, sans-serif)",
-                    fontWeight: 800,
-                    fontSize: 14,
-                    color: "#FFFFFF",
-                    margin: "0 0 2px",
-                    letterSpacing: "-0.02em",
-                  }}
-                >
-                  {build.car}
-                </p>
-                <p
-                  style={{
-                    fontSize: 11,
-                    color: "#A0A0B0",
-                    margin: "0 0 8px",
-                  }}
-                >
-                  {build.style}
-                </p>
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <span
-                    style={{
-                      fontSize: 12,
-                      fontWeight: 700,
-                      color: build.accent,
-                    }}
-                  >
-                    {build.priceRange}
-                  </span>
-                  <button
-                    style={{
-                      fontSize: 10,
-                      fontWeight: 700,
-                      color: "#0C0C10",
-                      background: build.accent,
-                      border: "none",
-                      borderRadius: 999,
-                      padding: "4px 10px",
-                      cursor: "pointer",
-                      letterSpacing: "0.02em",
-                    }}
-                  >
-                    Try This
-                  </button>
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </section>
-
-      {/* ── Build Styles ───────────────────────────────────────────────────── */}
-      <section style={{ padding: "0 20px", marginBottom: 32 }}>
-        <h2
-          style={{
-            fontFamily: "var(--font-manrope, Manrope, sans-serif)",
-            fontWeight: 800,
-            fontSize: 20,
-            color: "#FFFFFF",
-            letterSpacing: "-0.03em",
-            margin: "0 0 16px",
-          }}
-        >
-          Build Styles
-        </h2>
-
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: 12,
-          }}
-        >
-          {BUILD_STYLES.map((style, i) => (
-            <motion.button
-              key={style.id}
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.3 + i * 0.07, duration: 0.35 }}
-              onClick={() => router.push("/create")}
-              style={{
-                height: 160,
-                borderRadius: 16,
-                background: style.gradient,
-                border: `1px solid ${style.border}`,
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "flex-start",
-                justifyContent: "flex-end",
-                padding: "14px 16px",
-                cursor: "pointer",
-                textAlign: "left",
-                position: "relative",
-                overflow: "hidden",
+                fontSize: 13,
+                fontWeight: 600,
+                background: isActive ? "#44CCFF" : "var(--color-surface-elevated)",
+                color: isActive ? "#0C0C10" : "var(--color-text-secondary)",
+                transition: "all 0.15s",
               }}
             >
-              {/* Subtle glow top-right */}
-              <div
-                style={{
-                  position: "absolute",
-                  top: -10,
-                  right: -10,
-                  width: 60,
-                  height: 60,
-                  borderRadius: "50%",
-                  background: style.border,
-                  filter: "blur(18px)",
-                }}
-              />
-              <span
-                style={{
-                  display: "inline-block",
-                  fontSize: 10,
-                  fontWeight: 700,
-                  color: "#6B6B7B",
-                  letterSpacing: "0.06em",
-                  textTransform: "uppercase",
-                  marginBottom: 4,
-                  position: "relative",
-                }}
-              >
-                {style.tag}
-              </span>
-              <span
-                style={{
-                  fontFamily: "var(--font-manrope, Manrope, sans-serif)",
-                  fontWeight: 800,
-                  fontSize: 16,
-                  color: "#FFFFFF",
-                  letterSpacing: "-0.03em",
-                  position: "relative",
-                }}
-              >
-                {style.title}
-              </span>
-            </motion.button>
-          ))}
-        </div>
-      </section>
+              {pill}
+            </button>
+          );
+        })}
+      </div>
 
-      {/* ── Find a Shop CTA ────────────────────────────────────────────────── */}
-      <motion.div
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.6, duration: 0.4 }}
-        style={{ padding: "0 20px" }}
-      >
-        <div
-          style={{
-            background: "#1C1C24",
-            borderRadius: 16,
-            padding: 24,
-            border: "1px solid #2A2A36",
-            position: "relative",
-            overflow: "hidden",
-          }}
-        >
-          {/* Glow behind */}
-          <div
+      {/* ── Row 2: Tool Launcher ────────────────────────────────────────────── */}
+      <div style={{
+        display: "flex",
+        gap: 8,
+        overflowX: "auto",
+        padding: "8px 20px 16px",
+        scrollbarWidth: "none",
+      }}>
+        {TOOL_LAUNCHERS.map((tool) => (
+          <button
+            key={tool.label}
+            onClick={() => router.push(tool.href)}
             style={{
-              position: "absolute",
-              bottom: -20,
-              right: -20,
-              width: 100,
-              height: 100,
-              borderRadius: "50%",
-              background: "rgba(68,204,255,0.12)",
-              filter: "blur(30px)",
-            }}
-          />
-
-          <div
-            style={{
+              flexShrink: 0,
+              height: 48,
+              padding: "0 16px",
+              borderRadius: 16,
+              border: "1px solid var(--color-border)",
+              background: "var(--color-surface)",
+              cursor: "pointer",
               display: "flex",
               alignItems: "center",
-              gap: 8,
-              marginBottom: 8,
+              gap: 6,
             }}
           >
-            <MapPin size={16} color="#44CCFF" />
-            <span
-              style={{
-                fontSize: 11,
-                fontWeight: 700,
-                color: "#44CCFF",
-                letterSpacing: "0.06em",
-                textTransform: "uppercase",
-              }}
-            >
-              Near You
+            <span style={{ fontSize: 18 }}>{tool.icon}</span>
+            <span style={{ fontSize: 12, fontWeight: 500, color: "var(--color-text-primary)", whiteSpace: "nowrap" }}>
+              {tool.label}
             </span>
-          </div>
+          </button>
+        ))}
+      </div>
 
-          <h3
-            style={{
-              fontFamily: "var(--font-manrope, Manrope, sans-serif)",
-              fontWeight: 800,
-              fontSize: 20,
-              color: "#FFFFFF",
-              letterSpacing: "-0.03em",
-              margin: "0 0 6px",
-            }}
-          >
-            Ready to make it real?
-          </h3>
-          <p
-            style={{
-              fontSize: 14,
-              color: "#A0A0B0",
-              margin: "0 0 20px",
-              lineHeight: 1.5,
-            }}
-          >
-            Connect with certified installers near you.
-          </p>
-
+      {/* ── Row 3: My Garage (Recent) ───────────────────────────────────────── */}
+      <section style={{ marginBottom: 28 }}>
+        <div style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          padding: "0 20px",
+          marginBottom: 12,
+        }}>
+          <span style={{
+            fontSize: 10,
+            fontWeight: 700,
+            color: "#44CCFF",
+            letterSpacing: "0.15em",
+            textTransform: "uppercase",
+          }}>
+            Recent Builds
+          </span>
           <button
             onClick={() => router.push("/create")}
             style={{
-              height: 46,
-              padding: "0 24px",
-              borderRadius: 12,
-              background: "rgba(68,204,255,0.12)",
-              color: "#44CCFF",
-              border: "1px solid rgba(68,204,255,0.25)",
-              fontFamily: "var(--font-manrope, Manrope, sans-serif)",
-              fontSize: 14,
+              fontSize: 11,
               fontWeight: 700,
+              color: "#44CCFF",
+              background: "rgba(68,204,255,0.1)",
+              border: "1px solid rgba(68,204,255,0.2)",
+              borderRadius: 999,
+              padding: "4px 12px",
               cursor: "pointer",
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 8,
-              position: "relative",
             }}
           >
-            Find Shops Near Me
-            <ChevronRight size={16} />
+            + New Build
           </button>
         </div>
-      </motion.div>
+        <div style={{
+          display: "flex",
+          gap: 12,
+          overflowX: "auto",
+          padding: "4px 20px 8px",
+          scrollbarWidth: "none",
+        }}>
+          {RECENT_BUILDS.map((build) => (
+            <div
+              key={build.name}
+              onClick={() => router.push("/create")}
+              style={{ flexShrink: 0, cursor: "pointer" }}
+            >
+              <div style={{
+                width: 120,
+                height: 90,
+                borderRadius: 12,
+                overflow: "hidden",
+                border: "1px solid var(--color-border)",
+                marginBottom: 6,
+              }}>
+                <img
+                  src={build.image}
+                  alt={build.name}
+                  loading="lazy"
+                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                />
+              </div>
+              <p style={{
+                fontSize: 11,
+                color: "var(--color-text-secondary)",
+                margin: 0,
+                width: 120,
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+              }}>
+                {build.name}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ── Row 4: Get Inspired (Templates) ────────────────────────────────── */}
+      <section style={{ padding: "0 20px", marginBottom: 28 }}>
+        <p style={{
+          fontSize: 10,
+          fontWeight: 700,
+          color: "#44CCFF",
+          letterSpacing: "0.15em",
+          textTransform: "uppercase",
+          margin: "0 0 12px",
+        }}>
+          Get Inspired
+        </p>
+
+        {/* Filter tabs */}
+        <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
+          {TEMPLATE_FILTER_TABS.map((tab) => {
+            const isActive = tab === activeTemplateTab;
+            return (
+              <button
+                key={tab}
+                onClick={() => setActiveTemplateTab(tab)}
+                style={{
+                  height: 30,
+                  padding: "0 14px",
+                  borderRadius: 999,
+                  border: "1px solid var(--color-border)",
+                  background: isActive ? "var(--color-surface-elevated)" : "transparent",
+                  color: isActive ? "var(--color-text-primary)" : "var(--color-text-secondary)",
+                  fontSize: 12,
+                  fontWeight: isActive ? 600 : 400,
+                  cursor: "pointer",
+                }}
+              >
+                {tab}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* 2-col template grid */}
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+          {TEMPLATES.map((template) => {
+            const badge = TYPE_BADGE_COLORS[template.type];
+            return (
+              <div
+                key={template.name}
+                onClick={() => router.push("/create")}
+                style={{
+                  borderRadius: "1.5rem",
+                  background: "var(--color-surface)",
+                  border: "1px solid var(--color-border)",
+                  overflow: "hidden",
+                  cursor: "pointer",
+                }}
+              >
+                {/* 16:9 preview */}
+                <div style={{ position: "relative", aspectRatio: "16/9" }}>
+                  <img
+                    src={template.image}
+                    alt={template.name}
+                    loading="lazy"
+                    style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                  />
+                  <span style={{
+                    position: "absolute",
+                    top: 8,
+                    left: 8,
+                    fontSize: 9,
+                    fontWeight: 700,
+                    background: badge.bg,
+                    color: badge.color,
+                    padding: "3px 8px",
+                    borderRadius: 999,
+                    backdropFilter: "blur(8px)",
+                  }}>
+                    {template.type}
+                  </span>
+                </div>
+                {/* Body */}
+                <div style={{ padding: "10px 12px 12px" }}>
+                  <p style={{
+                    fontSize: 14,
+                    fontWeight: 600,
+                    color: "var(--color-text-primary)",
+                    margin: "0 0 4px",
+                    lineHeight: 1.3,
+                  }}>
+                    {template.name}
+                  </p>
+                  <p style={{
+                    fontSize: 12,
+                    color: "var(--color-text-secondary)",
+                    margin: "0 0 8px",
+                    lineHeight: 1.4,
+                  }}>
+                    {template.desc}
+                  </p>
+                  <span style={{ fontSize: 12, fontWeight: 600, color: "#44CCFF" }}>
+                    Try It →
+                  </span>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* ── Row 5: Trending in Community ────────────────────────────────────── */}
+      <section>
+        <div style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          padding: "0 20px",
+          marginBottom: 12,
+        }}>
+          <span style={{
+            fontSize: 10,
+            fontWeight: 700,
+            color: "#44CCFF",
+            letterSpacing: "0.15em",
+            textTransform: "uppercase",
+          }}>
+            Trending in Community
+          </span>
+          <button style={{
+            fontSize: 12,
+            fontWeight: 600,
+            color: "#44CCFF",
+            background: "none",
+            border: "none",
+            cursor: "pointer",
+          }}>
+            See All →
+          </button>
+        </div>
+
+        <div style={{
+          display: "flex",
+          gap: 14,
+          overflowX: "auto",
+          padding: "4px 20px 8px",
+          scrollbarWidth: "none",
+        }}>
+          {COMMUNITY_POSTS.map((post) => (
+            <div
+              key={post.username}
+              style={{
+                flexShrink: 0,
+                width: 220,
+                borderRadius: 16,
+                background: "var(--color-surface)",
+                border: "1px solid var(--color-border)",
+                overflow: "hidden",
+                cursor: "pointer",
+              }}
+            >
+              {/* 3:2 image */}
+              <div style={{ position: "relative", aspectRatio: "3/2" }}>
+                <img
+                  src={post.image}
+                  alt={post.caption}
+                  loading="lazy"
+                  style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                />
+              </div>
+              {/* Body */}
+              <div style={{ padding: "10px 12px 12px" }}>
+                <p style={{ fontSize: 12, color: "var(--color-text-secondary)", margin: "0 0 4px" }}>
+                  @{post.username} · {post.timeAgo}
+                </p>
+                <p style={{
+                  fontSize: 13,
+                  fontWeight: 500,
+                  color: "var(--color-text-primary)",
+                  margin: "0 0 8px",
+                  lineHeight: 1.4,
+                }}>
+                  &ldquo;{post.caption}&rdquo;
+                </p>
+                <div style={{ display: "flex", gap: 10, marginBottom: 10 }}>
+                  <span style={{ fontSize: 11, color: "var(--color-text-secondary)" }}>❤️ {post.likes}</span>
+                  <span style={{ fontSize: 11, color: "var(--color-text-secondary)" }}>💬 {post.comments}</span>
+                  <span style={{ fontSize: 11, color: "var(--color-text-secondary)" }}>👀 {post.views}</span>
+                </div>
+                <div style={{ display: "flex", gap: 12 }}>
+                  <button style={{ fontSize: 11, fontWeight: 600, color: "#44CCFF", background: "none", border: "none", cursor: "pointer", padding: 0 }}>
+                    Try On My Car
+                  </button>
+                  <button style={{ fontSize: 11, fontWeight: 600, color: "#44CCFF", background: "none", border: "none", cursor: "pointer", padding: 0 }}>
+                    Shop Build
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
     </div>
   );
 }

@@ -1,181 +1,161 @@
 "use client";
-
-import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Camera, ImagePlus, ChevronLeft, Sparkles } from "lucide-react";
-import { useBuildStore } from "@/lib/stores/build-store";
-import { cn } from "@/lib/utils/cn";
+import { ArrowLeft, Camera, Image as ImageIcon, Lightbulb } from "lucide-react";
 
-export default function CreatePage() {
+const DEMO_CARS = [
+  {
+    label: "2023 Toyota GR86",
+    img: "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=400&q=80&fm=webp",
+    param: "gr86",
+  },
+  {
+    label: "2024 BMW M4",
+    img: "https://images.unsplash.com/photo-1580273916550-e323be2ae537?w=400&q=80&fm=webp",
+    param: "m4",
+  },
+  {
+    label: "2022 Porsche 911",
+    img: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=400&q=80&fm=webp",
+    param: "911",
+  },
+];
+
+export default function StudioUploadPage() {
   const router = useRouter();
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const cameraInputRef = useRef<HTMLInputElement>(null);
-  const [isDragging, setIsDragging] = useState(false);
-  const { setVehicleImage, clearBuild } = useBuildStore();
-
-  function handleFile(file: File) {
-    const url = URL.createObjectURL(file);
-    clearBuild();
-    setVehicleImage(url);
-    router.push("/create/detect");
-  }
-
-  function onFileChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0];
-    if (file) handleFile(file);
-  }
-
-  function onDrop(e: React.DragEvent) {
-    e.preventDefault();
-    setIsDragging(false);
-    const file = e.dataTransfer.files?.[0];
-    if (file && file.type.startsWith("image/")) handleFile(file);
-  }
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
-      {/* Top glow */}
-      <div
-        style={{
-          position: "absolute",
-          top: 0,
-          left: "50%",
-          transform: "translateX(-50%)",
-          width: 400,
-          height: 300,
-          background:
-            "radial-gradient(ellipse at center top, rgba(68,204,255,0.12) 0%, transparent 70%)",
-          pointerEvents: "none",
-        }}
-      />
+    <div style={{
+      minHeight: "100dvh", background: "var(--color-bg)",
+      display: "flex", flexDirection: "column", position: "relative", overflow: "hidden",
+    }}>
+      {/* Ambient glow */}
+      <div style={{
+        position: "absolute", inset: 0, pointerEvents: "none",
+        background: "radial-gradient(ellipse 60% 40% at 50% -5%, rgba(68,204,255,0.08) 0%, transparent 60%)",
+      }} />
 
-      {/* TopBar */}
-      <header
-        className="flex items-center gap-3 px-4 pt-safe"
-        style={{ height: "3.5rem", borderBottom: "1px solid #2A2A36" }}
-      >
-        <button
-          onClick={() => router.back()}
-          className="w-9 h-9 flex items-center justify-center rounded-button text-text-secondary hover:text-text-primary transition-colors"
-        >
-          <ChevronLeft size={22} />
-        </button>
-        <span className="text-display-xs font-display text-text-primary flex-1">
-          New Build
-        </span>
-        <Sparkles size={18} className="text-cyan" />
-      </header>
+      {/* Back button */}
+      <button onClick={() => router.back()} style={{
+        position: "absolute", top: 16, left: 16, zIndex: 10,
+        background: "none", border: "none", cursor: "pointer",
+        color: "var(--color-text-tertiary)", display: "flex", alignItems: "center", gap: 4,
+        fontSize: 14,
+      }}>
+        <ArrowLeft size={18} /> Back
+      </button>
 
-      {/* Body */}
-      <div className="flex-1 flex flex-col items-center justify-center px-6 py-8 gap-8 relative z-10">
-        {/* Heading */}
-        <div className="text-center space-y-2">
-          <h1 className="text-display-md font-display text-text-primary">
-            Upload Your Car Photo
-          </h1>
-          <p className="text-body-md text-text-secondary max-w-xs mx-auto">
-            Our AI will detect your vehicle and help you build the perfect
-            customization.
+      {/* Main content */}
+      <div style={{
+        flex: 1, display: "flex", flexDirection: "column", alignItems: "center",
+        justifyContent: "center", padding: "72px 24px 0", position: "relative", zIndex: 1,
+        gap: 28, maxWidth: 400, margin: "0 auto", width: "100%",
+      }}>
+        {/* Car silhouette */}
+        <div style={{ width: 160, height: 80, display: "flex", alignItems: "center", justifyContent: "center", opacity: 0.3 }}>
+          <svg width="160" height="60" viewBox="0 0 160 60" fill="none">
+            <path d="M20 45 Q20 35 35 30 L55 20 Q65 15 75 15 L100 15 Q110 15 115 20 L130 30 Q145 35 145 45"
+              stroke="#44CCFF" strokeWidth="1.5" fill="none" />
+            <circle cx="45" cy="48" r="8" stroke="#44CCFF" strokeWidth="1.5" fill="none" />
+            <circle cx="120" cy="48" r="8" stroke="#44CCFF" strokeWidth="1.5" fill="none" />
+            <line x1="15" y1="50" x2="150" y2="50" stroke="#44CCFF" strokeWidth="0.5" opacity="0.3" />
+          </svg>
+        </div>
+
+        {/* Headline */}
+        <div style={{ textAlign: "center" }}>
+          <h1 style={{
+            fontSize: 28, fontWeight: 800, color: "var(--color-text-primary)",
+            fontFamily: "var(--font-manrope, Manrope, sans-serif)", margin: "0 0 8px",
+          }}>Upload Your Car</h1>
+          <p style={{ fontSize: 14, color: "var(--color-text-secondary)", margin: 0, lineHeight: 1.5 }}>
+            {"We'll transform it in seconds. Side angle works best."}
           </p>
         </div>
 
-        {/* Drop zone */}
-        <div
-          onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
-          onDragLeave={() => setIsDragging(false)}
-          onDrop={onDrop}
-          onClick={() => fileInputRef.current?.click()}
-          className={cn(
-            "w-full max-w-sm aspect-[4/3] rounded-card border-2 border-dashed flex flex-col items-center justify-center gap-3 cursor-pointer transition-all duration-200",
-            isDragging
-              ? "border-cyan bg-cyan-muted scale-[1.02]"
-              : "border-surface-border bg-surface hover:border-cyan/50 hover:bg-surface-elevated"
-          )}
-        >
-          <div
-            className="w-16 h-16 rounded-full flex items-center justify-center"
-            style={{ background: "rgba(68,204,255,0.1)" }}
-          >
-            <ImagePlus size={28} className="text-cyan" />
+        {/* Buttons */}
+        <div style={{ display: "flex", flexDirection: "column", gap: 12, width: "100%" }}>
+          <button onClick={() => router.push("/create/customize")} style={{
+            width: "100%", height: 56, borderRadius: 999,
+            background: "linear-gradient(135deg, #44CCFF 0%, #007FFF 100%)",
+            color: "#0C0C10", fontWeight: 700, fontSize: 16, border: "none", cursor: "pointer",
+            display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+            fontFamily: "var(--font-manrope, Manrope, sans-serif)",
+            boxShadow: "0 0 24px rgba(68,204,255,0.3)",
+          }}>
+            <Camera size={20} /> Take a Photo
+          </button>
+
+          <button onClick={() => router.push("/create/customize")} style={{
+            width: "100%", height: 56, borderRadius: 999,
+            background: "transparent", color: "var(--color-text-primary)",
+            fontWeight: 600, fontSize: 16, cursor: "pointer",
+            border: "1px solid var(--color-border)",
+            display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+            fontFamily: "var(--font-manrope, Manrope, sans-serif)",
+          }}>
+            <ImageIcon size={20} /> Choose from Gallery
+          </button>
+        </div>
+
+        {/* OR divider */}
+        <div style={{ display: "flex", alignItems: "center", gap: 12, width: "100%" }}>
+          <div style={{ flex: 1, height: 1, background: "var(--color-border)" }} />
+          <span style={{ fontSize: 12, color: "var(--color-text-tertiary)", fontWeight: 500 }}>or</span>
+          <div style={{ flex: 1, height: 1, background: "var(--color-border)" }} />
+        </div>
+
+        {/* Demo cars */}
+        <div style={{ width: "100%", display: "flex", flexDirection: "column", gap: 12 }}>
+          <p style={{ fontSize: 12, color: "var(--color-text-tertiary)", margin: 0, textAlign: "center" }}>
+            Try with a demo car
+          </p>
+          <div style={{ display: "flex", gap: 10, justifyContent: "center" }}>
+            {DEMO_CARS.map((car) => (
+              <button
+                key={car.param}
+                onClick={() => router.push(`/create/customize?demo=${car.param}`)}
+                style={{
+                  background: "none", border: "none", cursor: "pointer",
+                  padding: 0, display: "flex", flexDirection: "column", alignItems: "center", gap: 6,
+                }}
+              >
+                <img
+                  src={car.img}
+                  alt={car.label}
+                  loading="lazy"
+                  style={{
+                    width: 100, height: 64, objectFit: "cover",
+                    borderRadius: 10, display: "block",
+                    border: "1px solid var(--color-border)",
+                  }}
+                />
+                <span style={{ fontSize: 9, color: "var(--color-text-tertiary)", fontWeight: 600, maxWidth: 100, textAlign: "center", lineHeight: 1.3 }}>
+                  {car.label}
+                </span>
+              </button>
+            ))}
           </div>
-          <p className="text-body-md text-text-secondary text-center px-4">
-            Drop a photo here<br />
-            <span className="text-cyan font-medium">or tap to browse</span>
-          </p>
-          <p className="text-body-xs text-text-tertiary">
-            JPG, PNG, WEBP — up to 20 MB
-          </p>
-        </div>
-
-        {/* Divider */}
-        <div className="flex items-center gap-3 w-full max-w-sm">
-          <div className="flex-1 h-px bg-surface-border" />
-          <span className="text-body-xs text-text-tertiary">or choose</span>
-          <div className="flex-1 h-px bg-surface-border" />
-        </div>
-
-        {/* CTA cards */}
-        <div className="w-full max-w-sm grid grid-cols-2 gap-3">
-          {/* Camera */}
-          <button
-            onClick={() => cameraInputRef.current?.click()}
-            className="flex flex-col items-center gap-3 p-5 rounded-card bg-surface border border-surface-border hover:border-cyan/40 hover:bg-surface-elevated transition-all duration-200 active:scale-95"
-          >
-            <div
-              className="w-12 h-12 rounded-button flex items-center justify-center"
-              style={{ background: "rgba(68,204,255,0.12)" }}
-            >
-              <Camera size={22} className="text-cyan" />
-            </div>
-            <div className="text-center">
-              <p className="text-body-md font-medium text-text-primary">
-                Take Photo
-              </p>
-              <p className="text-body-xs text-text-tertiary mt-0.5">
-                Use camera
-              </p>
-            </div>
-          </button>
-
-          {/* Library */}
-          <button
-            onClick={() => fileInputRef.current?.click()}
-            className="flex flex-col items-center gap-3 p-5 rounded-card bg-surface border border-surface-border hover:border-cyan/40 hover:bg-surface-elevated transition-all duration-200 active:scale-95"
-          >
-            <div
-              className="w-12 h-12 rounded-button flex items-center justify-center"
-              style={{ background: "rgba(167,139,250,0.12)" }}
-            >
-              <ImagePlus size={22} style={{ color: "#A78BFA" }} />
-            </div>
-            <div className="text-center">
-              <p className="text-body-md font-medium text-text-primary">
-                Library
-              </p>
-              <p className="text-body-xs text-text-tertiary mt-0.5">
-                From device
-              </p>
-            </div>
-          </button>
         </div>
       </div>
 
-      {/* Hidden file inputs */}
-      <input
-        ref={fileInputRef}
-        type="file"
-        accept="image/*"
-        className="hidden"
-        onChange={onFileChange}
-      />
-      <input
-        ref={cameraInputRef}
-        type="file"
-        accept="image/*"
-        capture="environment"
-        className="hidden"
-        onChange={onFileChange}
-      />
+      {/* Bottom tip card */}
+      <div style={{
+        margin: "28px 24px 32px", padding: "16px 20px",
+        background: "var(--color-surface)", borderRadius: 16,
+        display: "flex", gap: 12, alignItems: "flex-start",
+        position: "relative", zIndex: 1,
+        maxWidth: 400, alignSelf: "center", width: "calc(100% - 48px)",
+      }}>
+        <Lightbulb size={18} style={{ color: "#44CCFF", flexShrink: 0, marginTop: 2 }} />
+        <div>
+          <p style={{ fontSize: 12, fontWeight: 700, color: "var(--color-text-primary)", margin: "0 0 4px" }}>
+            For best results
+          </p>
+          <p style={{ fontSize: 11, color: "var(--color-text-secondary)", margin: 0, lineHeight: 1.5 }}>
+            Clear side or ¾ angle · Good daylight · No obstructions · Single car in frame
+          </p>
+        </div>
+      </div>
     </div>
   );
 }

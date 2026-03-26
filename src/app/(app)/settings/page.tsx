@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import {
   ArrowLeft,
   User,
@@ -16,6 +17,9 @@ import {
   Eye,
   EyeOff,
   Shield,
+  Store,
+  LayoutDashboard,
+  Building2,
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils/cn";
@@ -40,7 +44,7 @@ function Toggle({
         width: 48,
         height: 26,
         borderRadius: 999,
-        background: value ? accent : "#2A2A36",
+        background: value ? accent : "var(--color-border)",
         border: "none",
         position: "relative",
         cursor: "pointer",
@@ -94,7 +98,7 @@ function SettingRow({
         padding: "14px 16px",
         background: "none",
         border: "none",
-        borderBottom: "1px solid #2A2A36",
+        borderBottom: "1px solid var(--color-border)",
         cursor: "pointer",
         textAlign: "left",
       }}
@@ -118,17 +122,17 @@ function SettingRow({
           style={{
             fontSize: 15,
             fontWeight: 500,
-            color: danger ? "#F87171" : "#FFFFFF",
+            color: danger ? "#F87171" : "var(--color-text-primary)",
             margin: 0,
           }}
         >
           {label}
         </p>
         {sublabel && (
-          <p style={{ fontSize: 12, color: "#6B6B7B", margin: "1px 0 0" }}>{sublabel}</p>
+          <p style={{ fontSize: 12, color: "var(--color-text-tertiary)", margin: "1px 0 0" }}>{sublabel}</p>
         )}
       </div>
-      <ChevronRight size={17} color="#2A2A36" />
+      <ChevronRight size={17} color="var(--color-border)" />
     </button>
   );
 }
@@ -155,7 +159,7 @@ function ToggleRow({
         alignItems: "center",
         gap: 14,
         padding: "14px 16px",
-        borderBottom: "1px solid #2A2A36",
+        borderBottom: "1px solid var(--color-border)",
       }}
     >
       <div
@@ -173,9 +177,9 @@ function ToggleRow({
         <Icon size={17} color={accent} />
       </div>
       <div style={{ flex: 1, minWidth: 0 }}>
-        <p style={{ fontSize: 15, fontWeight: 500, color: "#FFFFFF", margin: 0 }}>{label}</p>
+        <p style={{ fontSize: 15, fontWeight: 500, color: "var(--color-text-primary)", margin: 0 }}>{label}</p>
         {sublabel && (
-          <p style={{ fontSize: 12, color: "#6B6B7B", margin: "1px 0 0" }}>{sublabel}</p>
+          <p style={{ fontSize: 12, color: "var(--color-text-tertiary)", margin: "1px 0 0" }}>{sublabel}</p>
         )}
       </div>
       <Toggle value={value} onChange={onChange} accent={accent} />
@@ -189,7 +193,7 @@ function SectionHeader({ title }: { title: string }) {
       style={{
         fontSize: 11,
         fontWeight: 700,
-        color: "#6B6B7B",
+        color: "var(--color-text-tertiary)",
         letterSpacing: "0.06em",
         textTransform: "uppercase",
         padding: "20px 16px 8px",
@@ -218,8 +222,12 @@ export default function SettingsPage() {
   const [showActivity, setShowActivity] = useState(true);
   const [darkMode, setDarkMode] = useState(true);
 
+  // Creator mode
+  const [creatorMode, setCreatorMode] = useState(false);
+  const [sellerType, setSellerType] = useState("Individual Designer");
+
   return (
-    <div style={{ background: "#0C0C10", minHeight: "100vh", paddingBottom: 40 }}>
+    <div style={{ background: "var(--color-bg)", minHeight: "100vh", paddingBottom: 40 }}>
       {/* TopBar */}
       <div
         style={{
@@ -242,22 +250,22 @@ export default function SettingsPage() {
             width: 36,
             height: 36,
             borderRadius: "50%",
-            background: "#14141A",
-            border: "1px solid #2A2A36",
+            background: "var(--color-surface)",
+            border: "1px solid var(--color-border)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             cursor: "pointer",
           }}
         >
-          <ArrowLeft size={17} color="#A0A0B0" />
+          <ArrowLeft size={17} color="var(--color-text-secondary)" />
         </button>
         <h1
           style={{
             fontFamily: "var(--font-manrope, Manrope, sans-serif)",
             fontWeight: 900,
             fontSize: 20,
-            color: "#FFFFFF",
+            color: "var(--color-text-primary)",
             letterSpacing: "-0.04em",
             margin: 0,
           }}
@@ -275,9 +283,9 @@ export default function SettingsPage() {
         <SectionHeader title="Account" />
         <div
           style={{
-            background: "#14141A",
+            background: "var(--color-surface)",
             borderRadius: 16,
-            border: "1px solid #2A2A36",
+            border: "1px solid var(--color-border)",
             margin: "0 16px",
             overflow: "hidden",
           }}
@@ -304,13 +312,128 @@ export default function SettingsPage() {
           />
         </div>
 
+        {/* ── Creator Mode ──────────────────────────────────────────── */}
+        <div style={{ padding: "20px 16px 8px" }}>
+          <p style={{ fontSize: 11, fontWeight: 700, color: "#44CCFF", letterSpacing: "0.06em", textTransform: "uppercase", margin: 0 }}>
+            Creator Mode
+          </p>
+        </div>
+        <div
+          style={{
+            background: "var(--color-surface)",
+            borderRadius: 16,
+            border: "1px solid var(--color-border)",
+            margin: "0 16px",
+            overflow: "hidden",
+          }}
+        >
+          <ToggleRow
+            icon={Store}
+            label="Sell on AVA.CAR"
+            sublabel="List and sell your designs, reach car enthusiasts worldwide."
+            value={creatorMode}
+            onChange={setCreatorMode}
+            accent="#44CCFF"
+          />
+          {creatorMode && (
+            <div style={{ padding: "16px 16px 20px", borderTop: "1px solid var(--color-border)", display: "flex", flexDirection: "column", gap: 12 }}>
+              <div>
+                <label style={{ fontSize: 12, fontWeight: 700, color: "var(--color-text-tertiary)", letterSpacing: "0.04em", textTransform: "uppercase", display: "block", marginBottom: 8 }}>
+                  Seller type
+                </label>
+                <select
+                  value={sellerType}
+                  onChange={(e) => setSellerType(e.target.value)}
+                  style={{ width: "100%", padding: "10px 12px", borderRadius: 10, border: "none", background: "var(--color-surface-elevated)", color: "var(--color-text-primary)", fontSize: 14, outline: "none", cursor: "pointer" }}
+                >
+                  {["Individual Designer", "Shop", "Studio"].map((t) => <option key={t}>{t}</option>)}
+                </select>
+              </div>
+              <div>
+                <label style={{ fontSize: 12, fontWeight: 700, color: "var(--color-text-tertiary)", letterSpacing: "0.04em", textTransform: "uppercase", display: "block", marginBottom: 8 }}>
+                  Display name
+                </label>
+                <input
+                  defaultValue="WrapsbyAlex"
+                  style={{ width: "100%", padding: "10px 12px", borderRadius: 10, border: "none", background: "var(--color-surface-elevated)", color: "var(--color-text-primary)", fontSize: 14, outline: "none", boxSizing: "border-box" }}
+                />
+              </div>
+              <button
+                style={{ width: "100%", height: 44, borderRadius: 100, border: "none", cursor: "pointer", background: "linear-gradient(135deg, #44CCFF, #007FFF)", color: "#fff", fontSize: 14, fontWeight: 800, fontFamily: "var(--font-manrope, Manrope, sans-serif)" }}
+              >
+                Save Changes
+              </button>
+              <button
+                onClick={() => router.push("/marketplace/dashboard")}
+                style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, width: "100%", padding: "10px", background: "none", border: "none", cursor: "pointer", fontSize: 13, fontWeight: 700, color: "#44CCFF" }}
+              >
+                <LayoutDashboard size={15} />
+                View Seller Dashboard →
+              </button>
+            </div>
+          )}
+        </div>
+
+        {/* ── Brand Management ──────────────────────────────────────── */}
+        <div style={{ padding: "20px 16px 8px" }}>
+          <p style={{ fontSize: 11, fontWeight: 700, color: "#44CCFF", letterSpacing: "0.06em", textTransform: "uppercase", margin: 0 }}>
+            Brand Management
+          </p>
+        </div>
+        <div
+          style={{
+            background: "var(--color-surface)",
+            borderRadius: 16,
+            border: "1px solid var(--color-border)",
+            margin: "0 16px",
+            overflow: "hidden",
+          }}
+        >
+          <Link
+            href="/marketplace/brand-portal"
+            style={{
+              width: "100%",
+              display: "flex",
+              alignItems: "center",
+              gap: 14,
+              padding: "14px 16px",
+              borderBottom: "1px solid var(--color-border)",
+              textDecoration: "none",
+            }}
+          >
+            <div
+              style={{
+                width: 36,
+                height: 36,
+                borderRadius: 10,
+                background: "rgba(68,204,255,0.06)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                flexShrink: 0,
+              }}
+            >
+              <Building2 size={17} color="#44CCFF" />
+            </div>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <p style={{ fontSize: 15, fontWeight: 500, color: "var(--color-text-primary)", margin: 0 }}>
+                Brand Portal
+              </p>
+              <p style={{ fontSize: 12, color: "var(--color-text-tertiary)", margin: "1px 0 0" }}>
+                Manage your product catalog, analytics, and sponsored placements.
+              </p>
+            </div>
+            <ChevronRight size={17} color="var(--color-border)" />
+          </Link>
+        </div>
+
         {/* ── Notifications ─────────────────────────────────────────── */}
         <SectionHeader title="Notifications" />
         <div
           style={{
-            background: "#14141A",
+            background: "var(--color-surface)",
             borderRadius: 16,
-            border: "1px solid #2A2A36",
+            border: "1px solid var(--color-border)",
             margin: "0 16px",
             overflow: "hidden",
           }}
@@ -357,9 +480,9 @@ export default function SettingsPage() {
         <SectionHeader title="Privacy" />
         <div
           style={{
-            background: "#14141A",
+            background: "var(--color-surface)",
             borderRadius: 16,
-            border: "1px solid #2A2A36",
+            border: "1px solid var(--color-border)",
             margin: "0 16px",
             overflow: "hidden",
           }}
@@ -391,9 +514,9 @@ export default function SettingsPage() {
         <SectionHeader title="About" />
         <div
           style={{
-            background: "#14141A",
+            background: "var(--color-surface)",
             borderRadius: 16,
-            border: "1px solid #2A2A36",
+            border: "1px solid var(--color-border)",
             margin: "0 16px",
             overflow: "hidden",
           }}

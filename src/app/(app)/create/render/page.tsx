@@ -1,173 +1,245 @@
 "use client";
+import { useEffect, useState, Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { ArrowLeft, Save, Share2, MapPin } from "lucide-react";
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { useBuildStore } from "@/lib/stores/build-store";
-
-const STATUS_MESSAGES = [
-  "Applying wrap color...",
-  "Mounting wheels...",
-  "Rendering lighting...",
-  "Finalizing your build...",
+const RESULTS = [
+  {
+    id: 1,
+    img: "https://images.unsplash.com/photo-1617788138017-80ad40651399?w=800&q=80",
+    parts: ["3M Satin Black Wrap", "HRE FF15 Wheels", "Chrome Delete"],
+  },
+  {
+    id: 2,
+    img: "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=800&q=80",
+    parts: ["Avery Nardo Gray", "BBS CH-R Wheels", "PPF Full"],
+  },
+  {
+    id: 3,
+    img: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=800&q=80",
+    parts: ["Inozetek Gloss Black", "Vossen CV3 Wheels", "Ceramic Tint 20%"],
+  },
 ];
 
-// A real working car image for the mock render
-const MOCK_RENDER_URL =
-  "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=800&q=80";
+function LoadingSkeleton({ progress }: { progress: number }) {
+  return (
+    <div style={{
+      flex: 1, display: "flex", flexDirection: "column", alignItems: "center",
+      justifyContent: "center", gap: 32, padding: "0 24px",
+    }}>
+      <div style={{ opacity: 0.4, animation: "pulse 1.5s ease-in-out infinite" }}>
+        <svg width="160" height="60" viewBox="0 0 160 60" fill="none">
+          <path d="M20 45 Q20 35 35 30 L55 20 Q65 15 75 15 L100 15 Q110 15 115 20 L130 30 Q145 35 145 45"
+            stroke="#44CCFF" strokeWidth="1.5" fill="none" />
+          <circle cx="45" cy="48" r="8" stroke="#44CCFF" strokeWidth="1.5" fill="none" />
+          <circle cx="120" cy="48" r="8" stroke="#44CCFF" strokeWidth="1.5" fill="none" />
+        </svg>
+      </div>
+      <div style={{ textAlign: "center" }}>
+        <p style={{ fontSize: 18, fontWeight: 700, color: "var(--color-text-primary)", margin: "0 0 8px" }}>
+          Transforming your ride...
+        </p>
+        <p style={{ fontSize: 13, color: "var(--color-text-secondary)", margin: 0 }}>
+          Preparing 3 looks for you
+        </p>
+      </div>
+      <div style={{ width: "100%", maxWidth: 280, background: "var(--color-border)", borderRadius: 999, height: 4 }}>
+        <div style={{
+          height: "100%", borderRadius: 999,
+          background: "linear-gradient(90deg, #44CCFF, #007FFF)",
+          width: `${progress}%`, transition: "width 0.3s ease",
+        }} />
+      </div>
+      <style>{`
+        @keyframes pulse { 0%,100%{opacity:0.4} 50%{opacity:0.7} }
+      `}</style>
+    </div>
+  );
+}
 
-export default function RenderPage() {
+function RenderContent() {
   const router = useRouter();
-  const { setRenderUrl } = useBuildStore();
-  const [progress, setProgress] = useState(0);
-  const [msgIdx, setMsgIdx] = useState(0);
+  const searchParams = useSearchParams();
+  const preset = searchParams.get("preset") ?? "Your Build";
 
-  // Cycle status messages
+  const [loading, setLoading] = useState(true);
+  const [progress, setProgress] = useState(0);
+  const [selected, setSelected] = useState(0);
+
   useEffect(() => {
+    let p = 0;
     const interval = setInterval(() => {
-      setMsgIdx((i) => Math.min(i + 1, STATUS_MESSAGES.length - 1));
-    }, 900);
+      p += 4;
+      setProgress(Math.min(p, 100));
+      if (p >= 100) {
+        clearInterval(interval);
+        setTimeout(() => setLoading(false), 300);
+      }
+    }, 90);
     return () => clearInterval(interval);
   }, []);
 
-  // Animate progress to 100 over ~3.5 s
-  useEffect(() => {
-    let frame: ReturnType<typeof requestAnimationFrame>;
-    let start: number | null = null;
-    const DURATION = 3500;
-
-    function step(ts: number) {
-      if (!start) start = ts;
-      const elapsed = ts - start;
-      const raw = Math.min(elapsed / DURATION, 1);
-      // ease-out
-      const eased = 1 - Math.pow(1 - raw, 2);
-      setProgress(eased * 100);
-      if (raw < 1) {
-        frame = requestAnimationFrame(step);
-      } else {
-        setRenderUrl(MOCK_RENDER_URL);
-        setTimeout(() => router.push("/create/quote"), 400);
-      }
-    }
-
-    frame = requestAnimationFrame(step);
-    return () => cancelAnimationFrame(frame);
-  }, [router, setRenderUrl]);
-
-  const circumference = 2 * Math.PI * 52; // r=52
-  const strokeDash = circumference - (progress / 100) * circumference;
-
   return (
-    <div
-      className="min-h-screen bg-background flex flex-col items-center justify-center relative overflow-hidden"
-    >
-      {/* Radial glow */}
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          background:
-            "radial-gradient(ellipse at 50% 50%, rgba(68,204,255,0.1) 0%, transparent 60%)",
-          pointerEvents: "none",
-        }}
-      />
+    <div style={{
+      minHeight: "100dvh", background: "var(--color-bg)",
+      display: "flex", flexDirection: "column", position: "relative",
+    }}>
+      {/* Ambient glow */}
+      <div style={{
+        position: "absolute", inset: 0, pointerEvents: "none",
+        background: "radial-gradient(ellipse 60% 40% at 50% -5%, rgba(68,204,255,0.06) 0%, transparent 60%)",
+      }} />
 
-      {/* Ambient particle dots (static, purely decorative) */}
-      {[
-        { top: "15%", left: "10%", size: 3 },
-        { top: "25%", right: "12%", size: 2 },
-        { top: "70%", left: "8%", size: 2 },
-        { top: "75%", right: "15%", size: 3 },
-        { top: "45%", left: "5%", size: 1.5 },
-        { top: "55%", right: "6%", size: 1.5 },
-      ].map((dot, i) => (
-        <span
-          key={i}
-          style={{
-            position: "absolute",
-            ...dot,
-            width: dot.size,
-            height: dot.size,
-            borderRadius: "50%",
-            background: "#44CCFF",
-            opacity: 0.25 + (i % 3) * 0.1,
-          }}
-        />
-      ))}
+      {/* Top bar */}
+      <div style={{
+        display: "flex", alignItems: "center", justifyContent: "space-between",
+        padding: "16px 20px 0", position: "relative", zIndex: 2,
+      }}>
+        <button onClick={() => router.back()} style={{
+          background: "none", border: "none", cursor: "pointer",
+          color: "var(--color-text-tertiary)", display: "flex", alignItems: "center", gap: 4, fontSize: 14,
+        }}>
+          <ArrowLeft size={18} /> Back
+        </button>
+        <span style={{
+          fontSize: 13, fontWeight: 700, color: "var(--color-text-primary)",
+          fontFamily: "var(--font-manrope, Manrope, sans-serif)",
+          maxWidth: 180, textAlign: "center", lineHeight: 1.3,
+        }}>
+          Your {preset} Build
+        </span>
+        <div style={{ width: 60 }} />
+      </div>
 
-      {/* Circular progress */}
-      <div className="relative flex items-center justify-center mb-10" style={{ width: 140, height: 140 }}>
-        {/* Track */}
-        <svg
-          width="140"
-          height="140"
-          viewBox="0 0 120 120"
-          style={{ position: "absolute", inset: 0, transform: "rotate(-90deg)" }}
-        >
-          <circle
-            cx="60" cy="60" r="52"
-            fill="none"
-            stroke="rgba(255,255,255,0.06)"
-            strokeWidth="6"
-          />
-          <circle
-            cx="60" cy="60" r="52"
-            fill="none"
-            stroke="url(#renderGradient)"
-            strokeWidth="6"
-            strokeLinecap="round"
-            strokeDasharray={circumference}
-            strokeDashoffset={strokeDash}
-            style={{ transition: "stroke-dashoffset 0.15s linear" }}
-          />
-          <defs>
-            <linearGradient id="renderGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="#44CCFF" />
-              <stop offset="100%" stopColor="#A78BFA" />
-            </linearGradient>
-          </defs>
-        </svg>
+      {loading ? (
+        <LoadingSkeleton progress={progress} />
+      ) : (
+        <>
+          {/* Selected card hero */}
+          <div style={{
+            position: "relative", height: "38vh", overflow: "hidden", flexShrink: 0,
+            marginTop: 12,
+          }}>
+            <img
+              src={RESULTS[selected].img}
+              alt={`Option ${selected + 1}`}
+              loading="lazy"
+              style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }}
+            />
+            <div style={{
+              position: "absolute", inset: 0,
+              background: "linear-gradient(to bottom, transparent 40%, var(--color-bg) 100%)",
+            }} />
+            <div style={{ position: "absolute", bottom: 16, left: 20, right: 20 }}>
+              <p style={{ fontSize: 16, fontWeight: 800, color: "var(--color-text-primary)", margin: "0 0 6px" }}>
+                Option {selected + 1} — {preset}
+              </p>
+              <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+                {RESULTS[selected].parts.map((part) => (
+                  <span key={part} style={{
+                    fontSize: 10, padding: "3px 8px", borderRadius: 999,
+                    background: "rgba(68,204,255,0.15)", border: "1px solid rgba(68,204,255,0.3)",
+                    color: "#44CCFF", fontWeight: 600,
+                  }}>{part}</span>
+                ))}
+              </div>
+            </div>
+          </div>
 
-        {/* Center: percentage */}
-        <div className="relative z-10 flex flex-col items-center">
-          <span className="text-display-md font-display text-text-primary font-bold">
-            {Math.round(progress)}
-          </span>
-          <span className="text-body-xs text-text-tertiary -mt-1">%</span>
+          {/* Result cards row */}
+          <div style={{
+            display: "flex", gap: 12, overflowX: "auto", padding: "20px 20px 0",
+            scrollSnapType: "x mandatory", scrollbarWidth: "none",
+            position: "relative", zIndex: 1,
+          }}>
+            {RESULTS.map((r, i) => (
+              <button
+                key={r.id}
+                onClick={() => setSelected(i)}
+                style={{
+                  flexShrink: 0, width: 140, borderRadius: 12, overflow: "hidden",
+                  border: i === selected ? "2px solid #44CCFF" : "2px solid transparent",
+                  background: "none", padding: 0, cursor: "pointer",
+                  scrollSnapAlign: "start",
+                  boxShadow: i === selected ? "0 0 16px rgba(68,204,255,0.3)" : "none",
+                }}
+              >
+                <img
+                  src={r.img}
+                  alt={`Option ${i + 1}`}
+                  loading="lazy"
+                  style={{ width: "100%", height: 80, objectFit: "cover", display: "block" }}
+                />
+                <div style={{ padding: "8px", background: "var(--color-surface)", textAlign: "left" }}>
+                  <p style={{
+                    fontSize: 10, fontWeight: 700,
+                    color: i === selected ? "#44CCFF" : "var(--color-text-secondary)",
+                    margin: 0, lineHeight: 1.3,
+                  }}>Option {i + 1} — {preset}</p>
+                </div>
+              </button>
+            ))}
+          </div>
+
+          {/* Action buttons */}
+          <div style={{
+            flex: 1, display: "flex", flexDirection: "column", justifyContent: "flex-end",
+            padding: "20px 20px 32px", gap: 10, position: "relative", zIndex: 2,
+          }}>
+            <div style={{ display: "flex", gap: 10 }}>
+              <button style={{
+                flex: 1, height: 48, borderRadius: 999,
+                background: "transparent", color: "var(--color-text-primary)",
+                fontWeight: 600, fontSize: 14, cursor: "pointer",
+                border: "1px solid var(--color-border)",
+                display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
+              }}>
+                <Save size={16} /> Save to Garage
+              </button>
+              <button style={{
+                flex: 1, height: 48, borderRadius: 999,
+                background: "transparent", color: "var(--color-text-primary)",
+                fontWeight: 600, fontSize: 14, cursor: "pointer",
+                border: "1px solid var(--color-border)",
+                display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
+              }}>
+                <Share2 size={16} /> Post to Feed
+              </button>
+            </div>
+
+            <button
+              onClick={() => router.push("/create/shops")}
+              style={{
+                width: "100%", height: 56, borderRadius: 999,
+                background: "linear-gradient(135deg, #44CCFF 0%, #007FFF 100%)",
+                color: "#0C0C10", fontWeight: 700, fontSize: 15, border: "none", cursor: "pointer",
+                display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+                fontFamily: "var(--font-manrope, Manrope, sans-serif)",
+                boxShadow: "0 0 24px rgba(68,204,255,0.3)",
+              }}
+            >
+              <MapPin size={18} /> Get This Built — Find a Shop Near You
+            </button>
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
+export default function RenderPage() {
+  return (
+    <Suspense fallback={
+      <div style={{ minHeight: "100dvh", background: "var(--color-bg)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <div style={{ opacity: 0.4 }}>
+          <svg width="80" height="30" viewBox="0 0 160 60" fill="none">
+            <path d="M20 45 Q20 35 35 30 L55 20 Q65 15 75 15 L100 15 Q110 15 115 20 L130 30 Q145 35 145 45"
+              stroke="#44CCFF" strokeWidth="1.5" fill="none" />
+          </svg>
         </div>
       </div>
-
-      {/* Heading */}
-      <h1
-        className="font-display text-display-lg text-text-primary text-center mb-2 px-6"
-        style={{ letterSpacing: "-0.015em" }}
-      >
-        Rendering your build
-      </h1>
-
-      {/* Status */}
-      <p
-        className="text-body-md text-cyan text-center mb-10 transition-all duration-500"
-        style={{ minHeight: "1.5rem" }}
-      >
-        {STATUS_MESSAGES[msgIdx]}
-      </p>
-
-      {/* Step dots */}
-      <div className="flex gap-2">
-        {STATUS_MESSAGES.map((_, i) => (
-          <span
-            key={i}
-            style={{
-              width: i === msgIdx ? 20 : 6,
-              height: 6,
-              borderRadius: 3,
-              background: i <= msgIdx ? "#44CCFF" : "rgba(255,255,255,0.12)",
-              transition: "all 0.4s ease",
-            }}
-          />
-        ))}
-      </div>
-    </div>
+    }>
+      <RenderContent />
+    </Suspense>
   );
 }

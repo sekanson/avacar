@@ -186,12 +186,12 @@ body {
 
 /* Desktop-only chrome (sidebar, desktop main) */
 .desktop-only-chrome {
-  display: none;
+  display: none !important;
 }
 
 @media (min-width: 1024px) {
   .desktop-only-chrome {
-    display: flex;
+    display: flex !important;
   }
 }
 
@@ -249,15 +249,14 @@ body {
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 12px;
-  padding: 11px 0;
+  padding: 10px 0 10px 14px;
   border-radius: 0;
   color: var(--color-text-secondary);
   background: none;
   border: none;
   cursor: pointer;
-  width: 48px;
   text-align: left;
   white-space: nowrap;
   overflow: hidden;
@@ -302,11 +301,9 @@ body {
   background: var(--color-cyan-subtle);
 }
 
-/* On hover-expand, left-align items and expand to full width */
+/* On hover-expand, update padding only — justify-content already flex-start */
 .desktop-sidebar:hover .desktop-nav-item {
-  justify-content: flex-start;
-  padding: 12px 14px;
-  width: 160px;
+  padding: 10px 14px 10px 14px;
 }
 
 .desktop-sidebar-footer {
@@ -316,7 +313,7 @@ body {
 
 /* ─── Desktop Shell (full-width column wrapper) ─── */
 .desktop-shell {
-  display: flex;
+  /* display controlled by .desktop-only-chrome */
   flex-direction: column;
   flex: 1;
   min-width: 0;

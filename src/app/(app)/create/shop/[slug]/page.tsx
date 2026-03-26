@@ -59,7 +59,7 @@ function InfoCard({ children }: { children: React.ReactNode }) {
   return (
     <div
       className="rounded-card p-4 space-y-3"
-      style={{ background: "#14141A", border: "1px solid #2A2A36" }}
+      style={{ background: "var(--color-surface)", border: "1px solid var(--color-border)" }}
     >
       {children}
     </div>
@@ -78,7 +78,7 @@ function PortfolioPlaceholder({ index }: { index: number }) {
       style={{
         height: 120,
         background: gradients[index % gradients.length],
-        border: "1px solid #2A2A36",
+        border: "1px solid var(--color-border)",
       }}
     >
       <span className="text-body-xs text-text-tertiary">Photo {index + 1}</span>
@@ -106,7 +106,7 @@ export default function ShopProfilePage() {
           height: "3.5rem",
           background: "rgba(12,12,16,0.92)",
           backdropFilter: "blur(16px)",
-          borderBottom: "1px solid #2A2A36",
+          borderBottom: "1px solid var(--color-border)",
         }}
       >
         <button
@@ -124,7 +124,7 @@ export default function ShopProfilePage() {
       <div
         className="h-48 w-full"
         style={{
-          background: `linear-gradient(135deg, ${tierColor}18 0%, #1C1C24 60%, #14141A 100%)`,
+          background: `linear-gradient(135deg, ${tierColor}18 0%, var(--color-surface-elevated) 60%, var(--color-surface) 100%)`,
         }}
       />
 
@@ -297,7 +297,7 @@ export default function ShopProfilePage() {
               <div
                 key={review.id}
                 className="rounded-card p-4"
-                style={{ background: "#14141A", border: "1px solid #2A2A36" }}
+                style={{ background: "var(--color-surface)", border: "1px solid var(--color-border)" }}
               >
                 <div className="flex items-start gap-3 mb-2">
                   {/* Avatar initial */}
@@ -339,7 +339,7 @@ export default function ShopProfilePage() {
         style={{
           background: "rgba(12,12,16,0.95)",
           backdropFilter: "blur(16px)",
-          borderTop: "1px solid #2A2A36",
+          borderTop: "1px solid var(--color-border)",
           paddingBottom: "calc(0.75rem + env(safe-area-inset-bottom))",
         }}
       >

@@ -40,7 +40,7 @@ export default function SplashPage() {
         {/* Logo */}
         <motion.div variants={itemVariants} className="text-center mb-3">
           <h1 className="font-display text-display-2xl font-black tracking-tight text-white">
-            <span className="text-cyan">A</span>VACAR
+            AVA<span className="text-cyan">.</span>CAR
           </h1>
         </motion.div>
 
@@ -160,7 +160,7 @@ export default function SplashPage() {
         className="px-6 pb-10 flex flex-col gap-3 relative z-10 w-full max-w-sm mx-auto"
       >
         <button
-          onClick={() => router.push("/onboarding")}
+          onClick={() => router.push("/feed")}
           className="w-full h-14 rounded-button bg-cyan text-background font-display font-bold text-body-lg flex items-center justify-center gap-2 transition-all active:scale-95"
           style={{ boxShadow: "0 0 24px rgba(68,204,255,0.30)" }}
         >
@@ -169,7 +169,7 @@ export default function SplashPage() {
         </button>
 
         <button
-          onClick={() => router.push("/sign-in")}
+          onClick={() => router.push("/feed")}
           className="w-full h-12 rounded-button text-text-secondary text-body-md font-medium transition-colors hover:text-white"
         >
           I have an account

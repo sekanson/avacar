@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { Car, Plus, ChevronRight, Calendar, Wrench } from "lucide-react";
+import { Car, Plus, ChevronRight, Calendar, Wrench, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils/cn";
 
@@ -16,7 +16,7 @@ const MOCK_VEHICLES = [
     color: "White",
     builds: 1,
     lastModified: "2 weeks ago",
-    gradient: "linear-gradient(135deg, #0a0a12, #14141A)",
+    image: "https://images.unsplash.com/photo-1583121274602-3e2820c69888?w=800&q=80&fm=webp",
     accent: "#44CCFF",
   },
   {
@@ -27,7 +27,7 @@ const MOCK_VEHICLES = [
     color: "Brooklyn Grey",
     builds: 2,
     lastModified: "1 month ago",
-    gradient: "linear-gradient(135deg, #0a080e, #18102a)",
+    image: "https://images.unsplash.com/photo-1580273916550-e323be2ae537?w=800&q=80&fm=webp",
     accent: "#A78BFA",
   },
 ];
@@ -39,7 +39,7 @@ const MOCK_SAVED_BUILDS = [
     style: "Matte Black Wrap",
     price: "$1,400–$1,800",
     status: "Draft",
-    gradient: "linear-gradient(135deg, #0a0a12, #1a1a2e)",
+    image: "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=800&q=80&fm=webp",
     accent: "#44CCFF",
   },
   {
@@ -48,7 +48,7 @@ const MOCK_SAVED_BUILDS = [
     style: "Carbon Kit + PPF",
     price: "$4,200–$5,600",
     status: "Quoted",
-    gradient: "linear-gradient(135deg, #0a080e, #180d24)",
+    image: "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=800&q=80&fm=webp",
     accent: "#A78BFA",
   },
 ];
@@ -61,7 +61,7 @@ export default function GaragePage() {
   const hasVehicles = true;
 
   return (
-    <div style={{ background: "#0C0C10", minHeight: "100vh", paddingBottom: 24 }}>
+    <div style={{ background: "var(--color-bg)", minHeight: "100vh", paddingBottom: 24 }}>
       {/* TopBar */}
       <div
         style={{
@@ -83,7 +83,7 @@ export default function GaragePage() {
             fontFamily: "var(--font-manrope, Manrope, sans-serif)",
             fontWeight: 900,
             fontSize: 22,
-            color: "#FFFFFF",
+            color: "var(--color-text-primary)",
             letterSpacing: "-0.04em",
             margin: 0,
           }}
@@ -97,7 +97,7 @@ export default function GaragePage() {
             alignItems: "center",
             gap: 6,
             height: 36,
-            padding: "0 14px",
+            padding: "8px 16px",
             borderRadius: 999,
             background: "#44CCFF",
             color: "#0C0C10",
@@ -110,7 +110,7 @@ export default function GaragePage() {
           }}
         >
           <Plus size={15} />
-          Add
+          Add Car
         </button>
       </div>
 
@@ -142,7 +142,7 @@ export default function GaragePage() {
               justifyContent: "center",
             }}
           >
-            <Car size={36} color="#6B6B7B" />
+            <Car size={36} color="var(--color-text-tertiary)" />
           </div>
 
           <div>
@@ -151,7 +151,7 @@ export default function GaragePage() {
                 fontFamily: "var(--font-manrope, Manrope, sans-serif)",
                 fontWeight: 800,
                 fontSize: 22,
-                color: "#FFFFFF",
+                color: "var(--color-text-primary)",
                 letterSpacing: "-0.03em",
                 margin: "0 0 6px",
               }}
@@ -184,15 +184,15 @@ export default function GaragePage() {
           </button>
         </motion.div>
       ) : (
-        <div style={{ padding: "20px 20px 0" }}>
+        <div style={{ padding: "24px 20px 0" }}>
           {/* Vehicles section */}
           <h2
             style={{
               fontFamily: "var(--font-manrope, Manrope, sans-serif)",
-              fontWeight: 800,
-              fontSize: 11,
-              color: "#A0A0B0",
-              letterSpacing: "0.04em",
+              fontWeight: 700,
+              fontSize: 10,
+              color: "#44CCFF",
+              letterSpacing: "0.2em",
               textTransform: "uppercase",
               margin: "0 0 12px",
             }}
@@ -208,9 +208,9 @@ export default function GaragePage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.08, duration: 0.35 }}
                 style={{
-                  background: "#14141A",
+                  background: "var(--color-surface)",
                   borderRadius: 16,
-                  border: "1px solid #2A2A36",
+                  border: "1px solid var(--color-border)",
                   padding: 16,
                   display: "flex",
                   alignItems: "center",
@@ -218,34 +218,27 @@ export default function GaragePage() {
                   cursor: "pointer",
                 }}
               >
-                {/* Car gradient thumb */}
+                {/* Car photo thumbnail */}
                 <div
                   style={{
-                    width: 72,
-                    height: 72,
+                    width: 80,
+                    height: 60,
                     borderRadius: 12,
-                    background: v.gradient,
-                    border: `1px solid ${v.accent}30`,
                     flexShrink: 0,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    position: "relative",
                     overflow: "hidden",
+                    border: `1px solid ${v.accent}30`,
                   }}
                 >
-                  <div
+                  <img
+                    src={v.image}
+                    alt={`${v.year} ${v.make} ${v.model}`}
+                    loading="lazy"
                     style={{
-                      width: 36,
-                      height: 36,
-                      borderRadius: "50%",
-                      background: v.accent,
-                      opacity: 0.2,
-                      filter: "blur(12px)",
-                      position: "absolute",
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
                     }}
                   />
-                  <Car size={26} color={v.accent} style={{ position: "relative" }} />
                 </div>
 
                 {/* Details */}
@@ -255,7 +248,7 @@ export default function GaragePage() {
                       fontFamily: "var(--font-manrope, Manrope, sans-serif)",
                       fontWeight: 800,
                       fontSize: 15,
-                      color: "#FFFFFF",
+                      color: "var(--color-text-primary)",
                       margin: "0 0 3px",
                       letterSpacing: "-0.02em",
                     }}
@@ -267,19 +260,19 @@ export default function GaragePage() {
                   </p>
                   <div style={{ display: "flex", gap: 12 }}>
                     <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
-                      <Wrench size={11} color="#6B6B7B" />
-                      <span style={{ fontSize: 11, color: "#6B6B7B" }}>
+                      <Wrench size={14} color="var(--color-text-tertiary)" />
+                      <span style={{ fontSize: 11, color: "var(--color-text-tertiary)" }}>
                         {v.builds} build{v.builds !== 1 ? "s" : ""}
                       </span>
                     </div>
                     <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
-                      <Calendar size={11} color="#6B6B7B" />
-                      <span style={{ fontSize: 11, color: "#6B6B7B" }}>{v.lastModified}</span>
+                      <Calendar size={14} color="var(--color-text-tertiary)" />
+                      <span style={{ fontSize: 11, color: "var(--color-text-tertiary)" }}>{v.lastModified}</span>
                     </div>
                   </div>
                 </div>
 
-                <ChevronRight size={18} color="#2A2A36" />
+                <ChevronRight size={18} color="var(--color-border)" />
               </motion.div>
             ))}
           </div>
@@ -288,18 +281,18 @@ export default function GaragePage() {
           <h2
             style={{
               fontFamily: "var(--font-manrope, Manrope, sans-serif)",
-              fontWeight: 800,
-              letterSpacing: "0.04em",
+              fontWeight: 700,
+              letterSpacing: "0.2em",
               textTransform: "uppercase",
-              fontSize: 11,
-              color: "#A0A0B0",
+              fontSize: 10,
+              color: "#44CCFF",
               margin: "0 0 12px",
             }}
           >
             Saved Builds
           </h2>
 
-          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 32 }}>
             {MOCK_SAVED_BUILDS.map((build, i) => (
               <motion.div
                 key={build.id}
@@ -307,9 +300,9 @@ export default function GaragePage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 + i * 0.08, duration: 0.35 }}
                 style={{
-                  background: "#14141A",
+                  background: "var(--color-surface)",
                   borderRadius: 16,
-                  border: "1px solid #2A2A36",
+                  border: "1px solid var(--color-border)",
                   overflow: "hidden",
                   cursor: "pointer",
                   display: "flex",
@@ -324,25 +317,22 @@ export default function GaragePage() {
                   }}
                 />
 
-                {/* Gradient thumb */}
+                {/* Photo thumb */}
                 <div
                   style={{
-                    width: 56,
+                    width: 72,
                     flexShrink: 0,
-                    background: build.gradient,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
+                    overflow: "hidden",
                   }}
                 >
-                  <div
+                  <img
+                    src={build.image}
+                    alt={build.car}
+                    loading="lazy"
                     style={{
-                      width: 24,
-                      height: 24,
-                      borderRadius: "50%",
-                      background: build.accent,
-                      opacity: 0.25,
-                      filter: "blur(8px)",
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
                     }}
                   />
                 </div>
@@ -361,9 +351,9 @@ export default function GaragePage() {
                     <p
                       style={{
                         fontFamily: "var(--font-manrope, Manrope, sans-serif)",
-                        fontWeight: 800,
+                        fontWeight: 600,
                         fontSize: 14,
-                        color: "#FFFFFF",
+                        color: "var(--color-text-primary)",
                         margin: 0,
                         letterSpacing: "-0.02em",
                       }}
@@ -374,9 +364,9 @@ export default function GaragePage() {
                       style={{
                         fontSize: 10,
                         fontWeight: 700,
-                        color: build.accent,
-                        background: `${build.accent}18`,
-                        border: `1px solid ${build.accent}30`,
+                        color: build.status === "Draft" ? "var(--color-text-secondary)" : "#44CCFF",
+                        background: build.status === "Draft" ? "var(--color-surface-elevated)" : "rgba(68,204,255,0.15)",
+                        border: build.status === "Draft" ? "none" : "1px solid rgba(68,204,255,0.3)",
                         borderRadius: 999,
                         padding: "2px 8px",
                       }}
@@ -384,12 +374,12 @@ export default function GaragePage() {
                       {build.status}
                     </span>
                   </div>
-                  <p style={{ fontSize: 12, color: "#A0A0B0", margin: 0 }}>{build.style}</p>
+                  <p style={{ fontSize: 12, fontWeight: 400, color: "var(--color-text-secondary)", margin: 0 }}>{build.style}</p>
                   <p
                     style={{
                       fontSize: 12,
-                      fontWeight: 700,
-                      color: build.accent,
+                      fontWeight: 600,
+                      color: "#44CCFF",
                       margin: 0,
                     }}
                   >
@@ -399,6 +389,74 @@ export default function GaragePage() {
               </motion.div>
             ))}
           </div>
+
+          {/* GA3: Design a new build prompt */}
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5, duration: 0.35 }}
+            style={{
+              background: "var(--color-surface)",
+              borderRadius: 16,
+              border: "1px solid var(--color-border)",
+              padding: 24,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              textAlign: "center",
+              gap: 12,
+            }}
+          >
+            <div
+              style={{
+                width: 56,
+                height: 56,
+                borderRadius: "50%",
+                background: "rgba(68,204,255,0.08)",
+                border: "1px solid rgba(68,204,255,0.18)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Sparkles size={24} color="#44CCFF" />
+            </div>
+            <div>
+              <p
+                style={{
+                  fontFamily: "var(--font-manrope, Manrope, sans-serif)",
+                  fontWeight: 800,
+                  fontSize: 16,
+                  color: "var(--color-text-primary)",
+                  margin: "0 0 6px",
+                  letterSpacing: "-0.02em",
+                }}
+              >
+                Design a new build
+              </p>
+              <p style={{ fontSize: 13, color: "var(--color-text-secondary)", margin: 0, lineHeight: 1.5 }}>
+                Pick a style preset and see your car transformed in 30 seconds
+              </p>
+            </div>
+            <button
+              onClick={() => router.push("/create")}
+              style={{
+                height: 44,
+                padding: "0 24px",
+                borderRadius: 999,
+                background: "#44CCFF",
+                color: "#0C0C10",
+                fontFamily: "var(--font-manrope, Manrope, sans-serif)",
+                fontSize: 14,
+                fontWeight: 800,
+                border: "none",
+                cursor: "pointer",
+                boxShadow: "0 0 20px rgba(68,204,255,0.35)",
+              }}
+            >
+              Design My Car →
+            </button>
+          </motion.div>
         </div>
       )}
     </div>

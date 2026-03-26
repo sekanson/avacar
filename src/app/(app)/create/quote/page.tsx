@@ -93,7 +93,7 @@ function BeforeAfterSlider({ renderUrl }: { renderUrl: string | null }) {
         <div
           className="absolute inset-0"
           style={{
-            background: "linear-gradient(135deg, #1C1C24 0%, #14141A 100%)",
+            background: "linear-gradient(135deg, var(--color-surface-elevated) 0%, var(--color-surface) 100%)",
             minWidth: "100vw",
           }}
         >
@@ -173,7 +173,7 @@ function Toast({ message, onDone }: { message: string; onDone: () => void }) {
   return (
     <div
       className="fixed bottom-24 left-1/2 -translate-x-1/2 z-50 px-5 py-3 rounded-card text-body-sm font-medium text-text-primary animate-slide-up"
-      style={{ background: "#1C1C24", border: "1px solid #2A2A36", boxShadow: "0 8px 32px rgba(0,0,0,0.4)", whiteSpace: "nowrap" }}
+      style={{ background: "var(--color-surface-elevated)", border: "1px solid var(--color-border)", boxShadow: "0 8px 32px rgba(0,0,0,0.4)", whiteSpace: "nowrap" }}
     >
       {message}
     </div>
@@ -202,7 +202,7 @@ export default function QuotePage() {
       {/* TopBar */}
       <header
         className="flex items-center gap-3 px-4 flex-shrink-0"
-        style={{ height: "3.5rem", borderBottom: "1px solid #2A2A36" }}
+        style={{ height: "3.5rem", borderBottom: "1px solid var(--color-border)" }}
       >
         <button
           onClick={() => router.back()}
@@ -225,7 +225,7 @@ export default function QuotePage() {
           {currentBuild.vehicle && (
             <div
               className="flex items-center gap-2 px-4 py-3 rounded-card"
-              style={{ background: "#14141A", border: "1px solid #2A2A36" }}
+              style={{ background: "var(--color-surface)", border: "1px solid var(--color-border)" }}
             >
               <div
                 className="w-8 h-8 rounded-button flex items-center justify-center flex-shrink-0"
@@ -251,9 +251,9 @@ export default function QuotePage() {
           {/* Line items */}
           <div
             className="rounded-card overflow-hidden"
-            style={{ border: "1px solid #2A2A36" }}
+            style={{ border: "1px solid var(--color-border)" }}
           >
-            <div className="px-4 py-3" style={{ borderBottom: "1px solid #2A2A36" }}>
+            <div className="px-4 py-3" style={{ borderBottom: "1px solid var(--color-border)" }}>
               <p className="text-body-sm font-medium text-text-secondary">
                 Selected Items ({items.length})
               </p>
@@ -279,7 +279,7 @@ export default function QuotePage() {
                     key={product.id}
                     className="flex items-center gap-3 px-4 py-3"
                     style={{
-                      borderBottom: idx < items.length - 1 ? "1px solid #2A2A36" : "none",
+                      borderBottom: idx < items.length - 1 ? "1px solid var(--color-border)" : "none",
                     }}
                   >
                     {/* Category icon */}
@@ -321,7 +321,7 @@ export default function QuotePage() {
             {items.length > 0 && (
               <div
                 className="px-4 pt-3 pb-4 space-y-2"
-                style={{ borderTop: "1px solid #2A2A36", background: "#1C1C24" }}
+                style={{ borderTop: "1px solid var(--color-border)", background: "var(--color-surface-elevated)" }}
               >
                 {[
                   { label: "Subtotal", min: subtotalMin, max: subtotalMax },
@@ -336,7 +336,7 @@ export default function QuotePage() {
                 ))}
                 <div
                   className="flex items-center justify-between pt-2"
-                  style={{ borderTop: "1px solid #2A2A36" }}
+                  style={{ borderTop: "1px solid var(--color-border)" }}
                 >
                   <span className="text-body-md font-semibold text-text-primary">Total</span>
                   <span className="text-body-md font-mono font-bold text-cyan">
@@ -366,8 +366,8 @@ export default function QuotePage() {
               className="w-full h-12 rounded-button font-medium text-body-md flex items-center justify-center gap-2 transition-all active:scale-95"
               style={{
                 background: "transparent",
-                border: "1.5px solid #2A2A36",
-                color: "#A0A0B0",
+                border: "1.5px solid var(--color-border)",
+                color: "var(--color-text-secondary)",
               }}
             >
               <Download size={16} />

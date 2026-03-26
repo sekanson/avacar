@@ -3,239 +3,211 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { CheckCircle, Calendar, Car } from "lucide-react";
-import { useBuildStore } from "@/lib/stores/build-store";
+import { Check, Calendar, MapPin, Palette, Car, CreditCard } from "lucide-react";
 
-interface PendingBooking {
+interface BookingData {
   shopName: string;
   shopAddress: string;
+  shopCity: string;
   date: string;
-  time: string | null;
-  notes: string;
-  totalMin: number;
-  totalMax: number;
-  itemCount: number;
+  time: string;
+  designName: string;
   vehicle: string;
+  depositPaid: number;
 }
 
-function formatCents(cents: number): string {
-  if (cents === 0) return "$0";
-  return "$" + (cents / 100).toLocaleString("en-US", { maximumFractionDigits: 0 });
-}
-
-// Generate a stable confirmation code once per mount
-function generateCode(): string {
-  return "AVC-" + Math.random().toString(36).slice(2, 6).toUpperCase();
-}
+const FALLBACK: BookingData = {
+  shopName: "WrapsbyAlex",
+  shopAddress: "123 Auto Row, Mississauga, ON",
+  shopCity: "Mississauga, ON",
+  date: "Saturday, April 5",
+  time: "10:00 AM",
+  designName: "Midnight Fury — GT-R R35",
+  vehicle: "2022 Toyota GR86",
+  depositPaid: 200,
+};
 
 export default function BookingConfirmedPage() {
   const router = useRouter();
-  const { currentBuild } = useBuildStore();
-  const [booking, setBooking] = useState<PendingBooking | null>(null);
-  const [confirmCode] = useState(generateCode);
+  const [booking, setBooking] = useState<BookingData>(FALLBACK);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       const raw = localStorage.getItem("avacar-pending-booking");
       if (raw) {
         try {
-          setBooking(JSON.parse(raw) as PendingBooking);
+          const parsed = JSON.parse(raw) as Partial<BookingData>;
+          setBooking({ ...FALLBACK, ...parsed });
         } catch {
-          // Ignore parse errors
+          // use fallback
         }
       }
     }
   }, []);
 
-  // Fallback values
-  const shopName = booking?.shopName ?? "Apex Customs";
-  const shopAddress = booking?.shopAddress ?? "2847 West Olympic Blvd, Los Angeles, CA 90006";
-  const date = booking?.date ?? "Tomorrow";
-  const time = booking?.time ?? "9:00 AM";
-  const totalMin = booking?.totalMin ?? currentBuild.totalMin;
-  const totalMax = booking?.totalMax ?? currentBuild.totalMax;
-  const itemCount =
-    booking?.itemCount ?? Object.keys(currentBuild.items).length;
-  const vehicle =
-    booking?.vehicle ??
-    (currentBuild.vehicle
-      ? `${currentBuild.vehicle.year} ${currentBuild.vehicle.make} ${currentBuild.vehicle.model}`
-      : "Your Vehicle");
+  const details = [
+    { icon: Calendar, label: `${booking.date} at ${booking.time}` },
+    { icon: MapPin, label: `${booking.shopName} · ${booking.shopAddress}` },
+    { icon: Palette, label: booking.designName },
+    { icon: Car, label: booking.vehicle },
+    { icon: CreditCard, label: `Deposit paid: $${booking.depositPaid}` },
+  ];
+
+  const nextSteps = [
+    "The shop will confirm your appointment within 24 hours",
+    "They'll review your design files and car details",
+    "Arrive at your appointment — the rest is magic ✨",
+  ];
 
   return (
-    <div className="min-h-screen bg-background flex flex-col items-center px-6 py-12 gap-6 overflow-y-auto">
-      {/* Success animation */}
+    <div
+      className="min-h-screen flex flex-col items-center px-5 py-12 overflow-y-auto"
+      style={{ background: "var(--color-bg)" }}
+    >
+      {/* Checkmark */}
       <motion.div
         initial={{ scale: 0, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
-        transition={{
-          type: "spring",
-          stiffness: 300,
-          damping: 20,
-          delay: 0.1,
-        }}
-        className="flex-shrink-0"
+        transition={{ type: "spring", stiffness: 280, damping: 18, delay: 0.1 }}
+        className="flex-shrink-0 mb-6"
       >
         <div
-          className="w-24 h-24 rounded-full flex items-center justify-center"
+          className="flex items-center justify-center"
           style={{
-            background: "rgba(52,211,153,0.12)",
-            border: "2px solid rgba(52,211,153,0.4)",
-            boxShadow: "0 0 32px rgba(52,211,153,0.2)",
+            width: 80,
+            height: 80,
+            borderRadius: "50%",
+            background: "rgba(68,204,255,0.15)",
+            border: "2px solid rgba(68,204,255,0.5)",
+            boxShadow: "0 0 40px rgba(68,204,255,0.25)",
           }}
         >
-          <CheckCircle size={48} className="text-success" strokeWidth={1.5} />
+          <Check size={40} strokeWidth={2.5} style={{ color: "#44CCFF" }} />
         </div>
       </motion.div>
 
-      {/* Heading */}
+      {/* Headline */}
       <motion.div
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.3, duration: 0.3 }}
-        className="text-center"
+        transition={{ delay: 0.3, duration: 0.35 }}
+        className="text-center mb-8"
       >
-        <h1 className="text-display-lg font-display text-success">
-          Booking Confirmed!
+        <h1
+          className="font-display font-bold text-text-primary"
+          style={{ fontSize: 28 }}
+        >
+          You&apos;re Booked!
         </h1>
-        <p className="text-body-md text-text-secondary mt-1">
-          The shop has been notified of your appointment.
+        <p className="text-text-secondary mt-2" style={{ fontSize: 16 }}>
+          {booking.shopName} is expecting you.
         </p>
       </motion.div>
 
-      {/* Confirmation code */}
+      {/* Booking card */}
       <motion.div
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.45, duration: 0.3 }}
-        className="w-full max-w-sm"
+        transition={{ delay: 0.45, duration: 0.35 }}
+        className="w-full max-w-sm mb-6"
       >
         <div
-          className="rounded-card px-6 py-5 text-center"
-          style={{
-            background: "rgba(68,204,255,0.06)",
-            border: "1px solid rgba(68,204,255,0.25)",
-          }}
+          className="rounded-[1.5rem] overflow-hidden"
+          style={{ background: "var(--color-surface)" }}
         >
-          <p className="text-body-xs text-text-tertiary uppercase tracking-widest mb-2">
-            Confirmation Code
-          </p>
-          <p
-            className="font-mono text-3xl font-bold text-cyan tracking-widest"
-            style={{ letterSpacing: "0.08em" }}
-          >
-            {confirmCode}
-          </p>
-          <p className="text-body-xs text-text-tertiary mt-2">
-            Save this for reference
-          </p>
+          {details.map(({ icon: Icon, label }, i) => (
+            <div
+              key={i}
+              className="flex items-start gap-3 px-4 py-3"
+              style={{
+                borderBottom:
+                  i < details.length - 1 ? "1px solid var(--color-border)" : "none",
+              }}
+            >
+              <Icon size={16} style={{ color: "#44CCFF", flexShrink: 0, marginTop: 2 }} />
+              <span className="text-[14px] text-text-primary leading-snug">{label}</span>
+            </div>
+          ))}
         </div>
       </motion.div>
 
-      {/* Details card */}
+      {/* What happens next */}
       <motion.div
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.6, duration: 0.3 }}
-        className="w-full max-w-sm"
+        transition={{ delay: 0.6, duration: 0.35 }}
+        className="w-full max-w-sm mb-8"
       >
+        <p className="text-[11px] text-text-tertiary uppercase tracking-wider mb-3">
+          What Happens Next
+        </p>
         <div
-          className="rounded-card overflow-hidden"
-          style={{ background: "#14141A", border: "1px solid #2A2A36" }}
+          className="rounded-[1.5rem] p-4 space-y-3"
+          style={{ background: "var(--color-surface)" }}
         >
-          {/* Shop */}
-          <div className="px-4 py-4 border-b border-surface-border">
-            <p className="text-body-xs text-text-tertiary uppercase tracking-wider mb-1">Shop</p>
-            <p className="text-body-md font-semibold text-text-primary">{shopName}</p>
-            <p className="text-body-xs text-text-secondary mt-0.5">{shopAddress}</p>
-          </div>
-
-          {/* Date & Time */}
-          <div className="px-4 py-4 border-b border-surface-border flex items-center gap-3">
-            <Calendar size={18} className="text-cyan flex-shrink-0" />
-            <div>
-              <p className="text-body-xs text-text-tertiary uppercase tracking-wider mb-0.5">
-                Appointment
-              </p>
-              <p className="text-body-md text-text-primary">
-                {date} at {time}
-              </p>
+          {nextSteps.map((step, i) => (
+            <div key={i} className="flex items-start gap-3">
+              <div
+                className="flex-shrink-0 flex items-center justify-center font-bold text-[11px]"
+                style={{
+                  width: 24,
+                  height: 24,
+                  borderRadius: "50%",
+                  background: "rgba(68,204,255,0.15)",
+                  color: "#44CCFF",
+                  border: "1px solid rgba(68,204,255,0.3)",
+                  marginTop: 1,
+                }}
+              >
+                {i + 1}
+              </div>
+              <p className="text-[13px] text-text-secondary leading-snug">{step}</p>
             </div>
-          </div>
-
-          {/* Build summary */}
-          <div className="px-4 py-4 border-b border-surface-border flex items-center gap-3">
-            <Car size={18} className="text-cyan flex-shrink-0" />
-            <div>
-              <p className="text-body-xs text-text-tertiary uppercase tracking-wider mb-0.5">
-                Vehicle & Build
-              </p>
-              <p className="text-body-md text-text-primary">{vehicle}</p>
-              <p className="text-body-xs text-text-secondary mt-0.5">
-                {itemCount} item{itemCount !== 1 ? "s" : ""} selected
-              </p>
-            </div>
-          </div>
-
-          {/* Estimated cost */}
-          <div className="px-4 py-4">
-            <p className="text-body-xs text-text-tertiary uppercase tracking-wider mb-1">
-              Estimated Cost
-            </p>
-            {totalMin > 0 ? (
-              <p className="text-display-sm font-display text-cyan">
-                {formatCents(totalMin)}
-                <span className="text-text-tertiary mx-1">–</span>
-                {formatCents(totalMax)}
-              </p>
-            ) : (
-              <p className="text-body-md text-text-secondary">TBD at shop</p>
-            )}
-            <p className="text-body-xs text-text-tertiary mt-1">
-              Final price confirmed at the shop
-            </p>
-          </div>
+          ))}
         </div>
       </motion.div>
-
-      {/* Email notice */}
-      <motion.p
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.8, duration: 0.3 }}
-        className="text-body-sm text-text-secondary text-center max-w-xs"
-      >
-        A confirmation has been sent to your email.
-      </motion.p>
 
       {/* Action buttons */}
       <motion.div
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.9, duration: 0.3 }}
+        transition={{ delay: 0.75, duration: 0.35 }}
         className="w-full max-w-sm space-y-3"
       >
         <button
-          onClick={() => router.push("/garage")}
-          className="w-full flex items-center justify-center font-display font-semibold text-text-inverse rounded-button transition-colors active:opacity-90"
+          onClick={() => router.push("/feed")}
+          className="w-full font-display font-bold rounded-2xl flex items-center justify-center gap-2 transition-opacity active:opacity-80"
           style={{
             height: 52,
-            background: "#44CCFF",
-            boxShadow: "0 0 24px rgba(68,204,255,0.35)",
+            background: "linear-gradient(135deg, #44CCFF 0%, #0099CC 100%)",
+            color: "#000",
+            fontSize: 15,
+            boxShadow: "0 4px 24px rgba(68,204,255,0.35)",
           }}
         >
-          View in Garage
+          🏠 Back to Feed
         </button>
         <button
-          onClick={() => router.push("/feed")}
-          className="w-full flex items-center justify-center font-display font-semibold text-text-secondary rounded-button transition-colors"
+          onClick={() => {
+            // Share to feed — placeholder
+            router.push("/feed");
+          }}
+          className="w-full font-semibold rounded-2xl flex items-center justify-center gap-2 transition-all active:opacity-80"
           style={{
             height: 52,
             background: "transparent",
-            border: "1px solid #2A2A36",
+            border: "1px solid var(--color-border)",
+            color: "var(--color-text-secondary)",
+            fontSize: 15,
           }}
         >
-          Back to Feed
+          📤 Share to Feed
+        </button>
+        <button
+          className="w-full text-center text-[13px] text-text-tertiary py-2"
+          onClick={() => {/* Add to Calendar */}}
+        >
+          Add to Calendar
         </button>
       </motion.div>
     </div>

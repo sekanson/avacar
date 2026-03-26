@@ -37,7 +37,7 @@ export default function ConfirmVehiclePage() {
       {/* TopBar */}
       <header
         className="flex items-center gap-3 px-4 flex-shrink-0"
-        style={{ height: "3.5rem", borderBottom: "1px solid #2A2A36" }}
+        style={{ height: "3.5rem", borderBottom: "1px solid var(--color-border)" }}
       >
         <button
           onClick={() => router.back()}
@@ -68,8 +68,8 @@ export default function ConfirmVehiclePage() {
                 className="w-full h-full flex items-center justify-center"
                 style={{
                   background:
-                    "linear-gradient(135deg, #1C1C24 0%, #14141A 100%)",
-                  border: "1px solid #2A2A36",
+                    "linear-gradient(135deg, var(--color-surface-elevated) 0%, var(--color-surface) 100%)",
+                  border: "1px solid var(--color-border)",
                 }}
               >
                 <svg
@@ -91,7 +91,7 @@ export default function ConfirmVehiclePage() {
           {/* Confidence card */}
           <div
             className="rounded-card p-4 space-y-3"
-            style={{ background: "#14141A", border: "1px solid #2A2A36" }}
+            style={{ background: "var(--color-surface)", border: "1px solid var(--color-border)" }}
           >
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
@@ -127,7 +127,7 @@ export default function ConfirmVehiclePage() {
           {/* Editable fields */}
           <div
             className="rounded-card overflow-hidden"
-            style={{ border: "1px solid #2A2A36" }}
+            style={{ border: "1px solid var(--color-border)" }}
           >
             {[
               { label: "Make", value: make, onChange: setMake, placeholder: "e.g. Toyota" },
@@ -139,8 +139,8 @@ export default function ConfirmVehiclePage() {
                 key={field.label}
                 className="flex items-center px-4"
                 style={{
-                  background: "#14141A",
-                  borderBottom: idx < arr.length - 1 ? "1px solid #2A2A36" : "none",
+                  background: "var(--color-surface)",
+                  borderBottom: idx < arr.length - 1 ? "1px solid var(--color-border)" : "none",
                   height: 56,
                 }}
               >
@@ -164,7 +164,7 @@ export default function ConfirmVehiclePage() {
             {/* Body type select */}
             <div
               className="flex items-center px-4"
-              style={{ background: "#14141A", height: 56 }}
+              style={{ background: "var(--color-surface)", height: 56 }}
             >
               <span
                 className="text-body-sm text-text-tertiary"
@@ -179,7 +179,7 @@ export default function ConfirmVehiclePage() {
                 style={{ colorScheme: "dark", cursor: "pointer" }}
               >
                 {BODY_TYPES.map((bt) => (
-                  <option key={bt} value={bt} style={{ background: "#1C1C24" }}>
+                  <option key={bt} value={bt} style={{ background: "var(--color-surface-elevated)" }}>
                     {bt}
                   </option>
                 ))}

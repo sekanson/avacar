@@ -6,6 +6,20 @@ import { allMarketplaceProducts } from "@/data/marketplace";
 import type { MarketplaceProduct } from "@/data/marketplace";
 import { SlidersHorizontal, X } from "lucide-react";
 
+const MODE_TABS = [
+  { id: "designs",  label: "Designs",  href: "/marketplace/designs" },
+  { id: "products", label: "Products", href: "/marketplace/products" },
+  { id: "shops",    label: "Shops",    href: "/marketplace/shops" },
+  { id: "training", label: "Training", href: "/marketplace/training" },
+];
+
+const WHEEL_IMAGES = [
+  "https://images.unsplash.com/photo-1611821064430-0d40291d0f0b?w=600&q=80&fm=webp",
+  "https://images.unsplash.com/photo-1626668011687-8a114cf5a34c?w=600&q=80&fm=webp",
+  "https://images.unsplash.com/photo-1605559911160-a3d95d213904?w=600&q=80&fm=webp",
+];
+const PPF_IMAGE = "https://images.unsplash.com/photo-1619405399517-d7fce0f13302?w=600&q=80&fm=webp";
+
 const FINISHES = ["All", "Matte", "Satin", "Gloss", "Chrome", "Color-Shift"];
 const CATEGORIES = [
   { id: "all", label: "All" },
@@ -15,7 +29,7 @@ const CATEGORIES = [
 ];
 const SORTS = ["Popular", "Newest", "Price: Low", "Price: High"];
 
-function ProductCard({ product }: { product: MarketplaceProduct }) {
+function ProductCard({ product, sponsored }: { product: MarketplaceProduct; sponsored?: boolean }) {
   return (
     <Link
       href={`/marketplace/products/${product.slug}`}
@@ -35,18 +49,38 @@ function ProductCard({ product }: { product: MarketplaceProduct }) {
           style={{
             width: "100%",
             aspectRatio: "1 / 1",
-            background: `radial-gradient(ellipse at 35% 35%, ${product.primaryColorHex}cc, ${product.primaryColorHex})`,
+            background: product.category === "wraps"
+              ? product.primaryColorHex
+              : "#111",
             position: "relative",
             overflow: "hidden",
           }}
         >
-          <div
-            style={{
-              position: "absolute",
-              inset: 0,
-              background: "linear-gradient(135deg, rgba(255,255,255,0.12) 0%, transparent 55%)",
-            }}
-          />
+          {product.category === "wheels" && (
+            <img
+              src={WHEEL_IMAGES[product.slug.charCodeAt(0) % 3]}
+              alt={product.name}
+              loading="lazy"
+              style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
+            />
+          )}
+          {product.category === "ppf" && (
+            <img
+              src={PPF_IMAGE}
+              alt={product.name}
+              loading="lazy"
+              style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
+            />
+          )}
+          {product.category === "wraps" && (
+            <div
+              style={{
+                position: "absolute",
+                inset: 0,
+                background: "linear-gradient(135deg, rgba(255,255,255,0.10) 0%, transparent 55%)",
+              }}
+            />
+          )}
           {/* Brand logo overlay top-left */}
           <div
             style={{
@@ -65,6 +99,22 @@ function ProductCard({ product }: { product: MarketplaceProduct }) {
           >
             {product.brand}
           </div>
+          {sponsored && (
+            <div
+              style={{
+                position: "absolute",
+                top: 8,
+                right: 8,
+                fontSize: 9,
+                fontWeight: 600,
+                color: "var(--on-surface-variant)",
+                letterSpacing: "0.1em",
+                textTransform: "uppercase",
+              }}
+            >
+              Sponsored
+            </div>
+          )}
         </div>
 
         {/* Card body */}
@@ -314,6 +364,40 @@ export default function ProductCatalogPage() {
   return (
     <div style={{ background: "var(--bg)", minHeight: "100%", paddingBottom: 100 }}>
 
+      {/* Mode Tabs */}
+      <div
+        style={{
+          display: "flex",
+          gap: 0,
+          borderBottom: "1px solid rgba(255,255,255,0.06)",
+          padding: "0 20px",
+          overflowX: "auto",
+          scrollbarWidth: "none",
+        }}
+      >
+        {MODE_TABS.map((tab) => {
+          const isActive = tab.id === "products";
+          return (
+            <Link
+              key={tab.id}
+              href={tab.href}
+              style={{
+                flexShrink: 0,
+                padding: "14px 18px",
+                fontSize: 14,
+                fontWeight: 600,
+                color: isActive ? "#44CCFF" : "var(--color-text-tertiary)",
+                textDecoration: "none",
+                borderBottom: isActive ? "2px solid #44CCFF" : "2px solid transparent",
+                transition: "all 0.15s",
+              }}
+            >
+              {tab.label}
+            </Link>
+          );
+        })}
+      </div>
+
       {/* Header */}
       <div style={{ padding: "20px 20px 0" }}>
         <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.2em", color: "var(--primary)", textTransform: "uppercase", marginBottom: 4 }}>
@@ -433,8 +517,8 @@ export default function ProductCatalogPage() {
           >
             {loading
               ? Array.from({ length: 6 }).map((_, i) => <SkeletonCard key={i} />)
-              : sorted.map((product) => (
-                  <ProductCard key={product.slug} product={product} />
+              : sorted.map((product, idx) => (
+                  <ProductCard key={product.slug} product={product} sponsored={idx === 0} />
                 ))}
           </div>
 

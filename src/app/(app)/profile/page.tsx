@@ -24,28 +24,44 @@ const MOCK_BUILDS = [
     id: "mb1",
     title: "Supra Build",
     style: "Matte Black Wrap",
-    gradient: "linear-gradient(135deg, #0a0a12, #1a1a2e)",
+    category: "Wrap",
+    car: "2023 Toyota Supra",
+    likes: 342,
+    saves: 28,
+    image: "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=800&q=80&fm=webp",
     accent: "#44CCFF",
   },
   {
     id: "mb2",
     title: "GT500 Build",
     style: "Carbon Kit",
-    gradient: "linear-gradient(135deg, #0d0d0d, #1a0808)",
+    category: "Body Kit",
+    car: "2022 Ford GT500",
+    likes: 218,
+    saves: 41,
+    image: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=800&q=80&fm=webp",
     accent: "#F87171",
   },
   {
     id: "mb3",
     title: "M3 Build",
     style: "Chrome Delete",
-    gradient: "linear-gradient(135deg, #080a14, #101828)",
+    category: "Wrap",
+    car: "2021 BMW M3",
+    likes: 189,
+    saves: 17,
+    image: "https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?w=800&q=80&fm=webp",
     accent: "#34D399",
   },
   {
     id: "mb4",
     title: "RS7 Build",
     style: "Full PPF",
-    gradient: "linear-gradient(135deg, #0a080e, #180d24)",
+    category: "PPF",
+    car: "2023 Audi RS7",
+    likes: 421,
+    saves: 53,
+    image: "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=800&q=80&fm=webp",
     accent: "#A78BFA",
   },
 ];
@@ -55,28 +71,44 @@ const MOCK_POSTS = [
     id: "mp1",
     title: "Supra sunset",
     style: "Photo",
-    gradient: "linear-gradient(135deg, #1a0505, #2d0a0a)",
+    category: "Photo",
+    car: "2023 Toyota Supra",
+    likes: 156,
+    saves: 12,
+    image: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=800&q=80&fm=webp",
     accent: "#F87171",
   },
   {
     id: "mp2",
     title: "Garage day",
     style: "Photo",
-    gradient: "linear-gradient(135deg, #0a0c08, #101a0c)",
+    category: "Photo",
+    car: "2022 Honda Civic",
+    likes: 89,
+    saves: 7,
+    image: "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=800&q=80&fm=webp",
     accent: "#34D399",
   },
   {
     id: "mp3",
     title: "New wheels day",
     style: "Photo",
-    gradient: "linear-gradient(135deg, #080a14, #101828)",
+    category: "Wheels",
+    car: "2022 Toyota GR86",
+    likes: 234,
+    saves: 31,
+    image: "https://images.unsplash.com/photo-1583121274602-3e2820c69888?w=800&q=80&fm=webp",
     accent: "#A78BFA",
   },
   {
     id: "mp4",
     title: "PPF complete",
     style: "Photo",
-    gradient: "linear-gradient(135deg, #0a0a12, #1a1a2e)",
+    category: "PPF",
+    car: "2021 BMW M3",
+    likes: 178,
+    saves: 22,
+    image: "https://images.unsplash.com/photo-1580273916550-e323be2ae537?w=800&q=80&fm=webp",
     accent: "#44CCFF",
   },
 ];
@@ -122,23 +154,78 @@ export default function ProfilePage() {
         >
           Profile
         </h1>
-        <button
-          onClick={() => router.push("/settings")}
+        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          {/* P6: Follow button top-right, aligned with settings */}
+          <button
+            onClick={() => setFollowing((v) => !v)}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 6,
+              height: 36,
+              padding: "0 16px",
+              borderRadius: 999,
+              background: following ? "#1C1C24" : "#44CCFF",
+              color: following ? "#44CCFF" : "#0C0C10",
+              border: following ? "1px solid #44CCFF" : "none",
+              fontFamily: "var(--font-manrope, Manrope, sans-serif)",
+              fontSize: 13,
+              fontWeight: 800,
+              cursor: "pointer",
+              transition: "all 0.2s",
+              boxShadow: following ? "none" : "0 0 16px rgba(68,204,255,0.35)",
+            }}
+          >
+            {following ? (
+              <>
+                <UserCheck size={14} />
+                Following
+              </>
+            ) : (
+              <>
+                <UserPlus size={14} />
+                Follow
+              </>
+            )}
+          </button>
+          <button
+            onClick={() => router.push("/settings")}
+            style={{
+              width: 40,
+              height: 40,
+              borderRadius: "50%",
+              background: "#14141A",
+              border: "1px solid #2A2A36",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              cursor: "pointer",
+            }}
+            aria-label="Settings"
+          >
+            <Settings size={18} color="#A0A0B0" />
+          </button>
+        </div>
+      </div>
+
+      {/* P2: Cover photo */}
+      <div style={{ position: "relative", marginBottom: 0 }}>
+        <img
+          src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=1200&q=80&fm=webp"
+          alt="Cover"
+          loading="lazy"
           style={{
-            width: 40,
-            height: 40,
-            borderRadius: "50%",
-            background: "#14141A",
-            border: "1px solid #2A2A36",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            cursor: "pointer",
+            width: "100%",
+            height: 180,
+            objectFit: "cover",
+            display: "block",
           }}
-          aria-label="Settings"
-        >
-          <Settings size={18} color="#A0A0B0" />
-        </button>
+        />
+        <div style={{
+          position: "absolute",
+          inset: 0,
+          background: "linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(12,12,16,0.4))",
+        }} />
       </div>
 
       {/* Profile header */}
@@ -146,15 +233,13 @@ export default function ProfilePage() {
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
-        style={{ padding: "28px 20px 0" }}
+        style={{ padding: "0 20px 0" }}
       >
-        {/* Avatar + follow row */}
+        {/* Avatar row — avatar overlaps cover */}
         <div
           style={{
-            display: "flex",
-            alignItems: "flex-end",
-            justifyContent: "space-between",
             marginBottom: 16,
+            marginTop: -48,
           }}
         >
           {/* 96px avatar */}
@@ -172,46 +257,12 @@ export default function ProfilePage() {
               fontSize: 38,
               color: "#FFFFFF",
               boxShadow: "0 0 32px rgba(68,204,255,0.25)",
-              border: "3px solid rgba(68,204,255,0.25)",
+              border: "3px solid #0C0C10",
               flexShrink: 0,
             }}
           >
             {MOCK_USER.initial}
           </div>
-
-          {/* Follow button */}
-          <button
-            onClick={() => setFollowing((v) => !v)}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 6,
-              height: 40,
-              padding: "0 20px",
-              borderRadius: 999,
-              background: following ? "#1C1C24" : "#44CCFF",
-              color: following ? "#44CCFF" : "#0C0C10",
-              border: following ? "1px solid #44CCFF" : "none",
-              fontFamily: "var(--font-manrope, Manrope, sans-serif)",
-              fontSize: 13,
-              fontWeight: 800,
-              cursor: "pointer",
-              transition: "all 0.2s",
-              boxShadow: following ? "none" : "0 0 18px rgba(68,204,255,0.35)",
-            }}
-          >
-            {following ? (
-              <>
-                <UserCheck size={15} />
-                Following
-              </>
-            ) : (
-              <>
-                <UserPlus size={15} />
-                Follow
-              </>
-            )}
-          </button>
         </div>
 
         {/* Name, username, bio */}
@@ -252,9 +303,9 @@ export default function ProfilePage() {
         <div
           style={{
             display: "flex",
-            background: "#14141A",
+            background: "var(--color-surface)",
             borderRadius: 16,
-            border: "1px solid #2A2A36",
+            padding: 16,
             marginBottom: 24,
           }}
         >
@@ -327,8 +378,8 @@ export default function ProfilePage() {
                   borderBottom: isActive ? "2px solid #44CCFF" : "2px solid transparent",
                   marginBottom: -1,
                   color: isActive ? "#44CCFF" : "#6B6B7B",
-                  fontSize: 13,
-                  fontWeight: 700,
+                  fontSize: 14,
+                  fontWeight: 600,
                   cursor: "pointer",
                   textTransform: "capitalize",
                   transition: "color 0.2s",
@@ -341,8 +392,8 @@ export default function ProfilePage() {
           })}
         </div>
 
-        {/* Content grid */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+        {/* Content grid - masonry (P7) */}
+        <div style={{ columns: 2, columnGap: 10 }}>
           {gridItems.map((item, i) => (
             <motion.div
               key={item.id}
@@ -351,56 +402,80 @@ export default function ProfilePage() {
               transition={{ delay: i * 0.06, duration: 0.3 }}
               style={{
                 borderRadius: 14,
-                background: item.gradient,
-                border: `1px solid ${item.accent}20`,
-                aspectRatio: "1/1",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "flex-start",
-                justifyContent: "flex-end",
-                padding: 12,
+                height: i % 2 === 0 ? 200 : 320,
                 cursor: "pointer",
                 position: "relative",
                 overflow: "hidden",
+                breakInside: "avoid" as const,
+                marginBottom: 10,
+                display: "block",
               }}
             >
-              <div
+              <img
+                src={item.image}
+                alt={item.title}
+                loading="lazy"
                 style={{
                   position: "absolute",
-                  top: -10,
-                  right: -10,
-                  width: 50,
-                  height: 50,
-                  borderRadius: "50%",
-                  background: item.accent,
-                  opacity: 0.15,
-                  filter: "blur(16px)",
+                  inset: 0,
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
                 }}
               />
-              <span
-                style={{
-                  fontSize: 11,
-                  fontWeight: 700,
-                  color: item.accent,
-                  display: "block",
-                  marginBottom: 2,
-                  position: "relative",
-                }}
-              >
-                {item.style}
-              </span>
-              <span
-                style={{
-                  fontFamily: "var(--font-manrope, Manrope, sans-serif)",
-                  fontWeight: 800,
-                  fontSize: 13,
-                  color: "#FFFFFF",
-                  letterSpacing: "-0.02em",
-                  position: "relative",
-                }}
-              >
-                {item.title}
-              </span>
+              {/* Gradient overlay for text legibility */}
+              <div style={{
+                position: "absolute",
+                inset: 0,
+                background: "linear-gradient(to bottom, transparent 40%, rgba(0,0,0,0.8) 100%)",
+              }} />
+              {/* P4: Card metadata bottom overlay */}
+              <div style={{
+                position: "absolute",
+                bottom: 0,
+                left: 0,
+                right: 0,
+                padding: 10,
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "flex-end",
+              }}>
+                {/* Left: category + title + car */}
+                <div style={{ flex: 1, minWidth: 0, marginRight: 6 }}>
+                  <span style={{
+                    fontSize: 9,
+                    fontWeight: 700,
+                    color: item.accent,
+                    textTransform: "uppercase",
+                    letterSpacing: "0.1em",
+                    display: "block",
+                    marginBottom: 2,
+                  }}>
+                    {item.category}
+                  </span>
+                  <span style={{
+                    fontFamily: "var(--font-manrope, Manrope, sans-serif)",
+                    fontWeight: 800,
+                    fontSize: 11,
+                    color: "#FFFFFF",
+                    letterSpacing: "-0.02em",
+                    display: "block",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}>
+                    {item.title}
+                  </span>
+                  <span style={{ fontSize: 9, color: "rgba(255,255,255,0.55)", display: "block", marginTop: 1 }}>
+                    {item.car}
+                  </span>
+                </div>
+                {/* Right: likes + saves */}
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 3, flexShrink: 0 }}>
+                  <span style={{ fontSize: 10, color: "rgba(255,255,255,0.65)" }}>❤ {item.likes}</span>
+                  <span style={{ fontSize: 10, color: "rgba(255,255,255,0.65)" }}>🔖 {item.saves}</span>
+                </div>
+              </div>
             </motion.div>
           ))}
         </div>
