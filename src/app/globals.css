@@ -424,18 +424,31 @@ body {
   padding-left: 48px;
 }
 
-.desktop-content {
+/* Full-width scroll container — scrollbar appears at far right edge */
+.desktop-center-scroll {
   flex: 1;
   overflow-y: auto;
   min-width: 0;
   overscroll-behavior: contain;
 }
 
-/* Inner content wrapper — applies max-width constraint */
+.desktop-content {
+  max-width: 680px;
+  margin-left: auto;
+  margin-right: auto;
+  min-width: 0;
+}
+
+/* Inner content wrapper — non-feed pages */
 .desktop-content > * {
   max-width: 1280px;
   margin-left: auto;
   margin-right: auto;
+}
+
+/* Feed/explore: narrower column */
+.desktop-center-scroll .desktop-content > * {
+  max-width: none;
 }
 
 /* Feed column constraint — like IG/Reddit, posts max ~680px centered */

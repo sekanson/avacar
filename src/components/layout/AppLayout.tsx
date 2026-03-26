@@ -556,11 +556,10 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   const [cartOpen, setCartOpen] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
 
-  // Forward wheel events from anywhere in desktop-body to the content scroller
+  // Forward wheel events from sidebar/gaps to the center scroll wrapper
   const handleBodyWheel = useCallback((e: React.WheelEvent<HTMLDivElement>) => {
     const target = e.target as HTMLElement;
-    // Don't intercept if already scrolling inside right panel or content itself
-    if (target.closest('.desktop-right-panel') || target.closest('.desktop-content')) return;
+    if (target.closest('.desktop-right-panel') || target.closest('.desktop-center-scroll')) return;
     if (contentRef.current) {
       contentRef.current.scrollTop += e.deltaY;
     }
@@ -611,12 +610,14 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         <div className="desktop-body" onWheel={handleBodyWheel}>
           <DesktopSidebar pathname={pathname} />
           <div className={showRightPanel && !mobilePreview ? "desktop-three-col" : contentColClass}>
+            {/* Scroll wrapper spans full center width — scrollbar appears at far right */}
             <div
               ref={contentRef}
-              className={mobilePreview ? "desktop-content desktop-mobile-preview" : "desktop-content"}
-              style={isFeedLayout && !mobilePreview ? { maxWidth: 680, flex: '1 1 auto', marginLeft: 'auto', marginRight: 'auto', minHeight: 0 } : undefined}
+              className="desktop-center-scroll"
             >
-              {children}
+              <div className={mobilePreview ? "desktop-content desktop-mobile-preview" : "desktop-content"}>
+                {children}
+              </div>
             </div>
             {showRightPanel && !mobilePreview && <RightPanel />}
           </div>
