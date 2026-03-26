@@ -336,7 +336,7 @@ function FeedPost({ post, index }: { post: typeof FEED_POSTS[0]; index: number }
           src={post.image}
           alt={post.caption}
           loading="lazy"
-          style={{ width: "100%", aspectRatio: (post as any).ratio || "4/5", objectFit: "cover", display: "block" }}
+          style={{ width: "100%", aspectRatio: (post.ratio || "4/5"), objectFit: "cover", display: "block" }}
         />
       </div>
 

@@ -324,7 +324,7 @@ export default function FeedPage() {
               }}
             >
               {/* Variable aspect ratio like Instagram */}
-              <div style={{ position: "relative", aspectRatio: (post as any).ratio || "4/5" }}>
+              <div style={{ position: "relative", aspectRatio: (post.ratio || "4/5") }}>
                 <img
                   src={post.image}
                   alt={post.caption}
