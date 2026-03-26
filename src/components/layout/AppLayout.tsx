@@ -613,7 +613,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             {/* Scroll wrapper spans full center width — scrollbar appears at far right */}
             <div
               ref={contentRef}
-              className="desktop-center-scroll"
+              className={isFeedLayout && !mobilePreview ? "desktop-center-scroll feed-layout" : "desktop-center-scroll"}
             >
               <div className={mobilePreview ? "desktop-content desktop-mobile-preview" : "desktop-content"}>
                 {children}

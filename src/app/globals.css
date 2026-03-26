@@ -432,31 +432,32 @@ body {
   overscroll-behavior: contain;
 }
 
+/* Content wrapper — no max-width here, pages control their own width */
 .desktop-content {
-  max-width: 680px;
-  margin-left: auto;
-  margin-right: auto;
+  flex: 1;
   min-width: 0;
 }
 
-/* Inner content wrapper — non-feed pages */
+/* Feed/explore only: inner content centered at 680px */
+.desktop-center-scroll.feed-layout .desktop-content {
+  max-width: 680px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Non-feed pages: inner content max 1280px */
 .desktop-content > * {
   max-width: 1280px;
   margin-left: auto;
   margin-right: auto;
 }
 
-/* Feed/explore: narrower column */
-.desktop-center-scroll .desktop-content > * {
-  max-width: none;
-}
-
-/* Feed column constraint — like IG/Reddit, posts max ~680px centered */
-.desktop-feed-col {
-  max-width: 680px;
-  margin-left: auto;
-  margin-right: auto;
-  width: 100%;
+/* Full-width pages (marketplace, garage, profile) */
+.desktop-full-col {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+  padding-left: 48px;
 }
 
 .desktop-content.desktop-mobile-preview {
