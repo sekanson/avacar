@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Zap, Circle, Palette, Globe, Sparkles, Paintbrush, Video } from "lucide-react";
+import { Zap, Circle, Palette, Globe, Sparkles, Paintbrush, Video, Heart, MessageCircle, Eye } from "lucide-react";
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
@@ -393,9 +393,9 @@ export default function FeedPage() {
                   &ldquo;{post.caption}&rdquo;
                 </p>
                 <div style={{ display: "flex", gap: 10, marginBottom: 10 }}>
-                  <span style={{ fontSize: 11, color: "var(--color-text-secondary)" }}>❤️ {post.likes}</span>
-                  <span style={{ fontSize: 11, color: "var(--color-text-secondary)" }}>💬 {post.comments}</span>
-                  <span style={{ fontSize: 11, color: "var(--color-text-secondary)" }}>👀 {post.views}</span>
+                  <span style={{ fontSize: 11, color: "var(--color-text-secondary)", display: "flex", alignItems: "center", gap: 3 }}><Heart size={11} /> {post.likes}</span>
+                  <span style={{ fontSize: 11, color: "var(--color-text-secondary)", display: "flex", alignItems: "center", gap: 3 }}><MessageCircle size={11} /> {post.comments}</span>
+                  <span style={{ fontSize: 11, color: "var(--color-text-secondary)", display: "flex", alignItems: "center", gap: 3 }}><Eye size={11} /> {post.views}</span>
                 </div>
                 <div style={{ display: "flex", gap: 12 }}>
                   <button style={{ fontSize: 11, fontWeight: 600, color: "#44CCFF", background: "none", border: "none", cursor: "pointer", padding: 0 }}>

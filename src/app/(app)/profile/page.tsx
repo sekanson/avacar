@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Settings, Grid, Bookmark, UserCheck, UserPlus } from "lucide-react";
+import { Settings, Grid, Bookmark, UserCheck, UserPlus, Heart } from "lucide-react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils/cn";
 
@@ -12,7 +12,7 @@ const MOCK_USER = {
   initial: "H",
   displayName: "Hammad A.",
   username: "@hammadcar",
-  bio: "Car enthusiast. Building dreams one wrap at a time. 🚗",
+  bio: "Car enthusiast. Building dreams one wrap at a time.",
   posts: 12,
   followers: 847,
   following: 234,
@@ -472,8 +472,8 @@ export default function ProfilePage() {
                 </div>
                 {/* Right: likes + saves */}
                 <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 3, flexShrink: 0 }}>
-                  <span style={{ fontSize: 10, color: "rgba(255,255,255,0.65)" }}>❤ {item.likes}</span>
-                  <span style={{ fontSize: 10, color: "rgba(255,255,255,0.65)" }}>🔖 {item.saves}</span>
+                  <span style={{ fontSize: 10, color: "rgba(255,255,255,0.65)", display: "flex", alignItems: "center", gap: 2 }}><Heart size={9} /> {item.likes}</span>
+                  <span style={{ fontSize: 10, color: "rgba(255,255,255,0.65)", display: "flex", alignItems: "center", gap: 2 }}><Bookmark size={9} /> {item.saves}</span>
                 </div>
               </div>
             </motion.div>

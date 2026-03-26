@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Wrench, Globe, Sparkles, Camera } from "lucide-react";
 
 // ─── MODIFY PRESETS ────────────────────────────────────────────────────────────
 const MODIFY_PRESETS = [
@@ -9,13 +9,13 @@ const MODIFY_PRESETS = [
   { name: "Gloss Midnight Blue", sub: "Avery SW900", price: "From $2,200 installed", img: "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=600&q=80&fm=webp", tag: "Wrap Color" },
   { name: "Matte Black", sub: "3M 1080", price: "From $1,800 installed", img: "https://images.unsplash.com/photo-1525609004556-c46c70d0cf4c?w=600&q=80&fm=webp", tag: "Wrap Color" },
   { name: "Midnight Purple", sub: "Inozetek", price: "From $3,200 installed", img: "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=600&q=80&fm=webp", tag: "Wrap Color" },
-  { name: "HRE FF15 — Brushed Dark", sub: "HRE Wheels", price: "From $4,800", img: "https://images.unsplash.com/photo-1611821064430-0d40291d0f0b?w=600&q=80&fm=webp", tag: "Wheels" },
-  { name: "Vossen CV3 — Gloss Black", sub: "Vossen", price: "From $3,200", img: "https://images.unsplash.com/photo-1626668011687-8a114cf5a34c?w=600&q=80&fm=webp", tag: "Wheels" },
-  { name: "BBS CH-R — Satin Bronze", sub: "BBS", price: "From $5,600", img: "https://images.unsplash.com/photo-1605559911160-a3d95d213904?w=600&q=80&fm=webp", tag: "Wheels" },
+  { name: "HRE FF15 — Brushed Dark", sub: "HRE Wheels", price: "From $4,800", img: "https://images.unsplash.com/photo-1580273916550-e323be2ae537?w=600&q=80&fm=webp", tag: "Wheels" },
+  { name: "Vossen CV3 — Gloss Black", sub: "Vossen", price: "From $3,200", img: "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=600&q=80&fm=webp", tag: "Wheels" },
+  { name: "BBS CH-R — Satin Bronze", sub: "BBS", price: "From $5,600", img: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=600&q=80&fm=webp", tag: "Wheels" },
   { name: "Liberty Walk Wide Body", sub: "Liberty Walk", price: "From $8,500", img: "https://images.unsplash.com/photo-1583121274602-3e2820c69888?w=600&q=80&fm=webp", tag: "Body Kit" },
   { name: "Rocket Bunny V2", sub: "Pandem", price: "From $6,200", img: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=600&q=80&fm=webp", tag: "Body Kit" },
-  { name: "Slammed Stance", sub: "Air Suspension", price: "From $3,000", img: "https://images.unsplash.com/photo-1542362567-b07e54358753?w=600&q=80&fm=webp", tag: "Stance" },
-  { name: "Ceramic Tint 20%", sub: "XPEL", price: "From $400", img: "https://images.unsplash.com/photo-1619405399517-d7fce0f13302?w=600&q=80&fm=webp", tag: "Tint" },
+  { name: "Slammed Stance", sub: "Air Suspension", price: "From $3,000", img: "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=600&q=80&fm=webp", tag: "Stance" },
+  { name: "Ceramic Tint 20%", sub: "XPEL", price: "From $400", img: "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=600&q=80&fm=webp", tag: "Tint" },
   { name: "Chrome Delete", sub: "3M", price: "From $600", img: "https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?w=600&q=80&fm=webp", tag: "Tint" },
 ];
 
@@ -40,25 +40,25 @@ const STYLE_PRESETS = [
   { name: "Euro Luxury", desc: "Brushed wheels · Elegant tones · Refined", img: "https://images.unsplash.com/photo-1580273916550-e323be2ae537?w=600&q=80&fm=webp" },
   { name: "Murdered Out", desc: "All black everything · Stealth mode", img: "https://images.unsplash.com/photo-1525609004556-c46c70d0cf4c?w=600&q=80&fm=webp" },
   { name: "Track Weapon", desc: "Roll cage · Splitter · Wing · Stripped", img: "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=600&q=80&fm=webp" },
-  { name: "Off-Road Beast", desc: "Lift kit · All-terrain · Light bar", img: "https://images.unsplash.com/photo-1542362567-b07e54358753?w=600&q=80&fm=webp" },
+  { name: "Off-Road Beast", desc: "Lift kit · All-terrain · Light bar", img: "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=600&q=80&fm=webp" },
 ];
 
 // ─── CONTENT PRESETS ───────────────────────────────────────────────────────────
 const CONTENT_PRESETS = [
-  { name: "Instagram Story", desc: "Vertical · Dramatic crop · Text overlay", icon: "📱", img: "https://images.unsplash.com/photo-1583121274602-3e2820c69888?w=600&q=80&fm=webp" },
-  { name: "Phone Wallpaper", desc: "Lock screen optimized · Clean render", icon: "📲", img: "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=600&q=80&fm=webp" },
-  { name: "Desktop Wallpaper", desc: "Ultrawide · Cinematic", icon: "🖥️", img: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=600&q=80&fm=webp" },
-  { name: "Before / After", desc: "Side-by-side comparison", icon: "↔️", img: "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=600&q=80&fm=webp" },
+  { name: "Instagram Story", desc: "Vertical · Dramatic crop · Text overlay", img: "https://images.unsplash.com/photo-1583121274602-3e2820c69888?w=600&q=80&fm=webp" },
+  { name: "Phone Wallpaper", desc: "Lock screen optimized · Clean render", img: "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=600&q=80&fm=webp" },
+  { name: "Desktop Wallpaper", desc: "Ultrawide · Cinematic", img: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=600&q=80&fm=webp" },
+  { name: "Before / After", desc: "Side-by-side comparison", img: "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=600&q=80&fm=webp" },
 ];
 
 const CATEGORIES = [
-  { label: "🔧 Modify", key: "modify" },
-  { label: "🌍 Scenes", key: "scenes" },
-  { label: "🎨 Styles", key: "styles" },
-  { label: "📸 Content", key: "content" },
+  { label: "Modify", key: "modify", Icon: Wrench },
+  { label: "Scenes", key: "scenes", Icon: Globe },
+  { label: "Styles", key: "styles", Icon: Sparkles },
+  { label: "Content", key: "content", Icon: Camera },
 ];
 
-const CAR_IMG = "https://images.unsplash.com/photo-1617788138017-80ad40651399?w=800&q=80&fm=webp";
+const CAR_IMG = "https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?w=800&q=80&fm=webp";
 
 // ─── SUB-COMPONENTS ────────────────────────────────────────────────────────────
 
@@ -197,7 +197,7 @@ function StylesGrid({ onSelect }: { onSelect: (name: string) => void }) {
             <div style={{ padding: "10px 12px 12px" }}>
               <p style={{ fontSize: 14, fontWeight: 700, color: "var(--color-text-primary)", margin: "0 0 4px", lineHeight: 1.3 }}>{s.name}</p>
               <p style={{ fontSize: 11, color: "var(--color-text-secondary)", margin: "0 0 8px", lineHeight: 1.4 }}>{s.desc}</p>
-              <span style={{ fontSize: 11, color: "#44CCFF", fontWeight: 600 }}>✨ Try This Style</span>
+              <span style={{ fontSize: 11, color: "#44CCFF", fontWeight: 600, display: "flex", alignItems: "center", gap: 3 }}><Sparkles size={11} /> Try This Style</span>
             </div>
           </div>
         </button>
@@ -224,7 +224,7 @@ function ContentGrid({ onSelect }: { onSelect: (name: string) => void }) {
             }} />
             <div style={{ padding: "10px 12px 12px" }}>
               <p style={{ fontSize: 13, fontWeight: 700, color: "var(--color-text-primary)", margin: "0 0 2px", lineHeight: 1.3 }}>
-                {c.icon} {c.name}
+                {c.name}
               </p>
               <p style={{ fontSize: 11, color: "var(--color-text-secondary)", margin: "0 0 4px" }}>{c.desc}</p>
               <p style={{ fontSize: 10, color: "#44CCFF", margin: 0, fontWeight: 600 }}>Ready to post</p>
@@ -311,22 +311,27 @@ export default function StudioCustomizePage() {
             display: "flex", borderBottom: "1px solid var(--color-border)",
             overflowX: "auto", scrollbarWidth: "none",
           }}>
-            {CATEGORIES.map((cat, i) => (
-              <button
-                key={cat.key}
-                onClick={() => setActiveCategory(i)}
-                style={{
-                  flex: "1 0 auto", padding: "14px 8px", fontSize: 12, fontWeight: 700,
-                  background: "none", border: "none", cursor: "pointer", whiteSpace: "nowrap",
-                  color: activeCategory === i ? "#44CCFF" : "var(--color-text-secondary)",
-                  borderBottom: activeCategory === i ? "2px solid #44CCFF" : "2px solid transparent",
-                  marginBottom: -1, transition: "all 0.15s",
-                  fontFamily: "var(--font-manrope, Manrope, sans-serif)",
-                }}
-              >
-                {cat.label}
-              </button>
-            ))}
+            {CATEGORIES.map((cat, i) => {
+              const Icon = cat.Icon;
+              return (
+                <button
+                  key={cat.key}
+                  onClick={() => setActiveCategory(i)}
+                  style={{
+                    flex: "1 0 auto", padding: "14px 8px", fontSize: 12, fontWeight: 700,
+                    background: "none", border: "none", cursor: "pointer", whiteSpace: "nowrap",
+                    color: activeCategory === i ? "#44CCFF" : "var(--color-text-secondary)",
+                    borderBottom: activeCategory === i ? "2px solid #44CCFF" : "2px solid transparent",
+                    marginBottom: -1, transition: "all 0.15s",
+                    fontFamily: "var(--font-manrope, Manrope, sans-serif)",
+                    display: "flex", alignItems: "center", justifyContent: "center", gap: 5,
+                  }}
+                >
+                  <Icon size={13} />
+                  {cat.label}
+                </button>
+              );
+            })}
           </div>
         </div>
 

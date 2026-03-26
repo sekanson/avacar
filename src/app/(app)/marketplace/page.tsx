@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { Sparkles, Palette, CircleDot } from "lucide-react";
 import { marketplaceBrands, marketplaceWraps, marketplaceWheels } from "@/data/marketplace";
 
 /* ─── Mode Tabs ─── */
@@ -14,11 +15,11 @@ const MODE_TABS = [
 
 /* ─── Design Cards ─── */
 const FEATURED_DESIGNS = [
-  { slug: "midnight-fury",  name: "Midnight Fury",  car: "GT-R R35",      seller: "@wraplord",         price: 149, rating: 4.9, img: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=267&fit=crop&q=70&fm=webp" },
-  { slug: "carbon-stealth", name: "Carbon Stealth", car: "M4 Comp",       seller: "@graphicflow",      price: 199, rating: 4.8, img: "https://images.unsplash.com/photo-1603386329225-868f9b1ee6c9?w=400&h=267&fit=crop&q=70&fm=webp" },
-  { slug: "neon-circuit",   name: "Neon Circuit",   car: "Civic Type R",  seller: "@jdm.wraps",        price: 89,  rating: 4.7, img: "https://images.unsplash.com/photo-1542282088-72c9c27ed0cd?w=400&h=267&fit=crop&q=70&fm=webp" },
-  { slug: "arctic-storm",   name: "Arctic Storm",   car: "RS6 Avant",     seller: "@eurostyle",        price: 249, rating: 5.0, img: "https://images.unsplash.com/photo-1617814076367-b759c7d7e738?w=400&h=267&fit=crop&q=70&fm=webp" },
-  { slug: "tokyo-drift",    name: "Tokyo Drift",    car: "Supra A90",     seller: "@drift.kings",      price: 179, rating: 4.6, img: "https://images.unsplash.com/photo-1567808291548-fc3ee04dbcf0?w=400&h=267&fit=crop&q=70&fm=webp" },
+  { slug: "midnight-fury",  name: "Midnight Fury",  car: "GT-R R35",      seller: "@wraplord",         price: 149, rating: 4.9, img: "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=400&h=267&fit=crop&q=70&fm=webp" },
+  { slug: "carbon-stealth", name: "Carbon Stealth", car: "M4 Comp",       seller: "@graphicflow",      price: 199, rating: 4.8, img: "https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?w=400&h=267&fit=crop&q=70&fm=webp" },
+  { slug: "neon-circuit",   name: "Neon Circuit",   car: "Civic Type R",  seller: "@jdm.wraps",        price: 89,  rating: 4.7, img: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=400&h=267&fit=crop&q=70&fm=webp" },
+  { slug: "arctic-storm",   name: "Arctic Storm",   car: "RS6 Avant",     seller: "@eurostyle",        price: 249, rating: 5.0, img: "https://images.unsplash.com/photo-1580273916550-e323be2ae537?w=400&h=267&fit=crop&q=70&fm=webp" },
+  { slug: "tokyo-drift",    name: "Tokyo Drift",    car: "Supra A90",     seller: "@drift.kings",      price: 179, rating: 4.6, img: "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=400&h=267&fit=crop&q=70&fm=webp" },
 ];
 
 /* ─── Brand Colors ─── */
@@ -44,10 +45,10 @@ const FEATURED_SHOPS = [
 
 /* ─── Build Styles (kept from existing) ─── */
 const BUILD_STYLES = [
-  { id: "oem-plus",      label: "Clean OEM+",      desc: "Subtle upgrades, factory-perfect",    color: "#1c1c1e", accent: "#007FFF", bgImage: "https://images.unsplash.com/photo-1617814076367-b759c7d7e738?w=400&h=200&fit=crop&q=60&fm=webp" },
-  { id: "full-send-jdm", label: "Full Send JDM",   desc: "Aggressive stance, louder everything", color: "#1a2744", accent: "#ff3b30", bgImage: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=200&fit=crop&q=60&fm=webp" },
-  { id: "euro-spec",     label: "Euro Spec",        desc: "Restrained, precise, sophisticated",   color: "#2d1a44", accent: "#c8a84b", bgImage: "https://images.unsplash.com/photo-1542282088-72c9c27ed0cd?w=400&h=200&fit=crop&q=60&fm=webp" },
-  { id: "track-monster", label: "Track Monster",   desc: "Aero, lightweight, focused",           color: "#1a2a1a", accent: "#22c55e", bgImage: "https://images.unsplash.com/photo-1567808291548-fc3ee04dbcf0?w=400&h=200&fit=crop&q=60&fm=webp" },
+  { id: "oem-plus",      label: "Clean OEM+",      desc: "Subtle upgrades, factory-perfect",    color: "#1c1c1e", accent: "#007FFF", bgImage: "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=400&h=200&fit=crop&q=60&fm=webp" },
+  { id: "full-send-jdm", label: "Full Send JDM",   desc: "Aggressive stance, louder everything", color: "#1a2744", accent: "#ff3b30", bgImage: "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=400&h=200&fit=crop&q=60&fm=webp" },
+  { id: "euro-spec",     label: "Euro Spec",        desc: "Restrained, precise, sophisticated",   color: "#2d1a44", accent: "#c8a84b", bgImage: "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=400&h=200&fit=crop&q=60&fm=webp" },
+  { id: "track-monster", label: "Track Monster",   desc: "Aero, lightweight, focused",           color: "#1a2a1a", accent: "#22c55e", bgImage: "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=400&h=200&fit=crop&q=60&fm=webp" },
 ];
 
 const TRENDING = [...marketplaceWraps.slice(0, 3), ...marketplaceWheels.slice(0, 2)];
@@ -100,7 +101,7 @@ function DesignCard({ design }: { design: typeof FEATURED_DESIGNS[0] }) {
         </p>
         <p style={{ fontSize: 12, color: "var(--color-text-tertiary)", marginTop: 3 }}>by {design.seller}</p>
         <p style={{ fontSize: 13, fontWeight: 600, color: "#44CCFF", marginTop: 6 }}>From ${design.price} installed</p>
-        <p style={{ fontSize: 12, color: "#44CCFF", marginTop: 6, cursor: "pointer" }}>🔮 Try On My Car</p>
+        <p style={{ fontSize: 12, color: "#44CCFF", marginTop: 6, cursor: "pointer", display: "flex", alignItems: "center", gap: 4 }}><Sparkles size={11} /> Try On My Car</p>
       </div>
     </Link>
   );
@@ -152,7 +153,7 @@ export default function MarketplacePage() {
         style={{
           backgroundImage: `
             linear-gradient(to right, rgba(12,12,16,0.9) 0%, rgba(12,12,16,0.6) 50%, rgba(12,12,16,0.1) 100%),
-            url('https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=1600&h=600&fit=crop&q=80&fm=webp')
+            url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=1600&h=600&fit=crop&q=80&fm=webp')
           `,
           backgroundSize: "cover",
           backgroundPosition: "center",
@@ -387,9 +388,9 @@ export default function MarketplacePage() {
                   }}
                 >
                   <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, rgba(255,255,255,0.12) 0%, transparent 55%)" }} />
-                  <span style={{ fontSize: 28, opacity: 0.35, filter: "brightness(1.6)", zIndex: 1 }}>
-                    {product.category === "wheels" ? "⚙️" : "🎨"}
-                  </span>
+                  <div style={{ opacity: 0.35, zIndex: 1 }}>
+                    {product.category === "wheels" ? <CircleDot size={28} color="#fff" /> : <Palette size={28} color="#fff" />}
+                  </div>
                   <div
                     style={{
                       position: "absolute", top: 8, left: 8,
@@ -422,8 +423,8 @@ export default function MarketplacePage() {
                     from ${product.fromPrice}
                     <span style={{ fontSize: 10, fontWeight: 400, color: "var(--color-text-tertiary)" }}> {product.unit}</span>
                   </p>
-                  <p style={{ fontSize: 11, fontWeight: 600, color: "#44CCFF", marginTop: 6, cursor: "pointer" }}>
-                    🔮 Try On My Car →
+                  <p style={{ fontSize: 11, fontWeight: 600, color: "#44CCFF", marginTop: 6, cursor: "pointer", display: "flex", alignItems: "center", gap: 4 }}>
+                    <Sparkles size={11} /> Try On My Car →
                   </p>
                 </div>
               </Link>
@@ -588,7 +589,7 @@ export default function MarketplacePage() {
               <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, #0d1117 0%, #1a1a2e 50%, #1c1c1e 100%)" }} />
             ) : (
               <img
-                src="https://images.unsplash.com/photo-1603386329225-868f9b1ee6c9?w=800&h=500&fit=crop&q=80&fm=webp"
+                src="https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?w=800&h=500&fit=crop&q=80&fm=webp"
                 alt="BMW M4 community build"
                 loading="lazy"
                 onError={() => setBuildImgError(true)}

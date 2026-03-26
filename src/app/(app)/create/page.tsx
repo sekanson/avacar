@@ -51,7 +51,7 @@ export default function StudioUploadPage() {
         gap: 28, maxWidth: 400, margin: "0 auto", width: "100%",
       }}>
         {/* Car silhouette */}
-        <div style={{ width: 160, height: 80, display: "flex", alignItems: "center", justifyContent: "center", opacity: 0.3 }}>
+        <div style={{ width: 160, height: 80, display: "flex", alignItems: "center", justifyContent: "center", opacity: 0.5 }}>
           <svg width="160" height="60" viewBox="0 0 160 60" fill="none">
             <path d="M20 45 Q20 35 35 30 L55 20 Q65 15 75 15 L100 15 Q110 15 115 20 L130 30 Q145 35 145 45"
               stroke="#44CCFF" strokeWidth="1.5" fill="none" />

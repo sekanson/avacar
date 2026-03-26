@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { MapPin, Star } from "lucide-react";
+import { MapPin, Star, Heart, MessageCircle, Eye, Sparkles, ShoppingCart } from "lucide-react";
 import { motion } from "framer-motion";
 
 // ─── Feed Mock Data ────────────────────────────────────────────────────────────
@@ -89,7 +89,7 @@ const CATEGORIES = ["All", "Wraps", "Wheels", "Tint", "PPF", "Body Kits", "Acces
 
 const FEATURED_BUILDS = [
   { id: "b1", car: "2023 GR86", type: "Matte Wrap", shop: "WrapsByAlex", price: "$1,400", image: "https://images.unsplash.com/photo-1583121274602-3e2820c69888?w=800&q=80&fm=webp", accent: "#44CCFF", tag: "Wraps" },
-  { id: "b2", car: "2022 M4 Comp", type: "Carbon Kit", shop: "CarbonWerks", price: "Quote on request", image: "https://images.unsplash.com/photo-1542362567-b07e54358753?w=800&q=80&fm=webp", accent: "#F87171", tag: "Body Kits" },
+  { id: "b2", car: "2022 M4 Comp", type: "Carbon Kit", shop: "CarbonWerks", price: "Quote on request", image: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=800&q=80&fm=webp", accent: "#F87171", tag: "Body Kits" },
   { id: "b3", car: "2021 GT-R R35", type: "Ceramic Tint", shop: "TintPros GTA", price: "$650", image: "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=800&q=80&fm=webp", accent: "#34D399", tag: "Tint" },
   { id: "b4", car: "2023 WRX", type: "Forged Wheels", shop: "RimCity", price: "$3,200", image: "https://images.unsplash.com/photo-1580273916550-e323be2ae537?w=800&q=80&fm=webp", accent: "#A78BFA", tag: "Wheels" },
   { id: "b5", car: "2022 RS6 Avant", type: "Full PPF", shop: "ArmorShield", price: "$4,800", image: "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=800&q=80&fm=webp", accent: "#FBBF24", tag: "PPF" },
@@ -194,9 +194,9 @@ function FeedPost({ post, index }: { post: typeof FEED_POSTS[0]; index: number }
 
       {/* Engagement */}
       <div style={{ display: "flex", gap: 16, padding: "4px 16px 10px" }}>
-        <span style={{ fontSize: 13, color: "var(--color-text-secondary)" }}>❤️ {post.likes}</span>
-        <span style={{ fontSize: 13, color: "var(--color-text-secondary)" }}>💬 {post.comments}</span>
-        <span style={{ fontSize: 13, color: "var(--color-text-secondary)" }}>👀 {post.views}</span>
+        <span style={{ fontSize: 13, color: "var(--color-text-secondary)", display: "flex", alignItems: "center", gap: 4 }}><Heart size={13} /> {post.likes}</span>
+        <span style={{ fontSize: 13, color: "var(--color-text-secondary)", display: "flex", alignItems: "center", gap: 4 }}><MessageCircle size={13} /> {post.comments}</span>
+        <span style={{ fontSize: 13, color: "var(--color-text-secondary)", display: "flex", alignItems: "center", gap: 4 }}><Eye size={13} /> {post.views}</span>
       </div>
 
       {/* Action buttons */}
@@ -208,15 +208,17 @@ function FeedPost({ post, index }: { post: typeof FEED_POSTS[0]; index: number }
           flex: 1, fontSize: 13, fontWeight: 600, color: "#44CCFF",
           background: "rgba(68,204,255,0.08)", border: "1px solid rgba(68,204,255,0.2)",
           borderRadius: 12, padding: "10px 8px", cursor: "pointer",
+          display: "flex", alignItems: "center", justifyContent: "center", gap: 5,
         }}>
-          🔮 Try On My Car
+          <Sparkles size={13} /> Try On My Car
         </button>
         <button style={{
           flex: 1, fontSize: 13, fontWeight: 600, color: "#44CCFF",
           background: "rgba(68,204,255,0.08)", border: "1px solid rgba(68,204,255,0.2)",
           borderRadius: 12, padding: "10px 8px", cursor: "pointer",
+          display: "flex", alignItems: "center", justifyContent: "center", gap: 5,
         }}>
-          🛒 Shop This Build
+          <ShoppingCart size={13} /> Shop This Build
         </button>
       </div>
     </motion.div>

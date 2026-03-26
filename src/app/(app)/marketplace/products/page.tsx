@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { allMarketplaceProducts } from "@/data/marketplace";
 import type { MarketplaceProduct } from "@/data/marketplace";
-import { SlidersHorizontal, X } from "lucide-react";
+import { SlidersHorizontal, X, Search } from "lucide-react";
 
 const MODE_TABS = [
   { id: "designs",  label: "Designs",  href: "/marketplace/designs" },
@@ -14,11 +14,11 @@ const MODE_TABS = [
 ];
 
 const WHEEL_IMAGES = [
-  "https://images.unsplash.com/photo-1611821064430-0d40291d0f0b?w=600&q=80&fm=webp",
-  "https://images.unsplash.com/photo-1626668011687-8a114cf5a34c?w=600&q=80&fm=webp",
-  "https://images.unsplash.com/photo-1605559911160-a3d95d213904?w=600&q=80&fm=webp",
+  "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=600&q=80&fm=webp",
+  "https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?w=600&q=80&fm=webp",
+  "https://images.unsplash.com/photo-1580273916550-e323be2ae537?w=600&q=80&fm=webp",
 ];
-const PPF_IMAGE = "https://images.unsplash.com/photo-1619405399517-d7fce0f13302?w=600&q=80&fm=webp";
+const PPF_IMAGE = "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=600&q=80&fm=webp";
 
 const FINISHES = ["All", "Matte", "Satin", "Gloss", "Chrome", "Color-Shift"];
 const CATEGORIES = [
@@ -337,16 +337,11 @@ function FilterPanel({
 }
 
 export default function ProductCatalogPage() {
-  const [loading, setLoading] = useState(true);
+  const [loading] = useState(false);
   const [showFilterSheet, setShowFilterSheet] = useState(false);
   const [activeCategory, setActiveCategory] = useState("all");
   const [activeFinish, setActiveFinish] = useState("All");
   const [activeSort, setActiveSort] = useState("Popular");
-
-  useEffect(() => {
-    const t = setTimeout(() => setLoading(false), 800);
-    return () => clearTimeout(t);
-  }, []);
 
   const filtered = allMarketplaceProducts.filter((p) => {
     if (activeCategory !== "all" && p.category !== activeCategory) return false;
@@ -524,7 +519,7 @@ export default function ProductCatalogPage() {
 
           {!loading && sorted.length === 0 && (
             <div style={{ textAlign: "center", padding: "60px 0" }}>
-              <p style={{ fontSize: 24, marginBottom: 8 }}>🔍</p>
+              <Search size={24} style={{ marginBottom: 8, color: "var(--color-text-tertiary)" }} />
               <p style={{ fontSize: 15, fontWeight: 700, color: "var(--on-surface)", marginBottom: 6 }}>
                 Nothing here yet
               </p>

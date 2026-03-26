@@ -3,21 +3,22 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { Sparkles, Star } from "lucide-react";
 
 /* ─── Data ─── */
 const DESIGNS = [
-  { slug: "midnight-fury",  name: "Midnight Fury",  car: "GT-R R35",         seller: "@wraplord",        price: 149, rating: 4.9, img: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=267&fit=crop&q=70&fm=webp" },
-  { slug: "carbon-stealth", name: "Carbon Stealth", car: "M4 Comp",          seller: "@graphicflow",     price: 199, rating: 4.8, img: "https://images.unsplash.com/photo-1603386329225-868f9b1ee6c9?w=400&h=267&fit=crop&q=70&fm=webp" },
-  { slug: "neon-circuit",   name: "Neon Circuit",   car: "Civic Type R",     seller: "@jdm.wraps",       price: 89,  rating: 4.7, img: "https://images.unsplash.com/photo-1542282088-72c9c27ed0cd?w=400&h=267&fit=crop&q=70&fm=webp" },
-  { slug: "arctic-storm",   name: "Arctic Storm",   car: "RS6 Avant",        seller: "@eurostyle",       price: 249, rating: 5.0, img: "https://images.unsplash.com/photo-1617814076367-b759c7d7e738?w=400&h=267&fit=crop&q=70&fm=webp" },
-  { slug: "tokyo-drift",    name: "Tokyo Drift",    car: "Supra A90",        seller: "@drift.kings",     price: 179, rating: 4.6, img: "https://images.unsplash.com/photo-1567808291548-fc3ee04dbcf0?w=400&h=267&fit=crop&q=70&fm=webp" },
+  { slug: "midnight-fury",  name: "Midnight Fury",  car: "GT-R R35",         seller: "@wraplord",        price: 149, rating: 4.9, img: "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=400&h=267&fit=crop&q=70&fm=webp" },
+  { slug: "carbon-stealth", name: "Carbon Stealth", car: "M4 Comp",          seller: "@graphicflow",     price: 199, rating: 4.8, img: "https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?w=400&h=267&fit=crop&q=70&fm=webp" },
+  { slug: "neon-circuit",   name: "Neon Circuit",   car: "Civic Type R",     seller: "@jdm.wraps",       price: 89,  rating: 4.7, img: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=400&h=267&fit=crop&q=70&fm=webp" },
+  { slug: "arctic-storm",   name: "Arctic Storm",   car: "RS6 Avant",        seller: "@eurostyle",       price: 249, rating: 5.0, img: "https://images.unsplash.com/photo-1580273916550-e323be2ae537?w=400&h=267&fit=crop&q=70&fm=webp" },
+  { slug: "tokyo-drift",    name: "Tokyo Drift",    car: "Supra A90",        seller: "@drift.kings",     price: 179, rating: 4.6, img: "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=400&h=267&fit=crop&q=70&fm=webp" },
   { slug: "venom-strike",   name: "Venom Strike",   car: "Corvette C8",      seller: "@ameri.wraps",     price: 159, rating: 4.5, img: "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=400&h=267&fit=crop&q=70&fm=webp" },
-  { slug: "phantom-edge",   name: "Phantom Edge",   car: "Audi RS7",         seller: "@darkside.design", price: 219, rating: 4.9, img: "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=400&h=267&fit=crop&q=70&fm=webp" },
-  { slug: "solar-flare",    name: "Solar Flare",    car: "Porsche 911",      seller: "@sunburn.studio",  price: 299, rating: 4.8, img: "https://images.unsplash.com/photo-1564466809058-bf4114d55352?w=400&h=267&fit=crop&q=70&fm=webp" },
-  { slug: "cherry-bomb",    name: "Cherry Bomb",    car: "Dodge Charger",    seller: "@muscle.wraps",    price: 129, rating: 4.4, img: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=400&h=267&fit=crop&q=70&fm=webp" },
+  { slug: "phantom-edge",   name: "Phantom Edge",   car: "Audi RS7",         seller: "@darkside.design", price: 219, rating: 4.9, img: "https://images.unsplash.com/photo-1525609004556-c46c70d0cf4c?w=400&h=267&fit=crop&q=70&fm=webp" },
+  { slug: "solar-flare",    name: "Solar Flare",    car: "Porsche 911",      seller: "@sunburn.studio",  price: 299, rating: 4.8, img: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=400&h=267&fit=crop&q=70&fm=webp" },
+  { slug: "cherry-bomb",    name: "Cherry Bomb",    car: "Dodge Charger",    seller: "@muscle.wraps",    price: 129, rating: 4.4, img: "https://images.unsplash.com/photo-1583121274602-3e2820c69888?w=400&h=267&fit=crop&q=70&fm=webp" },
   { slug: "ice-queen",      name: "Ice Queen",      car: "Tesla Model 3",    seller: "@ev.wraps",        price: 99,  rating: 4.7, img: "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=400&h=267&fit=crop&q=70&fm=webp" },
-  { slug: "samurai",        name: "Samurai",        car: "Nissan Z",         seller: "@jdm.wraps",       price: 189, rating: 4.8, img: "https://images.unsplash.com/photo-1555215695-3004980ad54e?w=400&h=267&fit=crop&q=70&fm=webp" },
-  { slug: "spectre",        name: "Spectre",        car: "McLaren 720S",     seller: "@hyper.design",    price: 349, rating: 5.0, img: "https://images.unsplash.com/photo-1485291571150-772bcfc10da5?w=400&h=267&fit=crop&q=70&fm=webp" },
+  { slug: "samurai",        name: "Samurai",        car: "Nissan Z",         seller: "@jdm.wraps",       price: 189, rating: 4.8, img: "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=400&h=267&fit=crop&q=70&fm=webp" },
+  { slug: "spectre",        name: "Spectre",        car: "McLaren 720S",     seller: "@hyper.design",    price: 349, rating: 5.0, img: "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=400&h=267&fit=crop&q=70&fm=webp" },
 ];
 
 const STYLE_FILTERS = ["Racing", "Street", "JDM", "Euro", "Commercial", "Minimal", "Abstract"];
@@ -95,9 +96,10 @@ function DesignCard({ design }: { design: typeof DESIGNS[0] }) {
                 fontSize: 13, fontWeight: 700, color: "#44CCFF",
                 background: "rgba(0,0,0,0.8)", padding: "8px 18px",
                 borderRadius: 100, border: "1px solid #44CCFF44",
+                display: "flex", alignItems: "center", gap: 5,
               }}
             >
-              🔮 Try On My Car
+              <Sparkles size={13} /> Try On My Car
             </span>
           </div>
         )}
@@ -109,7 +111,7 @@ function DesignCard({ design }: { design: typeof DESIGNS[0] }) {
         </p>
         <p style={{ fontSize: 12, color: "var(--color-text-tertiary)", marginTop: 3 }}>by {design.seller}</p>
         <p style={{ fontSize: 13, fontWeight: 600, color: "#44CCFF", marginTop: 6 }}>From ${design.price} installed</p>
-        <p style={{ fontSize: 12, color: "#44CCFF", marginTop: 6, cursor: "pointer" }}>🔮 Try On My Car</p>
+        <p style={{ fontSize: 12, color: "#44CCFF", marginTop: 6, cursor: "pointer", display: "flex", alignItems: "center", gap: 4 }}><Sparkles size={11} /> Try On My Car</p>
       </div>
     </Link>
   );
@@ -389,9 +391,10 @@ export default function DesignsBrowsePage() {
                       fontWeight: 700,
                       borderRadius: 999,
                       padding: "2px 8px",
+                    display: "flex", alignItems: "center", gap: 4,
                     }}
                   >
-                    ⭐ Featured
+                    <Star size={10} fill="#EF9F27" /> Featured
                   </div>
                 )}
                 <DesignCard design={design} />
