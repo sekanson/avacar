@@ -414,7 +414,7 @@ export default function ExplorePage() {
         <div className="scroll-row" style={{ display: "flex", gap: 12, paddingBottom: 4 }}>
           {TRENDING_CARDS.map((card) => (
             <div key={card.title} style={{
-              flexShrink: 0, width: 280, height: 160, borderRadius: 16, overflow: "hidden",
+              flexShrink: 0, width: 'clamp(220px, 35vw, 320px)', height: 160, borderRadius: 16, overflow: "hidden",
               position: "relative", cursor: "pointer",
             }}>
               <img src={card.bg} alt={card.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
@@ -461,8 +461,8 @@ export default function ExplorePage() {
         </h2>
         <div className="scroll-row" style={{ display: "flex", gap: 12, paddingBottom: 4 }}>
           {COLLECTIONS.map((col) => (
-            <div key={col.title} style={{ flexShrink: 0, width: 180, cursor: "pointer" }}>
-              <div style={{ width: 180, height: 160, borderRadius: 14, overflow: "hidden", display: "grid", gridTemplateColumns: "1fr 1fr", gridTemplateRows: "1fr 1fr", gap: 2 }}>
+            <div key={col.title} style={{ flexShrink: 0, width: 'clamp(150px, 20vw, 220px)', cursor: "pointer" }}>
+              <div style={{ width: '100%', height: 160, borderRadius: 14, overflow: "hidden", display: "grid", gridTemplateColumns: "1fr 1fr", gridTemplateRows: "1fr 1fr", gap: 2 }}>
                 {col.images.map((img, i) => (
                   <img key={i} src={img} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                 ))}

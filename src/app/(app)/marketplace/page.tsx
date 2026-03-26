@@ -61,7 +61,7 @@ function DesignCard({ design }: { design: typeof FEATURED_DESIGNS[0] }) {
       href={`/marketplace/designs/${design.slug}`}
       style={{
         flexShrink: 0,
-        width: 200,
+        width: 'clamp(160px, 15vw, 240px)',
         background: "var(--color-surface)",
         borderRadius: 24,
         overflow: "hidden",
@@ -371,7 +371,7 @@ export default function MarketplacePage() {
                 href={`/marketplace/products/${product.slug}`}
                 style={{
                   flexShrink: 0,
-                  width: 160,
+                  width: 'clamp(140px, 13vw, 200px)',
                   background: "var(--color-surface)",
                   borderRadius: 16,
                   overflow: "hidden",
@@ -545,7 +545,7 @@ export default function MarketplacePage() {
         <p style={{ fontSize: 24, fontWeight: 800, color: "var(--color-text-primary)", letterSpacing: "-0.02em", marginBottom: 14 }}>
           Find Your Aesthetic
         </p>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(160px, 1fr))", gap: 10 }}>
           {BUILD_STYLES.map((style) => (
             <Link
               key={style.id}

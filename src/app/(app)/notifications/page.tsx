@@ -108,7 +108,7 @@ export default function NotificationsPage() {
   };
 
   return (
-    <div style={{ background: "var(--color-bg)", minHeight: "100vh", paddingBottom: 24, maxWidth: 1280, margin: "0 auto" }}>
+    <div style={{ background: "var(--color-bg)", minHeight: "100vh", paddingBottom: 24, maxWidth: 800, margin: "0 auto" }}>
       {/* TopBar */}
       <div
         style={{

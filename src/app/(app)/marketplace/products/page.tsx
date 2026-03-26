@@ -77,7 +77,7 @@ function CollectionsRow({
               key={col.id}
               onClick={() => onSelectCollection(isActive ? null : col.id, isActive ? null : col.filter)}
               style={{
-                flexShrink: 0, width: 160, borderRadius: 16,
+                flexShrink: 0, width: 'clamp(140px, 20vw, 200px)', borderRadius: 16,
                 background: isActive ? `${col.accent}18` : "var(--surface-card)",
                 border: isActive ? `1.5px solid ${col.accent}55` : "1px solid var(--ghost-border)",
                 padding: 0, cursor: "pointer", overflow: "hidden",
@@ -633,8 +633,6 @@ export default function ProductCatalogPage() {
           {/* Grid */}
           <div
             style={{
-              display: "grid",
-              gridTemplateColumns: "1fr 1fr",
               gap: 12,
             }}
             className="marketplace-product-grid"
