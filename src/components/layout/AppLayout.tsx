@@ -3,7 +3,7 @@
 import { usePathname, useRouter } from "next/navigation";
 import {
   Home, Compass, User, Bell, Sun, Moon, Sparkles, Car,
-  Smartphone, Store, ShoppingCart, MapPin, Plus,
+  Smartphone, Store, ShoppingCart, MapPin, Plus, Users,
   Wrench, Disc3, Palette, Globe, Paintbrush, Film, Camera, MessageCircle,
 } from "lucide-react";
 import { useAppStore } from "@/store/appStore";
@@ -33,6 +33,7 @@ const FULL_SCREEN_ROUTES = new Set([
   "/create/touchup",
   "/create/video",
   "/marketplace/upload",
+  "/community/upload",
 ]);
 
 // Routes that start with these prefixes are also full-screen
@@ -441,9 +442,10 @@ function DesktopSidebar({ pathname }: { pathname: string }) {
   const router = useRouter();
 
   const mainItems = [
-    { id: "home",    href: "/feed",              icon: Home,     label: "Home",    isActive: pathname === "/feed" || pathname === "/" },
-    { id: "explore", href: "/explore",           icon: Compass,  label: "Explore", isActive: pathname.startsWith("/explore") },
-    { id: "create",  href: "/create",            icon: Plus,     label: "Create",  isActive: pathname.startsWith("/create"), isAccent: true },
+    { id: "home",      href: "/feed",              icon: Home,     label: "Home",      isActive: pathname === "/feed" || pathname === "/" },
+    { id: "explore",   href: "/explore",           icon: Compass,  label: "Explore",   isActive: pathname.startsWith("/explore") },
+    { id: "community", href: "/community",         icon: Users,    label: "Community", isActive: pathname.startsWith("/community") },
+    { id: "create",    href: "/create",            icon: Plus,     label: "Create",    isActive: pathname.startsWith("/create"), isAccent: true },
     { id: "catalog", href: "/marketplace",       icon: Store,    label: "Catalog", isActive: pathname.startsWith("/marketplace") },
     { id: "garage",  href: "/garage",            icon: Car,      label: "My Garage",isActive: pathname.startsWith("/garage") },
     { id: "shop",    href: "/marketplace/shops", icon: MapPin,   label: "Shop",    isActive: pathname === "/marketplace/shops" },
@@ -574,7 +576,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   const showRightPanel = false;
   const isExplorePage = pathname.startsWith("/explore");
   const isFeedLayout = pathname === "/feed" || pathname === "/" || isExplorePage;
-  const isFullWidthLayout = pathname.startsWith("/marketplace") || pathname.startsWith("/garage") || pathname.startsWith("/profile");
+  const isFullWidthLayout = pathname.startsWith("/marketplace") || pathname.startsWith("/garage") || pathname.startsWith("/profile") || pathname.startsWith("/community");
   const contentColClass = isFeedLayout ? "desktop-two-col" : isFullWidthLayout ? "desktop-full-col" : "desktop-two-col";
 
   if (isFullScreen) {

@@ -290,15 +290,18 @@ export default function FeedPage() {
           }}>
             Trending in Community
           </span>
-          <button style={{
-            fontSize: 12,
-            fontWeight: 600,
-            color: "#44CCFF",
-            background: "none",
-            border: "none",
-            cursor: "pointer",
-          }}>
-            See All →
+          <button
+            onClick={() => router.push("/community")}
+            style={{
+              fontSize: 12,
+              fontWeight: 600,
+              color: "#44CCFF",
+              background: "none",
+              border: "none",
+              cursor: "pointer",
+            }}
+          >
+            See All in Community →
           </button>
         </div>
 
