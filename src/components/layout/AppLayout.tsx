@@ -600,7 +600,10 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         <div className="desktop-body">
           <DesktopSidebar pathname={pathname} />
           <div className={showRightPanel && !mobilePreview ? "desktop-three-col" : contentColClass}>
-            <div className={mobilePreview ? "desktop-content desktop-mobile-preview" : "desktop-content"}>
+            <div
+              className={mobilePreview ? "desktop-content desktop-mobile-preview" : "desktop-content"}
+              style={isFeedLayout && !mobilePreview ? { maxWidth: 680, flex: '0 0 auto', width: '100%' } : undefined}
+            >
               {children}
             </div>
             {showRightPanel && !mobilePreview && <RightPanel />}
