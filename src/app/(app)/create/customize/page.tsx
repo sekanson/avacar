@@ -24,7 +24,7 @@ const MODIFY_SUBCATS = ["All", "Wrap Color", "Wheels", "Body Kit", "Stance", "Ti
 // ─── SCENE PRESETS ─────────────────────────────────────────────────────────────
 const SCENE_PRESETS = [
   { name: "F1 Track", sub: "Monaco Grand Prix", img: "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=600&q=80&fm=webp" },
-  { name: "Tokyo Night", sub: "Neon-lit Shibuya", img: "https://images.unsplash.com/photo-1511919884226-fd3cad34687c?w=600&q=80&fm=webp" },
+  { name: "Tokyo Night", sub: "Neon-lit Shibuya", img: "https://images.unsplash.com/photo-1493246507139-91e8fad9978e?w=600&q=80&fm=webp" },
   { name: "Desert Highway", sub: "Golden Hour", img: "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=600&q=80&fm=webp" },
   { name: "Mountain Pass", sub: "Alpine Curves", img: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=600&q=80&fm=webp" },
   { name: "Studio Showroom", sub: "Clean + Dramatic", img: "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=600&q=80&fm=webp" },
@@ -59,6 +59,13 @@ const CATEGORIES = [
 ];
 
 const CAR_IMG = "https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?w=800&q=80&fm=webp";
+
+const TAB_HERO_IMAGES: Record<string, string> = {
+  modify: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=1200&q=80&fm=webp",
+  scenes: "https://images.unsplash.com/photo-1493246507139-91e8fad9978e?w=1200&q=80&fm=webp",
+  styles: "https://images.unsplash.com/photo-1511919884226-fd3cad34687c?w=1200&q=80&fm=webp",
+  content: "https://images.unsplash.com/photo-1580273916550-e323be2ae537?w=1200&q=80&fm=webp",
+};
 
 // ─── SUB-COMPONENTS ────────────────────────────────────────────────────────────
 
@@ -290,7 +297,7 @@ export default function StudioCustomizePage() {
           borderRadius: 16,
         }}>
           <img
-            src={CAR_IMG}
+            src={TAB_HERO_IMAGES[CATEGORIES[activeCategory]?.key] || CAR_IMG}
             alt="Your car"
             loading="lazy"
             style={{ width: "100%", height: "100%", objectFit: "cover" }}

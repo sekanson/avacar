@@ -7,7 +7,7 @@ export default function HistoryPage() {
   const router = useRouter();
 
   return (
-    <div style={{ background: "var(--color-bg)", minHeight: "100vh", padding: "32px 20px" }}>
+    <div style={{ background: "var(--color-bg)", minHeight: "100vh", padding: "32px 20px", maxWidth: 1280, margin: "0 auto" }}>
       <p style={{
         fontSize: 10, fontWeight: 700, color: "#44CCFF",
         letterSpacing: "0.15em", textTransform: "uppercase", margin: "0 0 8px",

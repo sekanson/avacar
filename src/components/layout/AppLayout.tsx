@@ -571,7 +571,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       pathname !== "/profile" &&
       FULL_SCREEN_PREFIXES.some((prefix) => pathname.startsWith(prefix)));
 
-  const showRightPanel = pathname.startsWith("/explore");
+  const showRightPanel = false; // Right panel removed — explore uses full-width masonry
   const isFeedLayout = pathname === "/feed" || pathname === "/" || pathname.startsWith("/explore");
   const isFullWidthLayout = pathname.startsWith("/marketplace") || pathname.startsWith("/garage") || pathname.startsWith("/profile");
   const contentColClass = isFeedLayout ? "desktop-two-col" : isFullWidthLayout ? "desktop-full-col" : "desktop-two-col";

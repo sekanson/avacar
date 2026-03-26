@@ -227,7 +227,7 @@ export default function SettingsPage() {
   const [sellerType, setSellerType] = useState("Individual Designer");
 
   return (
-    <div style={{ background: "var(--color-bg)", minHeight: "100vh", paddingBottom: 40 }}>
+    <div style={{ background: "var(--color-bg)", minHeight: "100vh", paddingBottom: 40, maxWidth: 1280, margin: "0 auto" }}>
       {/* TopBar */}
       <div
         style={{

@@ -32,7 +32,7 @@ const SHOPS = [
     priceRange: "$500–$750",
     nextAvailable: "Friday, 2:00 PM",
     category: "wrap",
-    hero: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80&fm=webp",
+    hero: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=800&q=80&fm=webp",
   },
   {
     id: "armorshield-pro",
@@ -213,7 +213,7 @@ export default function ShopsDirectoryPage() {
   });
 
   return (
-    <div className="min-h-screen pb-8" style={{ background: "var(--color-bg)" }}>
+    <div className="min-h-screen pb-8" style={{ background: "var(--color-bg)", maxWidth: 1280, margin: "0 auto" }}>
       {/* Header */}
       <div className="px-4 pt-6 pb-4">
         <h1 className="font-display font-bold text-text-primary text-[22px] mb-1">
