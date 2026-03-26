@@ -55,7 +55,7 @@ const BUILDERS = [
     thumbs: [
       "https://images.unsplash.com/photo-1617814076367-b759c7d7e738?w=120&h=80&fit=crop&q=70&fm=webp",
       "https://images.unsplash.com/photo-1567808291548-fc3ee04dbcf0?w=120&h=80&fit=crop&q=70&fm=webp",
-      "https://images.unsplash.com/photo-1525609004556-c46c70d0cf4c?w=120&h=80&fit=crop&q=70&fm=webp",
+      "https://images.unsplash.com/photo-1511919884226-fd3cad34687c?w=120&h=80&fit=crop&q=70&fm=webp",
     ],
   },
   {

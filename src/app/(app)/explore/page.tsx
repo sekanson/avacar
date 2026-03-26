@@ -14,7 +14,7 @@ const FEED_POSTS = [
     age: "3h",
     vehicle: "2022 Mercedes G-Wagon",
     caption: "Finally did the Murdered Out look on my G-Wagon. Full 3M Satin Black + tint.",
-    image: "https://images.unsplash.com/photo-1525609004556-c46c70d0cf4c?w=800&q=80&fm=webp",
+    image: "https://images.unsplash.com/photo-1511919884226-fd3cad34687c?w=800&q=80&fm=webp",
     tags: ["3M Satin Black", "HRE P101"],
     likes: "342",
     comments: "28",
@@ -218,7 +218,7 @@ const FEATURED_BUILDS = [
   { id: "b3", car: "2021 GT-R R35", type: "Ceramic Tint", shop: "TintPros GTA", price: "$650", image: "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=800&q=80&fm=webp", accent: "#34D399", tag: "Tint" },
   { id: "b4", car: "2023 WRX", type: "Forged Wheels", shop: "RimCity", price: "$3,200", image: "https://images.unsplash.com/photo-1580273916550-e323be2ae537?w=800&q=80&fm=webp", accent: "#A78BFA", tag: "Wheels" },
   { id: "b5", car: "2022 RS6 Avant", type: "Full PPF", shop: "ArmorShield", price: "$4,800", image: "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=800&q=80&fm=webp", accent: "#FBBF24", tag: "PPF" },
-  { id: "b6", car: "2023 Supra A90", type: "Chrome Delete", shop: "DetailKings", price: "$900", image: "https://images.unsplash.com/photo-1525609004556-c46c70d0cf4c?w=800&q=80&fm=webp", accent: "#FB923C", tag: "Accessories" },
+  { id: "b6", car: "2023 Supra A90", type: "Chrome Delete", shop: "DetailKings", price: "$900", image: "https://images.unsplash.com/photo-1511919884226-fd3cad34687c?w=800&q=80&fm=webp", accent: "#FB923C", tag: "Accessories" },
 ];
 
 const TRENDING_SHOPS = [

@@ -37,7 +37,7 @@ const TYPE_BADGE_COLORS: Record<string, { bg: string; color: string }> = {
 };
 
 const TEMPLATES = [
-  { name: "Murdered Out",        type: "Look",     desc: "All black everything. One tap.",              image: "https://images.unsplash.com/photo-1525609004556-c46c70d0cf4c?w=600&q=80&fm=webp" },
+  { name: "Murdered Out",        type: "Look",     desc: "All black everything. One tap.",              image: "https://images.unsplash.com/photo-1511919884226-fd3cad34687c?w=600&q=80&fm=webp" },
   { name: "Tokyo Night",         type: "Scene",    desc: "Neon-lit streets, rain reflections.",         image: "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=600&q=80&fm=webp" },
   { name: "JDM Street Build",    type: "Style",    desc: "Slammed, wide, aggressive.",                  image: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=600&q=80&fm=webp" },
   { name: "Studio Showroom",     type: "Scene",    desc: "Clean studio, dramatic lighting.",            image: "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=600&q=80&fm=webp" },
@@ -48,7 +48,7 @@ const TEMPLATES = [
 ];
 
 const COMMUNITY_POSTS = [
-  { username: "wrapsbyalex", timeAgo: "3h ago",  caption: "Finally did the Murdered Out look on my G-Wagon", likes: "342", comments: "28",  views: "12.4K", image: "https://images.unsplash.com/photo-1525609004556-c46c70d0cf4c?w=600&q=80&fm=webp" },
+  { username: "wrapsbyalex", timeAgo: "3h ago",  caption: "Finally did the Murdered Out look on my G-Wagon", likes: "342", comments: "28",  views: "12.4K", image: "https://images.unsplash.com/photo-1511919884226-fd3cad34687c?w=600&q=80&fm=webp" },
   { username: "driftking",   timeAgo: "5h ago",  caption: "Supra on HRE P101s at the track",                  likes: "218", comments: "45",  views: "8.7K",  image: "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=600&q=80&fm=webp" },
   { username: "euroboy",     timeAgo: "8h ago",  caption: "RS6 in 3M Nardo Gray — perfection",                likes: "567", comments: "89",  views: "24.1K", image: "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=600&q=80&fm=webp" },
   { username: "jdmfan",      timeAgo: "12h ago", caption: "Civic Type R — full JDM street build",             likes: "134", comments: "16",  views: "5.2K",  image: "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=600&q=80&fm=webp" },

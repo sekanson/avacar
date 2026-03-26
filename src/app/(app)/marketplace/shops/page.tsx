@@ -32,7 +32,7 @@ const SHOPS = [
     priceRange: "$500–$750",
     nextAvailable: "Friday, 2:00 PM",
     category: "wrap",
-    hero: "https://images.unsplash.com/photo-1597007066704-67bf2068d527?w=800&q=80&fm=webp",
+    hero: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80&fm=webp",
   },
   {
     id: "armorshield-pro",

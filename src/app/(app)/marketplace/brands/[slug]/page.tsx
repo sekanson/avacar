@@ -22,7 +22,7 @@ const BRAND_OVERRIDES: Record<string, {
     textColor: "#ffffff",
     category: "Wraps & PPF",
     about: "3M is the world's leading manufacturer of vinyl wrap films and paint protection film, trusted by professional installers and detailing shops worldwide. From the iconic 1080 Series to advanced Scotchgard PPF, 3M sets the global standard.",
-    heroImg: "https://images.unsplash.com/photo-1525609004556-c46c70d0cf4c?w=1200&q=80&fm=webp",
+    heroImg: "https://images.unsplash.com/photo-1511919884226-fd3cad34687c?w=1200&q=80&fm=webp",
     filterChips: ["All", "Wraps", "PPF", "Tint"],
     stats: { products: 42, builds: 8400, rating: 4.9 },
     products: [

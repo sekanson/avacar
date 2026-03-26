@@ -67,7 +67,7 @@ const MOCK_SAVED_BUILDS = [
     style: "Murdered Out Look",
     price: "$2,100–$2,800",
     status: "Draft" as const,
-    image: "https://images.unsplash.com/photo-1525609004556-c46c70d0cf4c?w=800&q=80&fm=webp",
+    image: "https://images.unsplash.com/photo-1511919884226-fd3cad34687c?w=800&q=80&fm=webp",
     accent: "#34D399",
   },
   {

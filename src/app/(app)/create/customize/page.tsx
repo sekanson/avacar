@@ -7,7 +7,7 @@ import { ArrowLeft, Wrench, Globe, Sparkles, Camera } from "lucide-react";
 const MODIFY_PRESETS = [
   { name: "Satin Nardo Gray", sub: "3M 1080 Series", price: "From $2,400 installed", img: "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=600&q=80&fm=webp", tag: "Wrap Color" },
   { name: "Gloss Midnight Blue", sub: "Avery SW900", price: "From $2,200 installed", img: "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=600&q=80&fm=webp", tag: "Wrap Color" },
-  { name: "Matte Black", sub: "3M 1080", price: "From $1,800 installed", img: "https://images.unsplash.com/photo-1525609004556-c46c70d0cf4c?w=600&q=80&fm=webp", tag: "Wrap Color" },
+  { name: "Matte Black", sub: "3M 1080", price: "From $1,800 installed", img: "https://images.unsplash.com/photo-1511919884226-fd3cad34687c?w=600&q=80&fm=webp", tag: "Wrap Color" },
   { name: "Midnight Purple", sub: "Inozetek", price: "From $3,200 installed", img: "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=600&q=80&fm=webp", tag: "Wrap Color" },
   { name: "HRE FF15 — Brushed Dark", sub: "HRE Wheels", price: "From $4,800", img: "https://images.unsplash.com/photo-1580273916550-e323be2ae537?w=600&q=80&fm=webp", tag: "Wheels" },
   { name: "Vossen CV3 — Gloss Black", sub: "Vossen", price: "From $3,200", img: "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=600&q=80&fm=webp", tag: "Wheels" },
@@ -24,7 +24,7 @@ const MODIFY_SUBCATS = ["All", "Wrap Color", "Wheels", "Body Kit", "Stance", "Ti
 // ─── SCENE PRESETS ─────────────────────────────────────────────────────────────
 const SCENE_PRESETS = [
   { name: "F1 Track", sub: "Monaco Grand Prix", img: "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=600&q=80&fm=webp" },
-  { name: "Tokyo Night", sub: "Neon-lit Shibuya", img: "https://images.unsplash.com/photo-1525609004556-c46c70d0cf4c?w=600&q=80&fm=webp" },
+  { name: "Tokyo Night", sub: "Neon-lit Shibuya", img: "https://images.unsplash.com/photo-1511919884226-fd3cad34687c?w=600&q=80&fm=webp" },
   { name: "Desert Highway", sub: "Golden Hour", img: "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=600&q=80&fm=webp" },
   { name: "Mountain Pass", sub: "Alpine Curves", img: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=600&q=80&fm=webp" },
   { name: "Studio Showroom", sub: "Clean + Dramatic", img: "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=600&q=80&fm=webp" },
@@ -38,7 +38,7 @@ const STYLE_PRESETS = [
   { name: "Clean Daily", desc: "OEM+ · Subtle mods · Daily driver perfection", img: "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=600&q=80&fm=webp" },
   { name: "JDM Street", desc: "Slammed · Wide body · Neon underglow", img: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=600&q=80&fm=webp" },
   { name: "Euro Luxury", desc: "Brushed wheels · Elegant tones · Refined", img: "https://images.unsplash.com/photo-1580273916550-e323be2ae537?w=600&q=80&fm=webp" },
-  { name: "Murdered Out", desc: "All black everything · Stealth mode", img: "https://images.unsplash.com/photo-1525609004556-c46c70d0cf4c?w=600&q=80&fm=webp" },
+  { name: "Murdered Out", desc: "All black everything · Stealth mode", img: "https://images.unsplash.com/photo-1511919884226-fd3cad34687c?w=600&q=80&fm=webp" },
   { name: "Track Weapon", desc: "Roll cage · Splitter · Wing · Stripped", img: "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=600&q=80&fm=webp" },
   { name: "Off-Road Beast", desc: "Lift kit · All-terrain · Light bar", img: "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=600&q=80&fm=webp" },
 ];
