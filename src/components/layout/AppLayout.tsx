@@ -602,7 +602,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           <div className={showRightPanel && !mobilePreview ? "desktop-three-col" : contentColClass}>
             <div
               className={mobilePreview ? "desktop-content desktop-mobile-preview" : "desktop-content"}
-              style={isFeedLayout && !mobilePreview ? { maxWidth: 680, flex: '0 0 auto', width: '100%' } : undefined}
+              style={isFeedLayout && !mobilePreview ? { maxWidth: 680, flex: '1 1 auto', marginLeft: 'auto', marginRight: 'auto' } : undefined}
             >
               {children}
             </div>

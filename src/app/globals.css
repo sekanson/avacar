@@ -422,7 +422,6 @@ body {
   gap: 0;
   overflow: hidden;
   padding-left: 48px;
-  justify-content: center;
 }
 
 .desktop-full-col {
