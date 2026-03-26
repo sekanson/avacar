@@ -27,6 +27,7 @@ const FEED_POSTS = [
     likes: "342",
     comments: "28",
     views: "12.4K",
+    ratio: "4/5",
   },
   {
     id: "p2",
@@ -40,6 +41,7 @@ const FEED_POSTS = [
     likes: "218",
     comments: "45",
     views: "8.7K",
+    ratio: "1/1",
   },
   {
     id: "p3",
@@ -53,6 +55,7 @@ const FEED_POSTS = [
     likes: "567",
     comments: "89",
     views: "24.1K",
+    ratio: "4/3",
   },
   {
     id: "p4",
@@ -66,6 +69,7 @@ const FEED_POSTS = [
     likes: "134",
     comments: "16",
     views: "5.2K",
+    ratio: "4/5",
   },
   {
     id: "p5",
@@ -79,6 +83,7 @@ const FEED_POSTS = [
     likes: "891",
     comments: "124",
     views: "41.2K",
+    ratio: "1/1",
   },
   {
     id: "p6",
@@ -92,6 +97,7 @@ const FEED_POSTS = [
     likes: "203",
     comments: "31",
     views: "9.8K",
+    ratio: "4/5",
   },
   {
     id: "p7",
@@ -105,6 +111,7 @@ const FEED_POSTS = [
     likes: "445",
     comments: "52",
     views: "18.3K",
+    ratio: "4/3",
   },
   {
     id: "p8",
@@ -118,6 +125,7 @@ const FEED_POSTS = [
     likes: "278",
     comments: "33",
     views: "11.2K",
+    ratio: "1/1",
   },
   {
     id: "p9",
@@ -131,6 +139,7 @@ const FEED_POSTS = [
     likes: "523",
     comments: "67",
     views: "22.1K",
+    ratio: "4/5",
   },
   {
     id: "p10",
@@ -144,6 +153,7 @@ const FEED_POSTS = [
     likes: "387",
     comments: "44",
     views: "16.8K",
+    ratio: "4/3",
   },
   {
     id: "p11",
@@ -157,6 +167,7 @@ const FEED_POSTS = [
     likes: "192",
     comments: "38",
     views: "7.4K",
+    ratio: "1/1",
   },
   {
     id: "p12",
@@ -170,6 +181,7 @@ const FEED_POSTS = [
     likes: "634",
     comments: "78",
     views: "29.5K",
+    ratio: "4/5",
   },
   {
     id: "p13",
@@ -183,6 +195,7 @@ const FEED_POSTS = [
     likes: "451",
     comments: "56",
     views: "19.2K",
+    ratio: "4/3",
   },
   {
     id: "p14",
@@ -196,6 +209,7 @@ const FEED_POSTS = [
     likes: "712",
     comments: "93",
     views: "35.8K",
+    ratio: "1/1",
   },
   {
     id: "p15",
@@ -209,6 +223,7 @@ const FEED_POSTS = [
     likes: "298",
     comments: "41",
     views: "13.7K",
+    ratio: "4/5",
   },
 ];
 
@@ -321,7 +336,7 @@ function FeedPost({ post, index }: { post: typeof FEED_POSTS[0]; index: number }
           src={post.image}
           alt={post.caption}
           loading="lazy"
-          style={{ width: "100%", aspectRatio: "16/9", objectFit: "cover", display: "block" }}
+          style={{ width: "100%", aspectRatio: (post as any).ratio || "4/5", objectFit: "cover", display: "block" }}
         />
       </div>
 

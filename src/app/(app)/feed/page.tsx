@@ -38,10 +38,10 @@ const TEMPLATES = [
 ];
 
 const COMMUNITY_POSTS = [
-  { username: "wrapsbyalex", timeAgo: "3h ago",  caption: "Finally did the Murdered Out look on my G-Wagon", likes: "342", comments: "28",  views: "12.4K", image: "https://images.unsplash.com/photo-1511919884226-fd3cad34687c?w=600&q=80&fm=webp" },
-  { username: "driftking",   timeAgo: "5h ago",  caption: "Supra on HRE P101s at the track",                  likes: "218", comments: "45",  views: "8.7K",  image: "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=600&q=80&fm=webp" },
-  { username: "euroboy",     timeAgo: "8h ago",  caption: "RS6 in 3M Nardo Gray — perfection",                likes: "567", comments: "89",  views: "24.1K", image: "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=600&q=80&fm=webp" },
-  { username: "jdmfan",      timeAgo: "12h ago", caption: "Civic Type R — full JDM street build",             likes: "134", comments: "16",  views: "5.2K",  image: "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=600&q=80&fm=webp" },
+  { username: "wrapsbyalex", timeAgo: "3h ago",  caption: "Finally did the Murdered Out look on my G-Wagon", likes: "342", comments: "28",  views: "12.4K", image: "https://images.unsplash.com/photo-1511919884226-fd3cad34687c?w=600&q=80&fm=webp", ratio: "4/5" },
+  { username: "driftking",   timeAgo: "5h ago",  caption: "Supra on HRE P101s at the track",                  likes: "218", comments: "45",  views: "8.7K",  image: "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=600&q=80&fm=webp", ratio: "1/1" },
+  { username: "euroboy",     timeAgo: "8h ago",  caption: "RS6 in 3M Nardo Gray — perfection",                likes: "567", comments: "89",  views: "24.1K", image: "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=600&q=80&fm=webp", ratio: "4/3" },
+  { username: "jdmfan",      timeAgo: "12h ago", caption: "Civic Type R — full JDM street build",             likes: "134", comments: "16",  views: "5.2K",  image: "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=600&q=80&fm=webp", ratio: "4/5" },
 ];
 
 // ─── Component ────────────────────────────────────────────────────────────────
@@ -323,8 +323,8 @@ export default function FeedPage() {
                 cursor: "pointer",
               }}
             >
-              {/* 3:2 image */}
-              <div style={{ position: "relative", aspectRatio: "3/2" }}>
+              {/* Variable aspect ratio like Instagram */}
+              <div style={{ position: "relative", aspectRatio: (post as any).ratio || "4/5" }}>
                 <img
                   src={post.image}
                   alt={post.caption}
