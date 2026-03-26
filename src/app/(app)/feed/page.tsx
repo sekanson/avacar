@@ -397,12 +397,22 @@ export default function FeedPage() {
                   <span style={{ fontSize: 11, color: "var(--color-text-secondary)", display: "flex", alignItems: "center", gap: 3 }}><MessageCircle size={11} /> {post.comments}</span>
                   <span style={{ fontSize: 11, color: "var(--color-text-secondary)", display: "flex", alignItems: "center", gap: 3 }}><Eye size={11} /> {post.views}</span>
                 </div>
-                <div style={{ display: "flex", gap: 12 }}>
-                  <button style={{ fontSize: 11, fontWeight: 600, color: "#44CCFF", background: "none", border: "none", cursor: "pointer", padding: 0 }}>
-                    Try On My Car
+                <div style={{ display: "flex", gap: 6 }}>
+                  <button style={{
+                    flex: 1, fontSize: 10, fontWeight: 700, color: "#44CCFF",
+                    background: "rgba(68,204,255,0.10)", border: "1px solid rgba(68,204,255,0.25)",
+                    borderRadius: 999, padding: "6px 4px", cursor: "pointer",
+                    display: "flex", alignItems: "center", justifyContent: "center", gap: 3,
+                  }}>
+                    ✨ Try On My Car
                   </button>
-                  <button style={{ fontSize: 11, fontWeight: 600, color: "#44CCFF", background: "none", border: "none", cursor: "pointer", padding: 0 }}>
-                    Shop Build
+                  <button style={{
+                    flex: 1, fontSize: 10, fontWeight: 700, color: "var(--color-text-primary)",
+                    background: "transparent", border: "1px solid var(--color-border)",
+                    borderRadius: 999, padding: "6px 4px", cursor: "pointer",
+                    display: "flex", alignItems: "center", justifyContent: "center", gap: 3,
+                  }}>
+                    🛒 Shop Build
                   </button>
                 </div>
               </div>

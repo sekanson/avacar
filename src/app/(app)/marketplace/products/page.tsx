@@ -4,7 +4,112 @@ import { useState } from "react";
 import Link from "next/link";
 import { allMarketplaceProducts } from "@/data/marketplace";
 import type { MarketplaceProduct } from "@/data/marketplace";
-import { SlidersHorizontal, X, Search } from "lucide-react";
+import { SlidersHorizontal, X, Search, Package } from "lucide-react";
+
+// ─── Curated Collections ──────────────────────────────────────────────────────
+
+const CURATED_COLLECTIONS = [
+  {
+    id: "murdered-out",
+    name: "Murdered Out Essentials",
+    count: 12,
+    description: "All black everything",
+    colors: ["#111111", "#1a1a1a", "#222222", "#0a0a0a"],
+    accent: "#F87171",
+    filter: { category: "wraps", finish: "Matte" },
+  },
+  {
+    id: "show-car",
+    name: "Show Car Starter Pack",
+    count: 18,
+    description: "Turn heads at every show",
+    colors: ["#c8c8c8", "#f0f0f0", "#FFD700", "#007FFF"],
+    accent: "#44CCFF",
+    filter: { category: "wraps", finish: "Gloss" },
+  },
+  {
+    id: "euro-clean",
+    name: "Euro Clean",
+    count: 9,
+    description: "Refined, subtle, tasteful",
+    colors: ["#8B7355", "#A9A9A9", "#2F4F4F", "#1C1C1C"],
+    accent: "#34D399",
+    filter: { category: "wraps", finish: "Satin" },
+  },
+  {
+    id: "off-road",
+    name: "Off-Road Ready",
+    count: 14,
+    description: "Built for the trail",
+    colors: ["#556B2F", "#8B4513", "#696969", "#2F4F4F"],
+    accent: "#FBBF24",
+    filter: { category: "wraps", finish: "Matte" },
+  },
+];
+
+function CollectionsRow({
+  onSelectCollection,
+  activeCollection,
+}: {
+  onSelectCollection: (id: string | null, filter: { category: string; finish: string } | null) => void;
+  activeCollection: string | null;
+}) {
+  return (
+    <div style={{ padding: "0 20px 20px" }}>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
+        <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.15em", color: "var(--primary)", textTransform: "uppercase", margin: 0 }}>
+          Curated Collections
+        </p>
+        {activeCollection && (
+          <button
+            onClick={() => onSelectCollection(null, null)}
+            style={{ fontSize: 11, fontWeight: 600, color: "var(--on-surface-variant)", background: "none", border: "none", cursor: "pointer" }}
+          >
+            Clear ×
+          </button>
+        )}
+      </div>
+      <div style={{ display: "flex", gap: 12, overflowX: "auto", scrollbarWidth: "none" }}>
+        {CURATED_COLLECTIONS.map((col) => {
+          const isActive = activeCollection === col.id;
+          return (
+            <button
+              key={col.id}
+              onClick={() => onSelectCollection(isActive ? null : col.id, isActive ? null : col.filter)}
+              style={{
+                flexShrink: 0, width: 160, borderRadius: 16,
+                background: isActive ? `${col.accent}18` : "var(--surface-card)",
+                border: isActive ? `1.5px solid ${col.accent}55` : "1px solid var(--ghost-border)",
+                padding: 0, cursor: "pointer", overflow: "hidden",
+                textAlign: "left", boxShadow: isActive ? `0 0 16px ${col.accent}22` : "var(--shadow-card)",
+                transition: "all 0.2s",
+              }}
+            >
+              {/* Color swatch row */}
+              <div style={{ display: "flex", height: 60, overflow: "hidden" }}>
+                {col.colors.map((color, i) => (
+                  <div key={i} style={{ flex: 1, background: color }} />
+                ))}
+              </div>
+              <div style={{ padding: "10px 12px 12px" }}>
+                <p style={{ fontSize: 12, fontWeight: 700, color: "var(--on-surface)", margin: "0 0 2px", lineHeight: 1.3 }}>
+                  {col.name}
+                </p>
+                <p style={{ fontSize: 10, color: "var(--on-surface-variant)", margin: "0 0 6px" }}>{col.description}</p>
+                <span style={{
+                  fontSize: 9, fontWeight: 700, color: col.accent,
+                  background: `${col.accent}15`, borderRadius: 999, padding: "2px 7px",
+                }}>
+                  {col.count} products
+                </span>
+              </div>
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
 
 
 const WHEEL_IMAGES = [
@@ -17,6 +122,9 @@ const PPF_IMAGE = "https://images.unsplash.com/photo-1503376780353-7e6692767b70?
 // Generate a rich gradient for wrap products based on their finish type and color
 function getWrapGradient(hex: string, finish: string): string {
   const f = (finish || "").toLowerCase();
+  if (f.includes("carbon")) {
+    return `repeating-linear-gradient(45deg, #1a1a1a 0px, #1a1a1a 4px, #2a2a2a 4px, #2a2a2a 8px), repeating-linear-gradient(-45deg, #111 0px, #111 4px, #222 4px, #222 8px)`;
+  }
   if (f.includes("chrome")) {
     return `linear-gradient(135deg, #c8c8c8 0%, #f0f0f0 25%, #a0a0a0 50%, #e8e8e8 75%, #b8b8b8 100%)`;
   }
@@ -24,11 +132,9 @@ function getWrapGradient(hex: string, finish: string): string {
     return `linear-gradient(135deg, ${hex} 0%, #9b59b6 33%, #3498db 66%, ${hex} 100%)`;
   }
   if (f.includes("matte")) {
-    // Matte: flat with subtle edge shadow, no shine
     return `linear-gradient(160deg, ${hex}ee 0%, ${hex}cc 40%, ${hex}bb 70%, ${hex}aa 100%)`;
   }
   if (f.includes("satin")) {
-    // Satin: slight sheen
     return `linear-gradient(135deg, ${hex}dd 0%, ${hex}ff 30%, ${hex}ee 60%, ${hex}cc 100%)`;
   }
   // Gloss: strong highlight
@@ -53,6 +159,9 @@ const CATEGORIES = [
 const SORTS = ["Popular", "Newest", "Price: Low", "Price: High"];
 
 function ProductCard({ product, sponsored }: { product: MarketplaceProduct; sponsored?: boolean }) {
+  const [activeVariantIdx, setActiveVariantIdx] = useState(0);
+  const activeVariant = product.variants[activeVariantIdx] ?? { colorHex: product.primaryColorHex, name: "" };
+
   return (
     <Link
       href={`/marketplace/products/${product.slug}`}
@@ -73,7 +182,7 @@ function ProductCard({ product, sponsored }: { product: MarketplaceProduct; spon
             width: "100%",
             aspectRatio: "1 / 1",
             background: product.category === "wraps"
-              ? getWrapGradient(product.primaryColorHex, product.finish)
+              ? getWrapGradient(activeVariant.colorHex, product.finish)
               : "#111",
             position: "relative",
             overflow: "hidden",
@@ -170,35 +279,30 @@ function ProductCard({ product, sponsored }: { product: MarketplaceProduct; spon
             {product.name}
           </p>
 
-          {/* Variant color swatches */}
+          {/* Variant color swatches — tappable */}
           <div style={{ display: "flex", gap: 4, marginBottom: 8 }}>
-            {product.variants.slice(0, 5).map((v) => (
-              <div
+            {product.variants.slice(0, 5).map((v, idx) => (
+              <button
                 key={v.name}
                 title={v.name}
+                onClick={(e) => { e.preventDefault(); setActiveVariantIdx(idx); }}
                 style={{
-                  width: 16,
-                  height: 16,
-                  borderRadius: "50%",
+                  width: 16, height: 16, borderRadius: "50%",
                   background: v.colorHex,
-                  border: "2px solid var(--surface-low)",
-                  flexShrink: 0,
+                  border: idx === activeVariantIdx ? "2px solid var(--primary)" : "2px solid var(--surface-low)",
+                  flexShrink: 0, cursor: "pointer", padding: 0,
+                  boxShadow: idx === activeVariantIdx ? `0 0 0 1px var(--primary)` : "none",
+                  transition: "all 0.15s",
                 }}
               />
             ))}
             {product.variants.length > 5 && (
               <div
                 style={{
-                  width: 16,
-                  height: 16,
-                  borderRadius: "50%",
+                  width: 16, height: 16, borderRadius: "50%",
                   background: "var(--surface-low)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontSize: 8,
-                  fontWeight: 700,
-                  color: "var(--on-surface-variant)",
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  fontSize: 8, fontWeight: 700, color: "var(--on-surface-variant)",
                 }}
               >
                 +{product.variants.length - 5}
@@ -381,6 +485,18 @@ export default function ProductCatalogPage() {
   const [activeCategory, setActiveCategory] = useState("all");
   const [activeFinish, setActiveFinish] = useState("All");
   const [activeSort, setActiveSort] = useState("Popular");
+  const [activeCollection, setActiveCollection] = useState<string | null>(null);
+
+  const handleSelectCollection = (id: string | null, filter: { category: string; finish: string } | null) => {
+    setActiveCollection(id);
+    if (filter) {
+      setActiveCategory(filter.category);
+      setActiveFinish(filter.finish);
+    } else {
+      setActiveCategory("all");
+      setActiveFinish("All");
+    }
+  };
 
   const filtered = allMarketplaceProducts.filter((p) => {
     if (activeCategory !== "all" && p.category !== activeCategory) return false;
@@ -461,6 +577,9 @@ export default function ProductCatalogPage() {
           </button>
         ))}
       </div>
+
+      {/* Curated Collections Row */}
+      <CollectionsRow onSelectCollection={handleSelectCollection} activeCollection={activeCollection} />
 
       {/* Desktop: two-column layout with filter sidebar */}
       <div

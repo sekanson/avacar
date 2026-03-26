@@ -3,6 +3,14 @@
 import { useState, useEffect } from "react";
 import { MapPin, Star, Heart, MessageCircle, Eye, Sparkles, ShoppingCart, Car } from "lucide-react";
 import { motion } from "framer-motion";
+import Link from "next/link";
+
+function slugifyVehicle(vehicle: string): string {
+  // "2022 Honda Civic" → "honda-civic"
+  // Strip year prefix, lowercase, replace spaces with hyphens
+  const withoutYear = vehicle.replace(/^\d{4}[-–]?\d{0,4}\s+/, "").replace(/^\d{4}\s+/, "");
+  return withoutYear.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
+}
 
 // ─── Feed Mock Data ────────────────────────────────────────────────────────────
 
@@ -289,15 +297,16 @@ function FeedPost({ post, index }: { post: typeof FEED_POSTS[0]; index: number }
       {/* Vehicle tag */}
       {post.vehicle && (
         <div style={{ padding: "0 16px 10px" }}>
-          <button style={{
+          <Link href={`/vehicle/${slugifyVehicle(post.vehicle)}`} style={{
             display: "inline-flex", alignItems: "center", gap: 5,
             fontSize: 11, fontWeight: 600, color: "var(--color-text-secondary)",
             background: "var(--color-surface-elevated)", border: "none",
             borderRadius: 999, padding: "4px 10px", cursor: "pointer",
+            textDecoration: "none",
           }}>
             <Car size={11} />
             {post.vehicle}
-          </button>
+          </Link>
         </div>
       )}
 
@@ -455,12 +464,55 @@ export default function ExplorePage() {
         </button>
       </div>
 
+      {/* Following tab content */}
+      {activeTab === 1 && (
+        <div style={{ padding: "16px 20px 0" }}>
+          {/* Following groups */}
+          <div style={{ marginBottom: 20 }}>
+            <p style={{ fontSize: 11, fontWeight: 700, color: "#6B6B7B", letterSpacing: "0.1em", textTransform: "uppercase", margin: "0 0 12px" }}>
+              You follow
+            </p>
+            <div style={{ display: "flex", gap: 10, overflowX: "auto", scrollbarWidth: "none", paddingBottom: 4 }}>
+              {[
+                { label: "wrapsbyalex", type: "Creator", color: "#44CCFF" },
+                { label: "BMW M4", type: "Vehicle", color: "#34D399" },
+                { label: "#MurderedOut", type: "Style", color: "#A78BFA" },
+                { label: "3M", type: "Brand", color: "#FBBF24" },
+                { label: "carbonwerks", type: "Creator", color: "#44CCFF" },
+              ].map((item) => (
+                <div key={item.label} style={{
+                  flexShrink: 0, display: "flex", flexDirection: "column", alignItems: "center", gap: 6,
+                }}>
+                  <div style={{
+                    width: 52, height: 52, borderRadius: "50%",
+                    background: `${item.color}22`,
+                    border: `2px solid ${item.color}44`,
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    fontSize: 18, fontWeight: 800, color: item.color,
+                  }}>
+                    {item.label[0].toUpperCase()}
+                  </div>
+                  <span style={{ fontSize: 10, color: "#A0A0B0", maxWidth: 60, textAlign: "center", lineHeight: 1.2 }}>{item.label}</span>
+                  <span style={{ fontSize: 9, fontWeight: 700, color: item.color, background: `${item.color}15`, borderRadius: 999, padding: "1px 6px" }}>{item.type}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+          {/* Following feed — subset of posts */}
+          {FEED_POSTS.slice(0, 5).map((post, i) => (
+            <FeedPost key={post.id} post={post} index={i} />
+          ))}
+        </div>
+      )}
+
       {/* Feed posts */}
+      {activeTab !== 1 && (
       <div style={{ padding: "16px 20px 0" }}>
         {FEED_POSTS.map((post, i) => (
           <FeedPost key={post.id} post={post} index={i} />
         ))}
       </div>
+      )}
 
       {/* ── FEATURED BUILDS section ───────────────────────────────────────── */}
       <div style={{ padding: "8px 20px 0" }}>
@@ -511,21 +563,28 @@ export default function ExplorePage() {
       } as React.CSSProperties}>
         {VEHICLE_FILTERS.map((v) => {
           const isActive = v === activeVehicle;
+          const slug = v !== "All Cars" && v !== "More" ? slugifyVehicle(v) : null;
+          const chipStyle: React.CSSProperties = {
+            flexShrink: 0, padding: "5px 12px", borderRadius: 999,
+            fontSize: 12, fontWeight: 600, cursor: "pointer",
+            border: isActive ? "1px solid rgba(52,211,153,0.35)" : "1px solid var(--color-border)",
+            background: isActive ? "rgba(52,211,153,0.12)" : "transparent",
+            color: isActive ? "#34D399" : "#6B6B7B",
+            transition: "all 0.2s",
+            display: "flex", alignItems: "center", gap: 5,
+          };
+          if (slug) {
+            return (
+              <Link key={v} href={`/vehicle/${slug}`} style={{ textDecoration: "none", flexShrink: 0, display: "inline-flex" }}>
+                <span style={chipStyle}>
+                  <Car size={10} />
+                  {v}
+                </span>
+              </Link>
+            );
+          }
           return (
-            <button
-              key={v}
-              onClick={() => setActiveVehicle(v)}
-              style={{
-                flexShrink: 0, padding: "5px 12px", borderRadius: 999,
-                fontSize: 12, fontWeight: 600, cursor: "pointer",
-                border: isActive ? "1px solid rgba(52,211,153,0.35)" : "1px solid var(--color-border)",
-                background: isActive ? "rgba(52,211,153,0.12)" : "transparent",
-                color: isActive ? "#34D399" : "#6B6B7B",
-                transition: "all 0.2s",
-                display: "flex", alignItems: "center", gap: 5,
-              }}
-            >
-              {v !== "All Cars" && v !== "More" && <Car size={10} />}
+            <button key={v} onClick={() => setActiveVehicle(v)} style={chipStyle}>
               {v}
             </button>
           );

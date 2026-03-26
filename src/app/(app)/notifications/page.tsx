@@ -2,9 +2,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Bell, Heart, MapPin, Star, UserPlus, Wrench } from "lucide-react";
+import { ArrowLeft, Heart, MapPin, Star, UserPlus, Wrench, ChevronRight } from "lucide-react";
 import { motion } from "framer-motion";
-import { cn } from "@/lib/utils/cn";
 
 // ─── Mock Data ────────────────────────────────────────────────────────────────
 
@@ -18,6 +17,7 @@ interface Notification {
   unread: boolean;
   initial: string;
   gradient: string;
+  href: string;
 }
 
 const MOCK_NOTIFICATIONS: Notification[] = [
@@ -29,6 +29,7 @@ const MOCK_NOTIFICATIONS: Notification[] = [
     unread: true,
     initial: "J",
     gradient: "linear-gradient(135deg, #003d8f, #005ab7)",
+    href: "/explore",
   },
   {
     id: "n2",
@@ -38,6 +39,7 @@ const MOCK_NOTIFICATIONS: Notification[] = [
     unread: true,
     initial: "W",
     gradient: "linear-gradient(135deg, #0a080e, #1a1030)",
+    href: "/profile/wrapsbyalex",
   },
   {
     id: "n3",
@@ -47,6 +49,7 @@ const MOCK_NOTIFICATIONS: Notification[] = [
     unread: true,
     initial: "C",
     gradient: "linear-gradient(135deg, #1a0505, #3d0e0e)",
+    href: "/marketplace/shops",
   },
   {
     id: "n4",
@@ -56,15 +59,17 @@ const MOCK_NOTIFICATIONS: Notification[] = [
     unread: false,
     initial: "Q",
     gradient: "linear-gradient(135deg, #081408, #0e2010)",
+    href: "/create/quote",
   },
   {
     id: "n5",
     type: "system",
-    text: "Your GT500 Build was featured in Trending 🔥",
+    text: "Your GT500 Build was featured in Trending",
     time: "1d ago",
     unread: false,
     initial: "A",
     gradient: "linear-gradient(135deg, #0a0a12, #14141A)",
+    href: "/explore",
   },
 ];
 
@@ -199,7 +204,7 @@ export default function NotificationsPage() {
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.06, duration: 0.3 }}
-              onClick={() => markOneRead(notif.id)}
+              onClick={() => { markOneRead(notif.id); router.push(notif.href); }}
               style={{
                 width: "100%",
                 display: "flex",
@@ -270,19 +275,21 @@ export default function NotificationsPage() {
                 <span style={{ fontSize: 12, color: "var(--color-text-tertiary)" }}>{notif.time}</span>
               </div>
 
-              {/* Unread dot */}
-              {notif.unread && (
-                <div
-                  style={{
-                    width: 8,
-                    height: 8,
-                    borderRadius: "50%",
-                    background: "#44CCFF",
-                    flexShrink: 0,
-                    boxShadow: "0 0 8px rgba(68,204,255,0.60)",
-                  }}
-                />
-              )}
+              {/* Right side: unread dot + chevron */}
+              <div style={{ display: "flex", alignItems: "center", gap: 6, flexShrink: 0 }}>
+                {notif.unread && (
+                  <div
+                    style={{
+                      width: 8,
+                      height: 8,
+                      borderRadius: "50%",
+                      background: "#44CCFF",
+                      boxShadow: "0 0 8px rgba(68,204,255,0.60)",
+                    }}
+                  />
+                )}
+                <ChevronRight size={16} color="var(--color-text-tertiary)" />
+              </div>
             </motion.button>
           );
         })}
