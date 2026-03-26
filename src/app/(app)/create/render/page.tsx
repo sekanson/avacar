@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { ArrowLeft, Save, Share2, MapPin } from "lucide-react";
+import { ArrowLeft, Save, Share2, MapPin, RefreshCcw } from "lucide-react";
 
 const RESULTS = [
   {
@@ -132,7 +132,7 @@ function RenderContent() {
             }} />
             <div style={{ position: "absolute", bottom: 16, left: 20, right: 20 }}>
               <p style={{ fontSize: 16, fontWeight: 800, color: "var(--color-text-primary)", margin: "0 0 6px" }}>
-                Option {selected + 1} — {preset}
+                Look {selected + 1} — {preset}
               </p>
               <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
                 {RESULTS[selected].parts.map((part) => (
@@ -187,14 +187,16 @@ function RenderContent() {
             padding: "20px 20px 32px", gap: 10, position: "relative", zIndex: 2,
           }}>
             <div style={{ display: "flex", gap: 10 }}>
-              <button style={{
-                flex: 1, height: 48, borderRadius: 999,
-                background: "transparent", color: "var(--color-text-primary)",
-                fontWeight: 600, fontSize: 14, cursor: "pointer",
-                border: "1px solid var(--color-border)",
-                display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
-              }}>
-                <Save size={16} /> Save to Garage
+              <button
+                onClick={() => router.back()}
+                style={{
+                  flex: 1, height: 48, borderRadius: 999,
+                  background: "transparent", color: "var(--color-text-primary)",
+                  fontWeight: 600, fontSize: 14, cursor: "pointer",
+                  border: "1px solid var(--color-border)",
+                  display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
+                }}>
+                <RefreshCcw size={15} /> Try another look
               </button>
               <button style={{
                 flex: 1, height: 48, borderRadius: 999,
@@ -203,7 +205,18 @@ function RenderContent() {
                 border: "1px solid var(--color-border)",
                 display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
               }}>
-                <Share2 size={16} /> Post to Feed
+                <Share2 size={16} /> Share
+              </button>
+            </div>
+            <div style={{ display: "flex", gap: 10 }}>
+              <button style={{
+                flex: 1, height: 44, borderRadius: 999,
+                background: "transparent", color: "var(--color-text-secondary)",
+                fontWeight: 600, fontSize: 13, cursor: "pointer",
+                border: "1px solid var(--color-border)",
+                display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
+              }}>
+                <Save size={15} /> Save to Garage
               </button>
             </div>
 

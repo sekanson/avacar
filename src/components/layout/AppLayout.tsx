@@ -5,6 +5,7 @@ import {
   Home, Compass, User, Bell, Sun, Moon, Sparkles, Car,
   Smartphone, Store, ShoppingCart, Folder, MapPin,
   ChevronDown, ChevronRight,
+  Wrench, Disc3, Palette, Globe, Paintbrush, Film, Camera,
 } from "lucide-react";
 import { useAppStore } from "@/store/appStore";
 import { useState, useEffect } from "react";
@@ -59,14 +60,14 @@ const MOBILE_TABS: MobileTabConfig[] = [
 ];
 
 const SHEET_TOOLS = [
-  { icon: "🔧", label: "Quick Build",   href: "/create" },
-  { icon: "🛞", label: "Swap Wheels",   href: "/create/customize?category=modify&sub=wheels" },
-  { icon: "🎨", label: "Change Wrap",   href: "/create/customize?category=modify&sub=wraps" },
-  { icon: "🌍", label: "Scene",         href: "/create/customize?category=scenes" },
-  { icon: "✨", label: "Style Explorer",href: "/create/customize?category=styles" },
-  { icon: "🖌️", label: "Touch Up",     href: "/create/touchup" },
-  { icon: "🎬", label: "Car Motion",    href: "/create/video" },
-  { icon: "📸", label: "Content",       href: "/create" },
+  { Icon: Sparkles,   label: "Quick Build",   href: "/create" },
+  { Icon: Disc3,      label: "Swap Wheels",   href: "/create/customize?category=modify&sub=wheels" },
+  { Icon: Palette,    label: "Change Wrap",   href: "/create/customize?category=modify&sub=wraps" },
+  { Icon: Globe,      label: "Scene",         href: "/create/customize?category=scenes" },
+  { Icon: Sparkles,   label: "Style Explorer",href: "/create/customize?category=styles" },
+  { Icon: Paintbrush, label: "Touch Up",      href: "/create/touchup" },
+  { Icon: Film,       label: "Car Motion",    href: "/create/video" },
+  { Icon: Camera,     label: "Content",       href: "/create" },
 ];
 
 function getMobileActiveTab(pathname: string): MobileTabId | null {
@@ -278,7 +279,9 @@ function TabBar() {
               gap: 8,
               padding: "12px 20px 0",
             }}>
-              {SHEET_TOOLS.map((tool) => (
+              {SHEET_TOOLS.map((tool) => {
+                const ToolIcon = tool.Icon;
+                return (
                 <button
                   key={tool.label}
                   onClick={() => handleSheetTool(tool.href)}
@@ -301,9 +304,8 @@ function TabBar() {
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    fontSize: 24,
                   }}>
-                    {tool.icon}
+                    <ToolIcon size={22} color="var(--color-text-secondary)" strokeWidth={2} />
                   </div>
                   <span style={{
                     fontSize: 11,
@@ -315,7 +317,8 @@ function TabBar() {
                     {tool.label}
                   </span>
                 </button>
-              ))}
+              );
+              })}
             </div>
           </div>
         </>

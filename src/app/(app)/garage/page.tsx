@@ -156,10 +156,10 @@ export default function GaragePage() {
                 margin: "0 0 6px",
               }}
             >
-              Your garage is empty
+              No builds yet
             </h2>
             <p style={{ fontSize: 14, color: "#A0A0B0", margin: 0, lineHeight: 1.5 }}>
-              Upload your car to start building
+              {"Let's make your first one!"}
             </p>
           </div>
 
@@ -435,7 +435,7 @@ export default function GaragePage() {
                 Design a new build
               </p>
               <p style={{ fontSize: 13, color: "var(--color-text-secondary)", margin: 0, lineHeight: 1.5 }}>
-                Pick a style preset and see your car transformed in 30 seconds
+                Pick a look and see your car transformed in 30 seconds
               </p>
             </div>
             <button

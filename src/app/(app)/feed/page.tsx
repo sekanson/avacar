@@ -29,7 +29,7 @@ const RECENT_BUILDS = [
 const TEMPLATE_FILTER_TABS = ["Templates", "Community", "Tutorials"];
 
 const TYPE_BADGE_COLORS: Record<string, { bg: string; color: string }> = {
-  Preset:   { bg: "rgba(68,204,255,0.15)",  color: "#44CCFF" },
+  Look:     { bg: "rgba(68,204,255,0.15)",  color: "#44CCFF" },
   Scene:    { bg: "rgba(52,211,153,0.15)",  color: "#34D399" },
   Style:    { bg: "rgba(168,85,247,0.15)",  color: "#A855F7" },
   Workflow: { bg: "rgba(251,191,36,0.15)",  color: "#FBBF24" },
@@ -37,7 +37,7 @@ const TYPE_BADGE_COLORS: Record<string, { bg: string; color: string }> = {
 };
 
 const TEMPLATES = [
-  { name: "Murdered Out",        type: "Preset",   desc: "All black everything. One tap.",              image: "https://images.unsplash.com/photo-1525609004556-c46c70d0cf4c?w=600&q=80&fm=webp" },
+  { name: "Murdered Out",        type: "Look",     desc: "All black everything. One tap.",              image: "https://images.unsplash.com/photo-1525609004556-c46c70d0cf4c?w=600&q=80&fm=webp" },
   { name: "Tokyo Night",         type: "Scene",    desc: "Neon-lit streets, rain reflections.",         image: "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=600&q=80&fm=webp" },
   { name: "JDM Street Build",    type: "Style",    desc: "Slammed, wide, aggressive.",                  image: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=600&q=80&fm=webp" },
   { name: "Studio Showroom",     type: "Scene",    desc: "Clean studio, dramatic lighting.",            image: "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=600&q=80&fm=webp" },

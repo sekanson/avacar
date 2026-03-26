@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Sparkles, Palette, CircleDot } from "lucide-react";
 import { marketplaceBrands, marketplaceWraps, marketplaceWheels } from "@/data/marketplace";
 
@@ -109,6 +110,7 @@ function DesignCard({ design }: { design: typeof FEATURED_DESIGNS[0] }) {
 
 /* ─── Main Page ─── */
 export default function MarketplacePage() {
+  const pathname = usePathname();
   const [buildImgError, setBuildImgError] = useState(false);
 
   return (
@@ -126,7 +128,7 @@ export default function MarketplacePage() {
         }}
       >
         {MODE_TABS.map((tab) => {
-          const isActive = tab.id === "designs";
+          const isActive = pathname === tab.href || (pathname === "/marketplace" && tab.id === "designs");
           return (
             <Link
               key={tab.id}
