@@ -317,7 +317,7 @@ body {
   flex-direction: column;
   flex: 1;
   min-width: 0;
-  overflow: hidden;
+  overflow-y: auto;
 }
 
 /* ─── Desktop Body (sidebar + content row, below topnav) ─── */
@@ -325,7 +325,6 @@ body {
   display: flex;
   flex: 1;
   min-height: 0;
-  overflow: hidden;
   position: relative;
 }
 
@@ -411,29 +410,28 @@ body {
 .desktop-two-col {
   flex: 1;
   display: flex;
-  overflow: hidden;
   justify-content: center;
   padding-left: 48px; /* leave room for collapsed sidebar */
+  align-items: flex-start;
+}
+
+.desktop-full-col {
+  flex: 1;
+  display: flex;
+  padding-left: 48px;
+  align-items: flex-start;
 }
 
 .desktop-three-col {
   flex: 1;
   display: flex;
   gap: 0;
-  overflow: hidden;
   padding-left: 48px;
-}
-
-.desktop-full-col {
-  flex: 1;
-  display: flex;
-  overflow: hidden;
-  padding-left: 48px;
+  align-items: flex-start;
 }
 
 .desktop-content {
   flex: 1;
-  overflow-y: auto;
   min-width: 0;
 }
 
@@ -461,9 +459,12 @@ body {
 .desktop-right-panel {
   width: 280px;
   flex-shrink: 0;
-  overflow-y: auto;
   border-left: 1px solid var(--color-border);
   padding: 16px;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
 }
 
 @media (max-width: 1279px) {
