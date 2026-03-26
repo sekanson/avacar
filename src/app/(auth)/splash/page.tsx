@@ -134,7 +134,7 @@ export default function SplashPage() {
 
               {/* Feature chips */}
               <div className="flex flex-wrap gap-2 justify-center">
-                {["AI Visualization", "200+ Wraps", "Certified Shops", "Live Pricing"].map(
+                {["Instant Visualization", "200+ Wraps", "Certified Shops", "Live Pricing"].map(
                   (chip) => (
                     <span
                       key={chip}

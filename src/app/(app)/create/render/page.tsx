@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { ArrowLeft, Save, Share2, ShoppingCart, RefreshCcw } from "lucide-react";
+import { ArrowLeft, BookmarkPlus, Share2, ShoppingBag, RefreshCw } from "lucide-react";
 
 const RESULTS = [
   {
@@ -55,7 +55,7 @@ function LoadingSkeleton({ progress }: { progress: number }) {
       <div style={{ textAlign: "center" }}>
         <p style={{ fontSize: 20, fontWeight: 800, color: "var(--color-text-primary)", margin: "0 0 6px",
           fontFamily: "var(--font-manrope, Manrope, sans-serif)" }}>
-          ✨ Working on your look...
+          Working on your look...
         </p>
         <p style={{ fontSize: 13, color: "var(--color-text-secondary)", margin: 0 }}>
           Preparing 3 looks for you
@@ -130,7 +130,7 @@ function RenderContent() {
           fontFamily: "var(--font-manrope, Manrope, sans-serif)",
           maxWidth: 180, textAlign: "center", lineHeight: 1.3,
         }}>
-          ✦ STUDIO
+          STUDIO
         </span>
         <div style={{ width: 60 }} />
       </div>
@@ -250,7 +250,7 @@ function RenderContent() {
                   border: "1px solid var(--color-border)",
                   display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
                 }}>
-                <RefreshCcw size={14} /> 🔮 Try another look
+                <RefreshCw size={14} /> Try another look
               </button>
               <button style={{
                 flex: 1, height: 48, borderRadius: 999,
@@ -259,7 +259,7 @@ function RenderContent() {
                 border: "1px solid var(--color-border)",
                 display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
               }}>
-                <Share2 size={14} /> 📤 Share
+                <Share2 size={14} /> Share
               </button>
             </div>
 
@@ -272,7 +272,7 @@ function RenderContent() {
                 border: "1px solid var(--color-border)",
                 display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
               }}>
-                <Save size={14} /> 💾 Save to My Garage
+                <BookmarkPlus size={14} /> Save to My Garage
               </button>
               <button
                 onClick={() => router.push("/marketplace/products")}
@@ -284,7 +284,7 @@ function RenderContent() {
                   fontWeight: 600, fontSize: 13, cursor: "pointer",
                   display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
                 }}>
-                <ShoppingCart size={14} /> 🛒 Shop this build
+                <ShoppingBag size={14} /> Shop this build
               </button>
             </div>
 

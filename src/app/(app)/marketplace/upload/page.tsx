@@ -50,7 +50,7 @@ function StepStart({ onUpload }: { onUpload: () => void }) {
           </div>
           <div style={{ flex: 1, minWidth: 0 }}>
             <p style={{ fontSize: 16, fontWeight: 700, color: "var(--color-text-primary)", margin: "0 0 4px" }}>Create in Studio</p>
-            <p style={{ fontSize: 13, color: "var(--color-text-tertiary)", margin: 0, lineHeight: 1.4 }}>Design something new using our AI-powered tools</p>
+            <p style={{ fontSize: 13, color: "var(--color-text-tertiary)", margin: 0, lineHeight: 1.4 }}>Design something new using our Studio tools</p>
           </div>
           <ChevronRight size={18} color="var(--color-text-tertiary)" />
         </button>

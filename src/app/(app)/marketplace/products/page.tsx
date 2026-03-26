@@ -14,7 +14,7 @@ const CURATED_COLLECTIONS = [
     name: "Murdered Out Essentials",
     count: 12,
     description: "All black everything",
-    colors: ["#111111", "#1a1a1a", "#222222", "#0a0a0a"],
+    image: "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=400&q=80&fm=webp",
     accent: "#F87171",
     filter: { category: "wraps", finish: "Matte" },
   },
@@ -23,7 +23,7 @@ const CURATED_COLLECTIONS = [
     name: "Show Car Starter Pack",
     count: 18,
     description: "Turn heads at every show",
-    colors: ["#c8c8c8", "#f0f0f0", "#FFD700", "#007FFF"],
+    image: "https://images.unsplash.com/photo-1560958089-b8a1929cea89?w=400&q=80&fm=webp",
     accent: "#44CCFF",
     filter: { category: "wraps", finish: "Gloss" },
   },
@@ -32,7 +32,7 @@ const CURATED_COLLECTIONS = [
     name: "Euro Clean",
     count: 9,
     description: "Refined, subtle, tasteful",
-    colors: ["#8B7355", "#A9A9A9", "#2F4F4F", "#1C1C1C"],
+    image: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=400&q=80&fm=webp",
     accent: "#34D399",
     filter: { category: "wraps", finish: "Satin" },
   },
@@ -41,7 +41,7 @@ const CURATED_COLLECTIONS = [
     name: "Off-Road Ready",
     count: 14,
     description: "Built for the trail",
-    colors: ["#556B2F", "#8B4513", "#696969", "#2F4F4F"],
+    image: "https://images.unsplash.com/photo-1583121274602-3e2820c69888?w=400&q=80&fm=webp",
     accent: "#FBBF24",
     filter: { category: "wraps", finish: "Matte" },
   },
@@ -85,11 +85,15 @@ function CollectionsRow({
                 transition: "all 0.2s",
               }}
             >
-              {/* Color swatch row */}
-              <div style={{ display: "flex", height: 60, overflow: "hidden" }}>
-                {col.colors.map((color, i) => (
-                  <div key={i} style={{ flex: 1, background: color }} />
-                ))}
+              {/* Hero image */}
+              <div style={{ position: "relative", height: 80, overflow: "hidden" }}>
+                <img
+                  src={col.image}
+                  alt={col.name}
+                  loading="lazy"
+                  style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                />
+                <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, rgba(0,0,0,0.15), rgba(0,0,0,0.45))" }} />
               </div>
               <div style={{ padding: "10px 12px 12px" }}>
                 <p style={{ fontSize: 12, fontWeight: 700, color: "var(--on-surface)", margin: "0 0 2px", lineHeight: 1.3 }}>

@@ -24,8 +24,8 @@ const VEHICLES: Record<string, {
   "honda-civic": {
     name: "Honda Civic",
     year: "2022–2024",
-    image: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=800&q=80&fm=webp",
-    heroImage: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=1200&q=80&fm=webp",
+    image: "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=800&q=80&fm=webp",
+    heroImage: "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=1200&q=80&fm=webp",
     builds: 1240,
     followers: 8400,
     popularMods: [
@@ -44,8 +44,8 @@ const VEHICLES: Record<string, {
   "bmw-m4": {
     name: "BMW M4",
     year: "2021–2024",
-    image: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=800&q=80&fm=webp",
-    heroImage: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=1200&q=80&fm=webp",
+    image: "https://images.unsplash.com/photo-1580273916550-e323be2ae537?w=800&q=80&fm=webp",
+    heroImage: "https://images.unsplash.com/photo-1580273916550-e323be2ae537?w=1200&q=80&fm=webp",
     builds: 3420,
     followers: 21600,
     popularMods: [
@@ -83,8 +83,8 @@ const VEHICLES: Record<string, {
   "g-wagon": {
     name: "Mercedes G-Wagon",
     year: "2019–2024",
-    image: "https://images.unsplash.com/photo-1511919884226-fd3cad34687c?w=800&q=80&fm=webp",
-    heroImage: "https://images.unsplash.com/photo-1511919884226-fd3cad34687c?w=1200&q=80&fm=webp",
+    image: "https://images.unsplash.com/photo-1542282088-72c9c27ed0cd?w=800&q=80&fm=webp",
+    heroImage: "https://images.unsplash.com/photo-1542282088-72c9c27ed0cd?w=1200&q=80&fm=webp",
     builds: 1890,
     followers: 18200,
     popularMods: [
@@ -102,8 +102,8 @@ const VEHICLES: Record<string, {
   "porsche-911": {
     name: "Porsche 911",
     year: "2020–2024",
-    image: "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=800&q=80&fm=webp",
-    heroImage: "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=1200&q=80&fm=webp",
+    image: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=800&q=80&fm=webp",
+    heroImage: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=1200&q=80&fm=webp",
     builds: 2760,
     followers: 22100,
     popularMods: [

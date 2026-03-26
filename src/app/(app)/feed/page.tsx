@@ -2,21 +2,11 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Zap, Circle, Palette, Globe, Sparkles, Paintbrush, Video, Heart, MessageCircle, Eye } from "lucide-react";
+import { Heart, MessageCircle, Eye } from "lucide-react";
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
 const INTENT_PILLS = ["All", "Modify", "Scene", "Style", "Content", "Browse", "Shop"];
-
-const TOOL_LAUNCHERS = [
-  { icon: Zap,        label: "Quick Build",    href: "/create" },
-  { icon: Circle,     label: "Swap Wheels",    href: "/create/customize?category=modify&sub=wheels" },
-  { icon: Palette,    label: "Change Wrap",    href: "/create/customize?category=modify&sub=wraps" },
-  { icon: Globe,      label: "Scene My Car",   href: "/create/customize?category=scenes" },
-  { icon: Sparkles,   label: "Style Explorer", href: "/create/customize?category=styles" },
-  { icon: Paintbrush, label: "Touch Up",       href: "/create/touchup" },
-  { icon: Video,      label: "Car in Motion",  href: "/create/video" },
-];
 
 const RECENT_BUILDS = [
   { name: "GR86 — Satin Black", image: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=400&q=80&fm=webp" },
@@ -98,43 +88,7 @@ export default function FeedPage() {
         })}
       </div>
 
-      {/* ── Row 2: Tool Launcher ────────────────────────────────────────────── */}
-      <div style={{
-        display: "flex",
-        gap: 8,
-        overflowX: "auto",
-        padding: "8px 20px 16px",
-        scrollbarWidth: "none",
-      }}>
-        {TOOL_LAUNCHERS.map((tool) => {
-          const Icon = tool.icon;
-          return (
-            <button
-              key={tool.label}
-              onClick={() => router.push(tool.href)}
-              style={{
-                flexShrink: 0,
-                height: 48,
-                padding: "0 16px",
-                borderRadius: 16,
-                border: "1px solid var(--color-border)",
-                background: "var(--color-surface)",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                gap: 6,
-              }}
-            >
-              <Icon size={18} color="var(--color-text-secondary)" strokeWidth={2} />
-              <span style={{ fontSize: 12, fontWeight: 500, color: "var(--color-text-primary)", whiteSpace: "nowrap" }}>
-                {tool.label}
-              </span>
-            </button>
-          );
-        })}
-      </div>
-
-      {/* ── Row 3: My Garage (Recent) ───────────────────────────────────────── */}
+      {/* ── Row 2: My Garage (Recent) ───────────────────────────────────────── */}
       <section style={{ marginBottom: 28 }}>
         <div style={{
           display: "flex",

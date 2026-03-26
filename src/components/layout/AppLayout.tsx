@@ -584,7 +584,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         <TopBar onToggleCart={() => setCartOpen(p => !p)} />
       </div>
 
-      <main className="mobile-only-chrome" style={{ flex: 1, flexDirection: "column", overflow: "auto", minHeight: 0 }}>
+      <main className="mobile-only-chrome" style={{ flex: 1, display: "block", overflow: "auto", minHeight: 0 }}>
         {children}
       </main>
 
